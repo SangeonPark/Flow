@@ -172,6 +172,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double wt_pos = 1.0;
     double wt_neg = 1.0;
     double wt = 1.0;
+    //test
+    /*
     cout << "nTracks : " << nTracks << endl;
     cout << "nTracks_pos : " << nTracks_pos << endl;
     cout << "nTracks_neg : " << nTracks_neg << endl; 
@@ -182,14 +184,21 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     cout << "numerator : " << Q2_pos.Rho2()-nTracks_pos << endl;
     cout << "denom : " << nTracks_pos*(nTracks_pos-1)<<endl;;
     cout << "num/den : " << (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1)) << endl;
+    */
     
 
  
     double evt_avg_pos = (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1));
 
-    cout << "evt_avg_pos : " << evt_avg_pos <<endl;
+    //   cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-nTracks_neg)/(nTracks_neg*(nTracks_neg-1));
     double evt_avg = (Q2.Rho2()-nTracks)/(nTracks*(nTracks-1));
+
+    c2Hist->Fill(evt_avg);
+    c2Hist_pos->Fill(evt_avg_pos);
+    c2Hist_neg->Fill(evt_avg_neg);
+
+    
 
     double evt_wtd_pos = wt_pos * evt_avg_pos;
     double evt_wtd_neg = wt_neg * evt_avg_neg;
@@ -222,6 +231,9 @@ V2Analyzer::beginJob()
 //    track_Data = fs->make<TNtuple>("track_Data","track_Data","pt:eta:phi:charge:dzos:dxyos:nhit");
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+    c2Hist = fs->make<TH1D>("c2Hist","c2 Distribution",5000 ,-0.1,0.1);
+    c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",5000 ,-0.1,0.1);
+    c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",5000 ,-0.1,0.1);
 //    C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram", 
 
     asym_Dist->SetMarkerStyle(21);
@@ -234,21 +246,24 @@ void
 V2Analyzer::endJob() 
 {
     using namespace std;
+    /*
     cout<< "sum of weighted average" << sum_wtdavg_pos <<endl;
     cout << "sum of weights_positive : " << sum_wt_pos << endl;
     cout << "sum of weights_negative : " << sum_wt_neg << endl;
     cout << "sum of weights : " << sum_wt << endl;
+    */
     double c2_pos = sum_wtdavg_pos/sum_wt_pos;
     double c2_neg = sum_wtdavg_neg/sum_wt_neg;
     double v2_pos = sqrt(c2_pos);
     double v2_neg = sqrt(c2_neg);
     double c2 = sum_wtdavg/sum_wt;
     double v2 = sqrt(c2);
-    std::cout<<"c2 positive: " << c2_pos<<std::endl;
-    std::cout<<"c2 negative: " << c2_neg<<std::endl;
-    std::cout<<"v2 positive: " <<v2_pos<<std::endl;
-    std::cout<<"v2 negative: " << v2_neg;
-    cout << "c2 whole: " << c2;
+
+    cout<<"c2 positive: " << c2_pos<< endl;
+    cout<<"c2 negative: " << c2_neg<< endl;
+    cout<<"v2 positive: " <<v2_pos<< endl;
+    cout<<"v2 negative: " << v2_neg << endl;
+    cout << "c2 whole: " << c2 << endl;
     cout << "v2 whole: " << v2;
 }
 
