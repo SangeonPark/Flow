@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-demo = cms.EDAnalyzer('V2Analyzer'
+demo = cms.EDAnalyzer('V2Analyzer',
                       vertexSrc = cms.string('offlinePrimaryVertices'),
                       trackSrc = cms.InputTag('generalTracks'),
                     # nHitCut = cms.int32(3),	
