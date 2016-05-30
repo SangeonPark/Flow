@@ -140,7 +140,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    }
 	}
 
-	if(2.4<=fabs(eta) || pt <= 0.4) continue;
+	if(2.4<=fabs(eta) || pt <= 0.3) continue;
 
 	
 	TComplex e(1,2*phi,1);
@@ -234,7 +234,7 @@ V2Analyzer::beginJob()
     c2Hist = fs->make<TH1D>("c2Hist","c2 Distribution",1000 ,-1,1);
     c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",31 ,-1,1);
     c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",31 ,-1,1);
-//    C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram",
+//  C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram",
 
     
 
