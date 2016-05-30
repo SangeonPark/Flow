@@ -92,6 +92,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     int N_pos = 0;
     int N_neg = 0;
+    int N_tot = 0;
 
     int nTracks = 0;
     int nTracks_pos = 0;
@@ -149,6 +150,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	Q2 += e;
 	cos_sum += cos(2*phi);
 	sin_sum += sin(2*phi);
+	N_tot++;
+	
 	
 	if(charge>0){
 	    N_pos++;
@@ -165,7 +168,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
     
-    int N_tot = N_pos + N_neg;
+    //  int N_tot = N_pos + N_neg;
     int N_diff = N_pos - N_neg;
     double ach = (double)N_diff/N_tot;
     asym_Dist->Fill(ach);
@@ -189,6 +192,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     cout << "denom : " << nTracks_pos*(nTracks_pos-1)<<endl;;
     cout << "num/den : " << (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1)) << endl;
     */
+    cout << "N_tot : " << N_tot << endl;
+    cout << "N_pos + N_neg : " << N_pos+N_neg <<endl;
+
     
 
  
