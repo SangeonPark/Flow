@@ -203,7 +203,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     cout << "denom : " << N_tot*(N_tot-1.0) << endl;
     cout << "evt_avg : " << evt_avg << endl;
     if(evt_avg < -0.008){
-	cout << "exist--------------" <<endl;
+	cout << "exist------------------------" <<endl;
     }
 
     
