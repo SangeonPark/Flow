@@ -165,10 +165,10 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     asym_Dist->Fill(ach);
     NTrkHist->Fill(nTracks);
 
-    double wt_pos = (nTracks_pos)*(nTracks_pos-1);
-    double wt_neg = (nTracks_neg)*(nTracks_neg-1);
-/*    double wt_pos = 1.0;
-      double wt_neg = 1.0; */
+/*    double wt_pos = (nTracks_pos)*(nTracks_pos-1);
+      double wt_neg = (nTracks_neg)*(nTracks_neg-1);*/
+    double wt_pos = 1.0;
+    double wt_neg = 1.0;
     double wt = 1.0;
     cout << "nTracks : " << nTracks << endl;
     cout << "nTracks_pos : " << nTracks_pos << endl;
