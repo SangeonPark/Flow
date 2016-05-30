@@ -307,6 +307,8 @@ class V2Analyzer : public edm::EDAnalyzer {
       TH1D* c2Hist;
       TH1D* c2Hist_pos;
       TH1D* c2Hist_neg;
+      TH1D* sinHist;
+      TH1D* cosHist;
     
       //      double nHitCut_;
       
