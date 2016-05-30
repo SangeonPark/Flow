@@ -94,6 +94,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     int N_neg = 0;
 
     int nTracks = 0;
+    int nTracks_pos = 0;
+    int nTracks_neg = 0;
 
     //define the flow vectors 
     TComplex Q2_pos(0,0);
@@ -127,7 +129,15 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	//ptError
 	if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
 
-	if(fabs(eta)<2.4 && pt > 0.4){ nTracks++;}
+	if(fabs(eta)<2.4 && pt > 0.4){
+	    nTracks++;
+	    if(charge>0){
+		nTracks_pos++;
+	    }
+	    else{
+		nTracks_neg++;
+	    }
+	}
 
 	if(2.4<=fabs(eta) || pt <= 0.3) continue;
 	
@@ -154,21 +164,23 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     asym_Dist->Fill(ach);
     NTrkHist->Fill(nTracks);
 
+    double wt_pos = (nTracks_pos)*(nTracks_pos-1);
+    double wt_neg = (nTracks_neg)*(nTracks_neg-1);
     double wt = 1.0;
 
-    double evt_avg_pos = (Q2_pos.Rho2()-nTracks)/(nTracks*(nTracks-1));
-    double evt_avg_neg = (Q2_neg.Rho2()-nTracks)/(nTracks*(nTracks-1));
+    double evt_avg_pos = (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1));
+    double evt_avg_neg = (Q2_neg.Rho2()-nTracks_neg)/(nTracks_neg*(nTracks_neg-1));
 
-    double evt_wtd_pos = wt * evt_avg_pos;
-    double evt_wtd_neg = wt * evt_avg_neg;
-    
-
+    double evt_wtd_pos = wt_pos * evt_avg_pos;
+    double evt_wtd_neg = wt_neg * evt_avg_neg;
+ 
     sum_wt += wt;
+    sum_wt_pos += wt_pos;
+    sum_wt_neg += wt_neg;
     sum_wtdavg_pos += evt_wtd_pos;
     sum_wtdavg_neg += evt_wtd_neg;
 
-    v2_pos = sum_wtdavg_pos / sum_wt;
-    v2_neg = sum_wtdavg_neg / sum_wt; 
+
 
 }
 
@@ -180,11 +192,14 @@ V2Analyzer::beginJob()
     edm::Service<TFileService> fs;
     TH1D::SetDefaultSumw2();
     sum_wt = 0.0;
+    sum_wt_pos = 0.0;
+    sum_wt_neg = 0.0;
     sum_wtdavg_pos = 0.0;
     sum_wtdavg_neg = 0.0;
 //    track_Data = fs->make<TNtuple>("track_Data","track_Data","pt:eta:phi:charge:dzos:dxyos:nhit");
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
-    NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
+    NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+//    C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram", 
 
     asym_Dist->SetMarkerStyle(21);
     asym_Dist->SetMarkerSize(0.8);
@@ -195,11 +210,11 @@ V2Analyzer::beginJob()
 void 
 V2Analyzer::endJob() 
 {
-    double c2_pos = sum_wtdavg_pos/sum_wt;
-    double c2_neg = sum_wtdavg_neg/sum_wt;
+    double c2_pos = sum_wtdavg_pos/sum_wt_pos;
+    double c2_neg = sum_wtdavg_neg/sum_wt_neg;
     double v2_pos = sqrt(c2_pos);
     double v2_neg = sqrt(c2_neg);
-    std::cout<<v2_pos;
+    std::cout<<v2_pos<<std::endl;
     std::cout<<v2_neg;
 }
 

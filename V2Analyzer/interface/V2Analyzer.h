@@ -301,7 +301,7 @@ class V2Analyzer : public edm::EDAnalyzer {
 
       // ----------member data ---------------------------
 
-            TNtuple* track_Data;
+      TNtuple* track_Data;
       TH1D* asym_Dist;
       TH1D* NTrkHist;
     
@@ -315,8 +315,11 @@ class V2Analyzer : public edm::EDAnalyzer {
       int NTrkMax_;
 
       double sum_wt;
+      double sum_wt_pos;
+      double sum_wt_neg;
       double sum_wtdavg_pos;
       double sum_wtdavg_neg;
+      double sum_wtdavg;
       double v2_pos;
       double v2_neg;
       
