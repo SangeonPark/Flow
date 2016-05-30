@@ -195,6 +195,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     cout << "N_tot : " << N_tot << endl;
     cout << "N_pos + N_neg : " << N_pos+N_neg <<endl;
 
+    sinHist->Fill(sin_sum);
+    cosHist->Fill(cos_sum);
+
     
 
  
@@ -251,6 +254,8 @@ V2Analyzer::beginJob()
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
     c2Hist = fs->make<TH1D>("c2Hist","c2 Distribution",1000,-1,1);
+    cosHist = fs->make<TH1D>("cosine Histogram","cosine Distribution",1000,-1,1);
+    sinHist = fs->make<TH1D>("sine Histogram","sine Distribution",1000,-1,1);
     c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",1000,-1,1);
     c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",1000,-1,1);
 //  C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram",
