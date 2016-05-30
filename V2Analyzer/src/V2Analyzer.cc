@@ -225,12 +225,14 @@ V2Analyzer::beginJob()
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
-void 
+void
 V2Analyzer::endJob() 
 {
     using namespace std;
     cout<< "sum of weighted average" << sum_wtdavg_pos <<endl;
-    cout << "sum of weights" << sum_wt_pos << endl;
+    cout << "sum of weights_positive : " << sum_wt_pos << endl;
+    cout << "sum of weights_negative : " << sum_wt_neg << endl;
+    cout << "sum of weights : " << sum_wt << endl;
     double c2_pos = sum_wtdavg_pos/sum_wt_pos;
     double c2_neg = sum_wtdavg_neg/sum_wt_neg;
     double v2_pos = sqrt(c2_pos);
