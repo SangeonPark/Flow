@@ -140,8 +140,12 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	}
 
 	if(2.4<=fabs(eta) || pt <= 0.3) continue;
+
+	cout << phi << endl;
+
 	
 	TComplex e(1,2*phi,1);
+	cout << e << endl;
 	
 	if(charge>0){
 	    N_pos++;
@@ -169,9 +173,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double wt_pos = 1.0;
     double wt_neg = 1.0;
     double wt = 1.0;
-    cout << "nTracks : " << nTracks << endl;
+/*    cout << "nTracks : " << nTracks << endl;
     cout << "nTracks_pos : " << nTracks_pos << endl;
-    cout << "nTracks_neg : " << nTracks_neg << endl;
+    cout << "nTracks_neg : " << nTracks_neg << endl; */
 
  
     double evt_avg_pos = (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1));
@@ -186,8 +190,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     sum_wtdavg_pos += evt_wtd_pos;
     sum_wtdavg_neg += evt_wtd_neg;
 
-    cout << "sum_wt_pos" << sum_wt_pos << endl;
-    cout << "sum_wt_neg" << sum_wt_neg << endl;
+    // cout << "sum_wt_pos" << sum_wt_pos << endl;
+    //cout << "sum_wt_neg" << sum_wt_neg << endl;
 
 }
 
