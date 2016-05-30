@@ -159,7 +159,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double evt_avg_pos = (Q2_pos.Rho2()-nTracks)/(nTracks*(nTracks-1));
     double evt_avg_neg = (Q2_neg.Rho2()-nTracks)/(nTracks*(nTracks-1));
 
-    double evt_wtd_pos = wt * evt_avg;
+    double evt_wtd_pos = wt * evt_avg_pos;
+    double evt_wtd_neg = wt * evt_avg_neg;
+    
 
     sum_wt += wt;
     sum_wtdavg_pos += evt_wtd_pos;
