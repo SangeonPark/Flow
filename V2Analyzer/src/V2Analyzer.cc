@@ -192,7 +192,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     //   cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1));
-    double evt_avg = (Q2.Rho2()-N_tot)/(nTracks*(N_tot-1));
+    double evt_avg = (Q2.Rho2()-N_tot)/(N_tot*(N_tot-1));
 
     c2Hist->Fill(evt_avg);
     c2Hist_pos->Fill(evt_avg_pos);
