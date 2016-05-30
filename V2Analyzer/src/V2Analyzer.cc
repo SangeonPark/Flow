@@ -214,6 +214,8 @@ V2Analyzer::endJob()
     double c2_neg = sum_wtdavg_neg/sum_wt_neg;
     double v2_pos = sqrt(c2_pos);
     double v2_neg = sqrt(c2_neg);
+    std::cout<<c2_pos<<std::endl;
+    std::cout<<c2_neg<<std::endl;
     std::cout<<v2_pos<<std::endl;
     std::cout<<v2_neg;
 }
