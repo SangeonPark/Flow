@@ -146,6 +146,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	
 	TComplex e(1,2*phi,1);
 	cout << e << endl;
+	cout << "rho2 : " << e.Rho2() << endl;
 	
 	if(charge>0){
 	    N_pos++;
