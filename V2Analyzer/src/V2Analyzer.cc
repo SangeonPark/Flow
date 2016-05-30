@@ -100,6 +100,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //define the flow vectors 
     TComplex Q2_pos(0,0);
     TComplex Q2_neg(0,0);
+    TComplex Q2(0,0);
 
 
     for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
@@ -143,6 +144,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	
 	TComplex e(1,2*phi,1);
+	Q2 += e; 
 	
 	if(charge>0){
 	    N_pos++;
@@ -187,15 +189,18 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-nTracks_neg)/(nTracks_neg*(nTracks_neg-1));
+    double evt_avg = (Q2.Rho2()-nTracks)/(nTracks*(nTracks-1))
 
     double evt_wtd_pos = wt_pos * evt_avg_pos;
     double evt_wtd_neg = wt_neg * evt_avg_neg;
+    double evt_wtd = wt * evt_avg;
  
     sum_wt += wt;
     sum_wt_pos += wt_pos;
     sum_wt_neg += wt_neg;
     sum_wtdavg_pos += evt_wtd_pos;
     sum_wtdavg_neg += evt_wtd_neg;
+    sum_wtdavg += evt_wtd; 
 
     // cout << "sum_wt_pos" << sum_wt_pos << endl;
     //cout << "sum_wt_neg" << sum_wt_neg << endl;
@@ -237,10 +242,14 @@ V2Analyzer::endJob()
     double c2_neg = sum_wtdavg_neg/sum_wt_neg;
     double v2_pos = sqrt(c2_pos);
     double v2_neg = sqrt(c2_neg);
-    std::cout<<"c2 positive " << c2_pos<<std::endl;
-    std::cout<<"c2 negative " << c2_neg<<std::endl;
-    std::cout<<"v2 positive" <<v2_pos<<std::endl;
-    std::cout<<"v2 negative" << v2_neg;
+    double c2 = sum_wtdavg/sum_wt;
+    double v2 = sqrt(c2);
+    std::cout<<"c2 positive: " << c2_pos<<std::endl;
+    std::cout<<"c2 negative: " << c2_neg<<std::endl;
+    std::cout<<"v2 positive: " <<v2_pos<<std::endl;
+    std::cout<<"v2 negative: " << v2_neg;
+    cout << "c2 whole: " << c2;
+    cout << "v2 whole: " << v2;
 }
 
 // ------------ method called when starting to processes a run  ------------
