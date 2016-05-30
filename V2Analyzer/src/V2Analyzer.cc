@@ -188,11 +188,11 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
 
  
-    double evt_avg_pos = (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1));
+    double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1));
 
     //   cout << "evt_avg_pos : " << evt_avg_pos <<endl;
-    double evt_avg_neg = (Q2_neg.Rho2()-nTracks_neg)/(nTracks_neg*(nTracks_neg-1));
-    double evt_avg = (Q2.Rho2()-nTracks)/(nTracks*(nTracks-1));
+    double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1));
+    double evt_avg = (Q2.Rho2()-N_tot)/(nTracks*(N_tot-1));
 
     c2Hist->Fill(evt_avg);
     c2Hist_pos->Fill(evt_avg_pos);
@@ -229,11 +229,11 @@ V2Analyzer::beginJob()
     sum_wtdavg_pos = 0.0;
     sum_wtdavg_neg = 0.0;
 //    track_Data = fs->make<TNtuple>("track_Data","track_Data","pt:eta:phi:charge:dzos:dxyos:nhit");
-    asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
+    asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",101,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
-    c2Hist = fs->make<TH1D>("c2Hist","c2 Distribution",5000 ,-0.1,0.1);
-    c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",5000 ,-0.1,0.1);
-    c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",5000 ,-0.1,0.1);
+    c2Hist = fs->make<TH1D>("c2Hist","c2 Distribution",5000 ,-1,1);
+    c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",5000 ,-1,1);
+    c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",5000 ,-1,1);
 //    C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram", 
 
     asym_Dist->SetMarkerStyle(21);
