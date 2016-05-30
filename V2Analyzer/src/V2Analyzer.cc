@@ -101,6 +101,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     TComplex Q2_pos(0,0);
     TComplex Q2_neg(0,0);
     TComplex Q2(0,0);
+    double cos_sum=0.0;
+    double sin_sum=0.0;
 
 
     for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
@@ -140,11 +142,13 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    }
 	}
 
-	if(2.4<=fabs(eta) || pt <= 0.3) continue;
+	if(2.4<=fabs(eta) || pt < 0.3 || pt > 3.0 ) continue;
 
 	
 	TComplex e(1,2*phi,1);
-	Q2 += e; 
+	Q2 += e;
+	cos_sum += cos(2*phi);
+	sin_sum += sin(2*phi);
 	
 	if(charge>0){
 	    N_pos++;
@@ -192,7 +196,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     //   cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1.0));
-    double evt_avg = (Q2.Rho2()-N_tot)/(N_tot*(N_tot-1.0));
+    
+    double evt_avg = (cos_sum*cos_sum+sin_sum*sin_sum-N_tot)/(N_tot*(N_tot-1.0));
 
     c2Hist->Fill(evt_avg);
     c2Hist_pos->Fill(evt_avg_pos);
