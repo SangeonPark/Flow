@@ -180,7 +180,8 @@ V2Analyzer::beginJob()
     edm::Service<TFileService> fs;
     TH1D::SetDefaultSumw2();
     sum_wt = 0.0;
-    sum_wtdavg = 0.0; 
+    sum_wtdavg_pos = 0.0;
+    sum_wtdavg_neg = 0.0;
 //    track_Data = fs->make<TNtuple>("track_Data","track_Data","pt:eta:phi:charge:dzos:dxyos:nhit");
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
@@ -194,8 +195,12 @@ V2Analyzer::beginJob()
 void 
 V2Analyzer::endJob() 
 {
-    double v2 = sum_wtdavg/sum_wt;
-    std::cout<<v2;
+    double c2_pos = sum_wtdavg_pos/sum_wt;
+    double c2_neg = sum_wtdavg_neg/sum_wt;
+    double v2_pos = sqrt(c2_pos);
+    double v2_neg = sqrt(c2_neg);
+    std::cout<<v2_pos;
+    std::cout<<v2_neg;
 }
 
 // ------------ method called when starting to processes a run  ------------
