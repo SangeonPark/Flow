@@ -141,12 +141,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	if(2.4<=fabs(eta) || pt <= 0.3) continue;
 
-	cout << phi << endl;
-
 	
 	TComplex e(1,2*phi,1);
-	cout << e << endl;
-	cout << "rho2 : " << e.Rho2() << endl;
 	
 	if(charge>0){
 	    N_pos++;
@@ -174,12 +170,22 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double wt_pos = 1.0;
     double wt_neg = 1.0;
     double wt = 1.0;
-/*    cout << "nTracks : " << nTracks << endl;
+    cout << "nTracks : " << nTracks << endl;
     cout << "nTracks_pos : " << nTracks_pos << endl;
-    cout << "nTracks_neg : " << nTracks_neg << endl; */
+    cout << "nTracks_neg : " << nTracks_neg << endl; 
+
+    cout << "Q2_pos : " << Q2_pos << endl;
+    cout << "Q2_neg : " << Q2_neg << endl;
+    cout << "Rho2 : " << Q2_pos.Rho2() << endl;
+    cout << "numerator : " << Q2_pos.Rho2()-nTracks_pos << endl;
+    cout << "denom : " << nTracks_pos*(nTracks_pos-1)<<endl;;
+    cout << "num/den : " << (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1)) << endl;
+    
 
  
     double evt_avg_pos = (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1));
+
+    cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-nTracks_neg)/(nTracks_neg*(nTracks_neg-1));
 
     double evt_wtd_pos = wt_pos * evt_avg_pos;
