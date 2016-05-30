@@ -173,6 +173,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     cout << "nTracks_pos : " << nTracks_pos << endl;
     cout << "nTracks_neg : " << nTracks_neg << endl;
 
+ 
     double evt_avg_pos = (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1));
     double evt_avg_neg = (Q2_neg.Rho2()-nTracks_neg)/(nTracks_neg*(nTracks_neg-1));
 
@@ -184,6 +185,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     sum_wt_neg += wt_neg;
     sum_wtdavg_pos += evt_wtd_pos;
     sum_wtdavg_neg += evt_wtd_neg;
+
+    cout << "sum_wt_pos" << sum_wt_pos << endl;
+    cout << "sum_wt_neg" << sum_wt_neg << endl;
 
 }
 
