@@ -334,17 +334,17 @@ V2Analyzer::endJob()
 
     for(Int_t i=0; i<5; i++){
 	x[i]=ach_hist[i]->GetMean();
-	c2_pos_val[i]=c2_pos->GetMean();
-	c2_neg_val[i]=c2_neg->GetMean();
-	c2_tot_val[i]=c2_tot->GetMean();
+	c2_pos_val[i]=c2_pos[i]->GetMean();
+	c2_neg_val[i]=c2_neg[i]->GetMean();
+	c2_tot_val[i]=c2_tot[i]->GetMean();
 	v2_pos_val[i]=sqrt(c2_pos_val[i]);
 	v2_neg_val[i]=sqrt(c2_neg_val[i]);
 	v2_tot_val[i]=sqrt(c2_tot_val[i]);
 
     }  
 
-    TGraph* gr_pos = new TGraph(5,x,v2_pos);
-    TGraph* gr_neg = new TGraph(5,x,v2_neg);
+    TGraph* gr_pos = new TGraph(5,x,v2_pos_val);
+    TGraph* gr_neg = new TGraph(5,x,v2_neg_val);
     v2graph->Add(gr_pos);
     v2graph->Add(gr_neg);
     
