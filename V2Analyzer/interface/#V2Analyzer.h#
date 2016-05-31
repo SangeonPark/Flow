@@ -304,11 +304,15 @@ class V2Analyzer : public edm::EDAnalyzer {
       TNtuple* track_Data;
       TH1D* asym_Dist;
       TH1D* NTrkHist;
-      TH1D* c2Hist;
+      TGraph* gr_pos;
+      TGraph* gr_neg;
+  
+      /*      TH1D* c2Hist;
       TH1D* c2Hist_pos;
-      TH1D* c2Hist_neg;
-      TH1D* sinHist;
-      TH1D* cosHist;
+      TH1D* c2Hist_neg; */
+
+      //      TH1D* sinHist;
+      //      TH1D* cosHist;
     
       //      double nHitCut_;
       
@@ -319,15 +323,18 @@ class V2Analyzer : public edm::EDAnalyzer {
       int NTrkMin_;
       int NTrkMax_;
 
-      double sum_wt;
-      double sum_wt_pos;
-      double sum_wt_neg;
-      double sum_wtdavg_pos;
-      double sum_wtdavg_neg;
-      double sum_wtdavg;
-      double v2_pos;
-      double v2_neg;
       
+    
+      double Bins[6] = {-999,-0.04,-0.01,0.02,0.045,999 };
+
+      TH1D* c2_pos[5];
+      TH1D* c2_neg[5];
+      TH1D* c2_tot[5];
+      TH1D* ach_hist[5];
+      
+      
+      
+    
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
 
