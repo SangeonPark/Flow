@@ -158,9 +158,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    N_neg++;
 	    Q2_neg += e;
 	}
-
-//	double data[7]={pt,eta,phi,charge,dzos,dxyos,(double)nhit};
-//	track_Data->Fill(pt,eta,phi,charge,dzos,dxyos);
+	
     }
 
 
@@ -221,49 +219,22 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 
     }
     */
+    
     if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
     
-    //  int N_tot = N_pos + N_neg;
     int N_diff = N_pos - N_neg;
     double ach = (double)N_diff/N_tot;
     asym_Dist->Fill(ach);
     NTrkHist->Fill(nTracks);
 
-
-/*    double wt_pos = (nTracks_pos)*(nTracks_pos-1);
-      double wt_neg = (nTracks_neg)*(nTracks_neg-1);*/
     double wt_pos = 1.0;
     double wt_neg = 1.0;
     double wt = 1.0;
-    //test
-    /*
-    cout << "nTracks : " << nTracks << endl;
-    cout << "nTracks_pos : " << nTracks_pos << endl;
-    cout << "nTracks_neg : " << nTracks_neg << endl; 
-
-    cout << "Q2_pos : " << Q2_pos << endl;
-    cout << "Q2_neg : " << Q2_neg << endl;
-    cout << "Rho2 : " << Q2_pos.Rho2() << endl;
-    cout << "numerator : " << Q2_pos.Rho2()-nTracks_pos << endl;
-    cout << "denom : " << nTracks_pos*(nTracks_pos-1)<<endl;;
-    cout << "num/den : " << (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1)) << endl;
-    */
-    // cout << "N_tot : " << N_tot << endl;
-    //cout << "N_pos + N_neg : " << N_pos+N_neg <<endl;
-
-//    sinHist->Fill(sin_sum);
-//    cosHist->Fill(cos_sum);
-
-    
 
  
     double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1.0));
-    //   cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1.0));
     double evt_avg = (Q2.Rho2()-N_tot)/(N_tot*(N_tot-1.0));
-
-    
- 
     /*
     cout << "numerator : " << cos_sum*cos_sum+sin_sum*sin_sum-N_tot << endl;
     cout << "denom : " << N_tot*(N_tot-1.0) << endl;
@@ -278,28 +249,15 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     c2Hist_pos->Fill(evt_avg_pos);
     c2Hist_neg->Fill(evt_avg_neg);
     */
-
-    
-
-    double evt_wtd_pos = wt_pos * evt_avg_pos;
-    double evt_wtd_neg = wt_neg * evt_avg_neg;
-    double evt_wtd = wt * evt_avg;
- 
-
-
-    
-    for(Int_t i = 0; i < npoints ; i++){
-	if(Bins[i] <= ach && ach < Bins[i+1]){
-	        sum_wt[i] += wt;
-		sum_wt_pos[i] += wt_pos;
-		sum_wt_neg[i] += wt_neg;
-		sum_wtdavg_pos[i] += evt_wtd_pos;
-		sum_wtdavg_neg[i] += evt_wtd_neg;
-		sum_wtdavg[i] += evt_wtd;
-		num_data[i]++;
-		sum_ach[i] += ach;
-	}
+    for(Int_t i=0;i<5;i++){
+	 if(Bins[i] < ach && ach <= Bins[i+1]){
+	     ach_hist[i]->Fill(ach);
+	     c2_pos[i]->Fill(evt_avg_pos);
+	     c2_neg[i]->Fill(evt_avg_neg);
+	     c2_tot[i]->Fill(evt_avg);
+	 }
     }
+    
        
 
     // cout << "sum_wt_pos" << sum_wt_pos << endl;
@@ -318,18 +276,38 @@ V2Analyzer::beginJob()
 //    track_Data = fs->make<TNtuple>("track_Data","track_Data","pt:eta:phi:charge:dzos:dxyos:nhit");
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
-    c2Hist = fs->make<TH1D>("c2Hist","c2 Distribution",1000,-1,1);
-//    cosHist = fs->make<TH1D>("cosine Histogram","cosine Distribution",1000,-1,1);
-//    sinHist = fs->make<TH1D>("sine Histogram","sine Distribution",1000,-1,1);
-    c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",1000,-1,1);
-    c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",1000,-1,1);
+
+    //list of c2 histograms
+    c2_tot[0] = fs->make<TH1D>("c2Hist_1","c2 Distribution1",1000,-1,1);
+    c2_pos[0] = fs->make<TH1D>("c2Hist_pos_1","c2 Distribution for positive charges1",1000,-1,1);
+    c2_neg[0] = fs->make<TH1D>("c2Hist_neg_1","c2 Distribution for negative charges1",1000,-1,1);
+
+    c2_tot[1] = fs->make<TH1D>("c2Hist2","c2 Distribution2",1000,-1,1);
+    c2_pos[1] = fs->make<TH1D>("c2Hist_pos2","c2 Distribution for positive charges2",1000,-1,1);
+    c2_neg[1] = fs->make<TH1D>("c2Hist_neg2","c2 Distribution for negative charges2",1000,-1,1);
+
+    c2_tot[2] = fs->make<TH1D>("c2Hist3","c2 Distribution3",1000,-1,1);
+    c2_pos[2] = fs->make<TH1D>("c2Hist_pos3","c2 Distribution for positive charges3",1000,-1,1);
+    c2_neg[2] = fs->make<TH1D>("c2Hist_neg3","c2 Distribution for negative charges3",1000,-1,1);
+
+    c2_tot[3] = fs->make<TH1D>("c2Hist4","c2 Distribution4",1000,-1,1);
+    c2_pos[3]= fs->make<TH1D>("c2Hist_pos4","c2 Distribution for positive charges4",1000,-1,1);
+    c2_neg[3] = fs->make<TH1D>("c2Hist_neg4","c2 Distribution for negative charges4",1000,-1,1);
+
+    c2_tot[4] = fs->make<TH1D>("c2Hist5","c2 Distribution5",1000,-1,1);
+    c2_pos[4] = fs->make<TH1D>("c2Hist_pos5","c2 Distribution for positive charges5",1000,-1,1);
+    c2_neg[4] = fs->make<TH1D>("c2Hist_neg5","c2 Distribution for negative charges5",1000,-1,1);
+
+    ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,Bins[0],Bins[1]);
+    ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,Bins[1],Bins[2]);
+    ach_hist[2] = fs->make<TH1D>("ach_2","ach_3",1000,Bins[2],Bins[3]);
+    ach_hist[3] = fs->make<TH1D>("ach_3","ach_4",1000,Bins[3],Bins[4]);
+    ach_hist[4] = fs->make<TH1D>("ach_3","ach_5",1000,Bins[4],Bins[5]);
+
     v2graph = fs->make<TMultiGraph>();
 
     
 
-    asym_Dist->SetMarkerStyle(21);
-    asym_Dist->SetMarkerSize(0.8);
-    asym_Dist->SetStats(0);
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
@@ -342,20 +320,31 @@ V2Analyzer::endJob()
     cout << "sum of weights_positive : " << sum_wt_pos << endl;
     cout << "sum of weights_negative : " << sum_wt_neg << endl;
     cout << "sum of weights : " << sum_wt << endl;
+
+
     */
 
+    double x[5];
+    double v2_pos_val[5];
+    double v2_neg_val[5];
+    double v2_tot_val[5];
+    double c2_pos_val[5];
+    double c2_neg_val[5];
+    double c2_tot_val[5];
 
-    for(Int_t i=0; i<npoints ; i++){
-	c2_pos[i] = sum_wtdavg_pos[i]/sum_wt_pos[i];
-	c2[i] = sum_wtdavg[i]/sum_wt[i];
-	c2_neg[i] = sum_wtdavg_neg[i]/sum_wt_neg[i];
-	v2_pos[i] = sqrt(c2_pos[i]);
-	v2_neg[i] = sqrt(c2_neg[i]);
-	v2 = sqrt(c2[i]);
-	x[i] =  sum_ach[i]/num_data[i];
-    }
-    TGraph* gr_pos = new TGraph(npoints,x,v2_pos);
-    TGraph* gr_neg = new TGraph(npoints,x,v2_neg);
+    for(Int_t i=0; i<5; i++){
+	x[i]=ach_hist[i]->GetMean();
+	c2_pos_val[i]=c2_pos->GetMean();
+	c2_neg_val[i]=c2_neg->GetMean();
+	c2_tot_val[i]=c2_tot->GetMean();
+	v2_pos_val[i]=sqrt(c2_pos_val[i]);
+	v2_neg_val[i]=sqrt(c2_neg_val[i]);
+	v2_tot_val[i]=sqrt(c2_tot_val[i]);
+
+    }  
+
+    TGraph* gr_pos = new TGraph(5,x,v2_pos);
+    TGraph* gr_neg = new TGraph(5,x,v2_neg);
     v2graph->Add(gr_pos);
     v2graph->Add(gr_neg);
     

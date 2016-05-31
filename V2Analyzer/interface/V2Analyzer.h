@@ -323,26 +323,17 @@ class V2Analyzer : public edm::EDAnalyzer {
       int NTrkMax_;
 
       
-      const Int_t npoints = 5;
-      double Bins[npoints+1] = {-999,-0.04,-0.01,0.02,0.045,999 };
+    
+      double Bins[6] = {-999,-0.04,-0.01,0.02,0.045,999 };
 
-      double sum_wt[npoints]={0};
-      double sum_wt_pos[npoints]={0};
-      double sum_wt_neg[npoints]={0};
-      double sum_wtdavg_pos[npoints]={0};
-      double sum_wtdavg_neg[npoints]={0};
-      double sum_wtdavg[npoints]={0};
-      double sum_ach[npoints]={0};
-      int num_data[npoints]={0};
+      TH1D* c2_pos[5];
+      TH1D* c2_neg[5];
+      TH1D* c2_tot[5];
+      TH1D* ach_hist[5];
       
-      double x[npoints]={0};
-      double c2_pos[npoints]={0};
-      double c2_neg[npoints]={0};
-      double c2[npoints]={0};
-      double v2_pos[npoints]={0};
-      double v2_neg[npoints]={0};
-      double v2[npoints]={0};
       
+      
+    
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
 
