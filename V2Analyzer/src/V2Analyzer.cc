@@ -102,7 +102,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     TComplex Q2_pos(0,0);
     TComplex Q2_neg(0,0);
     TComplex Q2(0,0);
-    double cos_sum=0.0;
+//    double cos_sum=0.0;
 //    double sin_sum=0.0;
 
    
@@ -167,7 +167,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
 
-    
+    /*
     int Npairs = 0;
     for( reco::TrackCollection::const_iterator cand1 = tracks->begin(); cand1 != tracks->end(); cand1++){
 
@@ -223,6 +223,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	}
 	 
     }
+    */
 
 
     
@@ -264,13 +265,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1.0));
     //   cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1.0));
-
-    double numerator =0.0;
-    double denominator = 0.0;
-    double evt_avg = 0.0;
-    numerator = cos_sum;
-    denominator = (double)Npairs;
-    evt_avg = numerator/denominator;
+    double evt_avg = (Q2.Rho2()-N_tot)/(N_tot*(N_tot-1.0));
 
     
  
