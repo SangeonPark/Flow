@@ -346,6 +346,7 @@ V2Analyzer::endJob()
 
     gr_pos = fs->make<TGraph>(5,x,v2_pos_val);
     gr_neg = fs->make<TGraph>(5,x,v2_neg_val);
+    gr_tot = fs->make<TGraph>(5,x,v2_tot_val);
     // v2graph->Add(gr_pos);
     //v2graph->Add(gr_neg);
     

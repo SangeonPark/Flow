@@ -306,6 +306,7 @@ class V2Analyzer : public edm::EDAnalyzer {
       TH1D* NTrkHist;
       TGraph* gr_pos;
       TGraph* gr_neg;
+      TGraph* gr_tot;
   
       /*      TH1D* c2Hist;
       TH1D* c2Hist_pos;
