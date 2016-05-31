@@ -108,6 +108,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
+	
+
 	double eta = cand->eta();
 	double charge = (double)cand->charge();
 	double pt = cand->pt();
@@ -208,12 +210,14 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     double evt_avg = (cos_sum*cos_sum+sin_sum*sin_sum-N_tot)/(N_tot*(N_tot-1.0));
 
+    /*
     cout << "numerator : " << cos_sum*cos_sum+sin_sum*sin_sum-N_tot << endl;
     cout << "denom : " << N_tot*(N_tot-1.0) << endl;
     cout << "evt_avg : " << evt_avg << endl;
     if(evt_avg < -0.008){
 	cout << "exist------------------------" <<endl;
     }
+    */
 
     
     c2Hist->Fill(evt_avg);
