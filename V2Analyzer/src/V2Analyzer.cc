@@ -194,8 +194,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     cout << "denom : " << nTracks_pos*(nTracks_pos-1)<<endl;;
     cout << "num/den : " << (Q2_pos.Rho2()-nTracks_pos)/(nTracks_pos*(nTracks_pos-1)) << endl;
     */
-    cout << "N_tot : " << N_tot << endl;
-    cout << "N_pos + N_neg : " << N_pos+N_neg <<endl;
+    // cout << "N_tot : " << N_tot << endl;
+    //cout << "N_pos + N_neg : " << N_pos+N_neg <<endl;
 
     sinHist->Fill(sin_sum);
     cosHist->Fill(cos_sum);
