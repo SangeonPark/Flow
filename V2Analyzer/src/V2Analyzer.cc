@@ -73,7 +73,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     using namespace edm;
     using namespace std;
 
-        edm::Handle<reco::VertexCollection> vertices;
+    edm::Handle<reco::VertexCollection> vertices;
     iEvent.getByLabel(vertexSrc_,vertices);
     double bestvz=-999.9, bestvx=-999.9, bestvy=-999.9;
     double bestvzError=-999.9, bestvxError=-999.9, bestvyError=-999.9;
@@ -105,10 +105,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double cos_sum=0.0;
     double sin_sum=0.0;
 
+   
 
     for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
-
-	
 
 	double eta = cand->eta();
 	double charge = (double)cand->charge();
@@ -118,10 +117,6 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	//highPurity
 	if(!cand->quality(reco::TrackBase::highPurity)) continue;
 
-	//trkNHits cut
-/*	int nhit = cand->numberOfValidHits();
-	if(nhit <= nHitCut_) continue; */
-     
 	//DCA
 	math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
 	double dzbest = cand->dz(bestvtx);
@@ -149,9 +144,12 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	
 	TComplex e(1,2*phi,1);
+	
 	Q2 += e;
-	cos_sum += cos(2*phi);
-	sin_sum += sin(2*phi);
+
+	/*cos_sum += cos(2*phi);
+	  sin_sum += sin(2*phi);*/
+
 	N_tot++;
 	
 	
@@ -168,6 +166,66 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 //	track_Data->Fill(pt,eta,phi,charge,dzos,dxyos);
     }
 
+
+    
+    int Npairs = 0;
+    for( reco::TrackCollection::const_iterator cand1 = tracks->begin(); cand1 != tracks->end(); cand1++){
+
+	double eta1 = cand1->eta();
+	double charge1 = (double)cand1->charge();
+	double pt1 = cand1->pt();
+	double phi1 = cand1->phi();
+
+	//highPurity
+	if(!cand1->quality(reco::TrackBase::highPurity)) continue;
+
+	//DCA
+	math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
+	double dzbest1 = cand1->dz(bestvtx);
+	double dxybest1 = cand1->dxy(bestvtx);
+	double dzerror1 = sqrt(cand1->dzError()*cand1->dzError()+bestvzError*bestvzError);
+	double dxyerror1 = sqrt(cand1->d0Error()*cand1->d0Error()+bestvxError*bestvyError);
+	double dzos1 = dzbest1/dzerror1;
+	double dxyos1 = dxybest1/dxyerror1;
+	if( dzSigCut_ <= fabs(dzos1) || dxySigCut_ <= fabs(dxyos1) ) continue;
+
+	//ptError
+	if(fabs(cand1->ptError())/cand1->pt() > 0.1 ) continue;
+	if(2.4<=fabs(eta1) || pt1 < 0.3 || pt1 > 3.0 ) continue;
+	
+	for( reco::TrackCollection::const_iterator cand2 = tracks->begin(); cand2 != tracks->end(); cand2++){
+
+	     double eta2 = cand2->eta();
+	     double charge2 = (double)cand2->charge();
+	     double pt2 = cand2->pt();
+	     double phi2 = cand2->phi();
+
+	     //highPurity
+	     if(!cand2->quality(reco::TrackBase::highPurity)) continue;
+
+	     //DCA
+	     math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
+	     double dzbest2 = cand2->dz(bestvtx);
+	     double dxybest2 = cand2->dxy(bestvtx);
+	     double dzerror2 = sqrt(cand2->dzError()*cand2->dzError()+bestvzError*bestvzError);
+	     double dxyerror2 = sqrt(cand2->d0Error()*cand2->d0Error()+bestvxError*bestvyError);
+	     double dzos2 = dzbest2/dzerror2;
+	     double dxyos2 = dxybest2/dxyerror2;
+	     if( dzSigCut_ <= fabs(dzos2) || dxySigCut_ <= fabs(dxyos2) ) continue;
+
+	     //ptError
+	     if(fabs(cand2->ptError())/cand2->pt() > 0.1 ) continue;
+	     if(2.4<=fabs(eta2) || pt2 < 0.3 || pt2 > 3.0 ) continue;
+
+	     if(cand1 == cand2) continue;
+	     cos_sum += cos(2*(phi1-phi2));
+	     Npairs++;
+	}
+	 
+    }
+
+
+    
     if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
     
     //  int N_tot = N_pos + N_neg;
@@ -197,19 +255,25 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // cout << "N_tot : " << N_tot << endl;
     //cout << "N_pos + N_neg : " << N_pos+N_neg <<endl;
 
-    sinHist->Fill(sin_sum);
-    cosHist->Fill(cos_sum);
+//    sinHist->Fill(sin_sum);
+//    cosHist->Fill(cos_sum);
 
     
 
  
     double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1.0));
-
     //   cout << "evt_avg_pos : " << evt_avg_pos <<endl;
     double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1.0));
-    
-    double evt_avg = (cos_sum*cos_sum+sin_sum*sin_sum-N_tot)/(N_tot*(N_tot-1.0));
 
+    double numerator =0.0;
+    double denominator = 0.0;
+    double evt_avg = 0.0;
+    numerator = cos_sum;
+    denominator = (double)Npairs;
+    evt_avg = numerator/denominator;
+
+    
+ 
     /*
     cout << "numerator : " << cos_sum*cos_sum+sin_sum*sin_sum-N_tot << endl;
     cout << "denom : " << N_tot*(N_tot-1.0) << endl;
@@ -258,8 +322,8 @@ V2Analyzer::beginJob()
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
     c2Hist = fs->make<TH1D>("c2Hist","c2 Distribution",1000,-1,1);
-    cosHist = fs->make<TH1D>("cosine Histogram","cosine Distribution",1000,-1,1);
-    sinHist = fs->make<TH1D>("sine Histogram","sine Distribution",1000,-1,1);
+//    cosHist = fs->make<TH1D>("cosine Histogram","cosine Distribution",1000,-1,1);
+//    sinHist = fs->make<TH1D>("sine Histogram","sine Distribution",1000,-1,1);
     c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",1000,-1,1);
     c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",1000,-1,1);
 //  C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram",
