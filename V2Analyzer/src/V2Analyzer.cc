@@ -347,6 +347,18 @@ V2Analyzer::endJob()
     gr_pos = fs->make<TGraph>(5,x,v2_pos_val);
     gr_neg = fs->make<TGraph>(5,x,v2_neg_val);
     gr_tot = fs->make<TGraph>(5,x,v2_tot_val);
+
+    gr_pos -> SetName("positive tracks");
+    gr_neg -> SetName("negative tracks");
+    gr_tot -> SetName("total tracks");
+    gr_pos -> SetTitle("positive tracks");
+    gr_neg -> SetTitle("negative tracks");
+    gr_tot -> SetTitle("total tracks");
+    gr_pos->SetMarkerStyle(21);
+    gr_neg->SetMarkerStyle(21);
+    gr_tot->SetMarkerStyle(21);
+
+
     // v2graph->Add(gr_pos);
     //v2graph->Add(gr_neg);
     
