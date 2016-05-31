@@ -304,7 +304,8 @@ class V2Analyzer : public edm::EDAnalyzer {
       TNtuple* track_Data;
       TH1D* asym_Dist;
       TH1D* NTrkHist;
-      TMultiGraph* v2graph;
+      TGraph* gr_pos;
+      TGraph* gr_neg;
   
       /*      TH1D* c2Hist;
       TH1D* c2Hist_pos;
