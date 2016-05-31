@@ -227,9 +227,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     asym_Dist->Fill(ach);
     NTrkHist->Fill(nTracks);
 
-    double wt_pos = 1.0;
-    double wt_neg = 1.0;
-    double wt = 1.0;
+    // double wt_pos = 1.0;
+    //double wt_neg = 1.0;
+    //double wt = 1.0;
 
  
     double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1.0));
@@ -314,6 +314,8 @@ void
 V2Analyzer::endJob() 
 {
     using namespace std;
+    edm::Service<TFileService> fs;
+	
     /*
     cout<< "sum of weighted average" << sum_wtdavg_pos <<endl;
     cout << "sum of weights_positive : " << sum_wt_pos << endl;
