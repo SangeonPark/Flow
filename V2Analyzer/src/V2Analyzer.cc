@@ -103,7 +103,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     TComplex Q2_neg(0,0);
     TComplex Q2(0,0);
     double cos_sum=0.0;
-    double sin_sum=0.0;
+//    double sin_sum=0.0;
 
    
 
@@ -172,7 +172,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     for( reco::TrackCollection::const_iterator cand1 = tracks->begin(); cand1 != tracks->end(); cand1++){
 
 	double eta1 = cand1->eta();
-	double charge1 = (double)cand1->charge();
+//	double charge1 = (double)cand1->charge();
 	double pt1 = cand1->pt();
 	double phi1 = cand1->phi();
 
@@ -196,7 +196,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	for( reco::TrackCollection::const_iterator cand2 = tracks->begin(); cand2 != tracks->end(); cand2++){
 
 	     double eta2 = cand2->eta();
-	     double charge2 = (double)cand2->charge();
+//	     double charge2 = (double)cand2->charge();
 	     double pt2 = cand2->pt();
 	     double phi2 = cand2->phi();
 
