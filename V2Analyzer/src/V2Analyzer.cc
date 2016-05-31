@@ -343,12 +343,6 @@ V2Analyzer::endJob()
     cout << "sum of weights_negative : " << sum_wt_neg << endl;
     cout << "sum of weights : " << sum_wt << endl;
     */
-    double x[npoints]={0};
-    double c2_pos[npoints]={0};
-    double c2_neg[npoints]={0};
-    double c2[npoints]={0};
-    double v2_pos[npoints]={0};
-    double v2_neg[npoints]={0};
 
 
     for(Int_t i=0; i<npoints ; i++){

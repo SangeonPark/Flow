@@ -332,11 +332,16 @@ class V2Analyzer : public edm::EDAnalyzer {
       double sum_wtdavg_pos[npoints]={0};
       double sum_wtdavg_neg[npoints]={0};
       double sum_wtdavg[npoints]={0};
+      double sum_ach[npoints]={0};
+      int num_data[npoints]={0};
+      
+      double x[npoints]={0};
+      double c2_pos[npoints]={0};
+      double c2_neg[npoints]={0};
+      double c2[npoints]={0};
       double v2_pos[npoints]={0};
       double v2_neg[npoints]={0};
       double v2[npoints]={0};
-      double sum_ach[npoints]={0};
-      int num_data[npoints]={0};
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
