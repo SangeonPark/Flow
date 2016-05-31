@@ -304,7 +304,7 @@ V2Analyzer::beginJob()
     ach_hist[3] = fs->make<TH1D>("ach_3","ach_4",1000,Bins[3],Bins[4]);
     ach_hist[4] = fs->make<TH1D>("ach_3","ach_5",1000,Bins[4],Bins[5]);
 
-    v2graph = fs->make<TMultiGraph>("graph","graph");
+    v2graph = fs->make<TMultiGraph>;
 
     
 
