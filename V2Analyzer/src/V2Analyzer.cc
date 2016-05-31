@@ -142,14 +142,11 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	if(2.4<=fabs(eta) || pt < 0.3 || pt > 3.0 ) continue;
 
-	
+
+
 	TComplex e(1,2*phi,1);
 	
 	Q2 += e;
-
-	/*cos_sum += cos(2*phi);
-	  sin_sum += sin(2*phi);*/
-
 	N_tot++;
 	
 	
@@ -224,9 +221,6 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	 
     }
     */
-
-
-    
     if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
     
     //  int N_tot = N_pos + N_neg;
@@ -234,6 +228,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double ach = (double)N_diff/N_tot;
     asym_Dist->Fill(ach);
     NTrkHist->Fill(nTracks);
+
 
 /*    double wt_pos = (nTracks_pos)*(nTracks_pos-1);
       double wt_neg = (nTracks_neg)*(nTracks_neg-1);*/
@@ -278,10 +273,11 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
     */
 
-    
+    /*
     c2Hist->Fill(evt_avg);
     c2Hist_pos->Fill(evt_avg_pos);
     c2Hist_neg->Fill(evt_avg_neg);
+    */
 
     
 
@@ -289,12 +285,22 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double evt_wtd_neg = wt_neg * evt_avg_neg;
     double evt_wtd = wt * evt_avg;
  
-    sum_wt += wt;
-    sum_wt_pos += wt_pos;
-    sum_wt_neg += wt_neg;
-    sum_wtdavg_pos += evt_wtd_pos;
-    sum_wtdavg_neg += evt_wtd_neg;
-    sum_wtdavg += evt_wtd; 
+
+
+    
+    for(Int_t i = 0; i < npoints ; i++){
+	if(Bins[i] <= ach && ach < Bins[i+1]){
+	        sum_wt[i] += wt;
+		sum_wt_pos[i] += wt_pos;
+		sum_wt_neg[i] += wt_neg;
+		sum_wtdavg_pos[i] += evt_wtd_pos;
+		sum_wtdavg_neg[i] += evt_wtd_neg;
+		sum_wtdavg[i] += evt_wtd;
+		num_data[i]++;
+		sum_ach[i] += ach;
+	}
+    }
+       
 
     // cout << "sum_wt_pos" << sum_wt_pos << endl;
     //cout << "sum_wt_neg" << sum_wt_neg << endl;
@@ -308,11 +314,7 @@ V2Analyzer::beginJob()
 {
     edm::Service<TFileService> fs;
     TH1D::SetDefaultSumw2();
-    sum_wt = 0.0;
-    sum_wt_pos = 0.0;
-    sum_wt_neg = 0.0;
-    sum_wtdavg_pos = 0.0;
-    sum_wtdavg_neg = 0.0;
+
 //    track_Data = fs->make<TNtuple>("track_Data","track_Data","pt:eta:phi:charge:dzos:dxyos:nhit");
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
@@ -321,7 +323,7 @@ V2Analyzer::beginJob()
 //    sinHist = fs->make<TH1D>("sine Histogram","sine Distribution",1000,-1,1);
     c2Hist_pos = fs->make<TH1D>("c2Hist_pos","c2 Distribution for positive charges",1000,-1,1);
     c2Hist_neg = fs->make<TH1D>("c2Hist_neg","c2 Distribution for negative charges",1000,-1,1);
-//  C2Hist = fs->make<TH1D>("C2Hist","C2 Histogram",
+    v2graph = fs->make<TMultiGraph>();
 
     
 
@@ -341,19 +343,28 @@ V2Analyzer::endJob()
     cout << "sum of weights_negative : " << sum_wt_neg << endl;
     cout << "sum of weights : " << sum_wt << endl;
     */
-    double c2_pos = sum_wtdavg_pos/sum_wt_pos;
-    double c2_neg = sum_wtdavg_neg/sum_wt_neg;
-    double v2_pos = sqrt(c2_pos);
-    double v2_neg = sqrt(c2_neg);
-    double c2 = sum_wtdavg/sum_wt;
-    double v2 = sqrt(c2);
+    double x[npoints]={0};
+    double c2_pos[npoints]={0};
+    double c2_neg[npoints]={0};
+    double c2[npoints]={0};
+    double v2_pos[npoints]={0};
+    double v2_neg[npoints]={0};
 
-    cout<<"c2 positive: " << c2_pos<< endl;
-    cout<<"c2 negative: " << c2_neg<< endl;
-    cout<<"v2 positive: " <<v2_pos<< endl;
-    cout<<"v2 negative: " << v2_neg << endl;
-    cout << "c2 whole: " << c2 << endl;
-    cout << "v2 whole: " << v2;
+
+    for(Int_t i=0; i<npoints ; i++){
+	c2_pos[i] = sum_wtdavg_pos[i]/sum_wt_pos[i];
+	c2[i] = sum_wtdavg[i]/sum_wt[i];
+	c2_neg[i] = sum_wtdavg_neg[i]/sum_wt_neg[i];
+	v2_pos[i] = sqrt(c2_pos[i]);
+	v2_neg[i] = sqrt(c2_neg[i]);
+	v2 = sqrt(c2[i]);
+	x[i] =  sum_ach[i]/num_data[i];
+    }
+    TGraph* gr_pos = new TGraph(npoints,x,v2_pos);
+    TGraph* gr_neg = new TGraph(npoints,x,v2_neg);
+    v2graph->Add(gr_pos);
+    v2graph->Add(gr_neg);
+    
 }
 
 // ------------ method called when starting to processes a run  ------------

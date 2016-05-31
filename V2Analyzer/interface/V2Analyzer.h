@@ -304,11 +304,14 @@ class V2Analyzer : public edm::EDAnalyzer {
       TNtuple* track_Data;
       TH1D* asym_Dist;
       TH1D* NTrkHist;
-      TH1D* c2Hist;
+      TMultiGraph* v2graph;
+  
+      /*      TH1D* c2Hist;
       TH1D* c2Hist_pos;
-      TH1D* c2Hist_neg;
-      TH1D* sinHist;
-      TH1D* cosHist;
+      TH1D* c2Hist_neg; */
+
+      //      TH1D* sinHist;
+      //      TH1D* cosHist;
     
       //      double nHitCut_;
       
@@ -319,14 +322,21 @@ class V2Analyzer : public edm::EDAnalyzer {
       int NTrkMin_;
       int NTrkMax_;
 
-      double sum_wt;
-      double sum_wt_pos;
-      double sum_wt_neg;
-      double sum_wtdavg_pos;
-      double sum_wtdavg_neg;
-      double sum_wtdavg;
-      double v2_pos;
-      double v2_neg;
+      
+      const Int_t npoints = 5;
+      double Bins[npoints+1] = {-999,-0.04,-0.01,0.02,0.045,999 };
+
+      double sum_wt[npoints]={0};
+      double sum_wt_pos[npoints]={0};
+      double sum_wt_neg[npoints]={0};
+      double sum_wtdavg_pos[npoints]={0};
+      double sum_wtdavg_neg[npoints]={0};
+      double sum_wtdavg[npoints]={0};
+      double v2_pos[npoints]={0};
+      double v2_neg[npoints]={0};
+      double v2[npoints]={0};
+      double sum_ach[npoints]={0};
+      int num_data[npoints]={0};
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
