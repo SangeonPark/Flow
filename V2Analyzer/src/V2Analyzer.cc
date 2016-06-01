@@ -539,8 +539,7 @@ V2Analyzer::beginJob()
 void
 V2Analyzer::endJob() 
 {
-    using namespace std;
-    edm::Service<TFileService> fs;
+    //using namespace std;
 	
     /*
     cout<< "sum of weighted average" << sum_wtdavg_pos <<endl;
@@ -550,7 +549,8 @@ V2Analyzer::endJob()
 
 
     */
-
+/*
+    edm::Service<TFileService> fs;
     double x[5];
     double v2_pos_case1[5];
     double v2_neg_case1[5];
@@ -648,6 +648,7 @@ V2Analyzer::endJob()
     gr_pos_case2->SetMarkerStyle(21);
     gr_neg_case2->SetMarkerStyle(21);
     gr_tot_case2->SetMarkerStyle(21);
+*/
 
     // v2graph->Add(gr_pos);
     //v2graph->Add(gr_neg);
