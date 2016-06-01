@@ -95,6 +95,13 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     int N_neg = 0;
     int N_tot = 0;
 
+    int N_Q2 = 0;
+    int N_Q2_pos = 0;
+    int N_Q2_neg = 0;
+    int N_Q2C = 0;
+    int N_Q2C_pos = 0;
+    int N_Q2C_neg = 0;
+
     int nTracks = 0;
     int nTracks_pos = 0;
     int nTracks_neg = 0;
@@ -157,27 +164,33 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	TComplex e(1,2*phi,1);
 
 	if(eta > 0.0){
+	    N_Q2++;
 	    Q2 += e;
 	    N_tot++;
 	    if(charge>0){
+		N_Q2_pos++;
 		N_pos++;
 		Q2_pos += e;
 	    }
 	    if(charge<0){
 		N_neg++;
+		N_Q2_neg++;
 		Q2_neg += e;
 	    }
 	}
 
 	if(eta < 0.0){
 	    Q2C += e;
-	    N_tot ++;
+	    N_tot++;
+	    N_Q2C++;
 	    if(charge>0){
 		N_pos++;
+		N_Q2C_pos++;
 		Q2C_pos += e;
 	    }
 	    if(charge<0){
 		N_neg++;
+		N_Q2C_neg++;
 		Q2C_neg += e;
 	    }
 	}
@@ -185,6 +198,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     Handle<CaloTowerCollection> towers;
     iEvent.getByLabel(towerSrc_, towers);
+
+    int N_Q2A = 0;
+    int N_Q2B = 0;
 
     for(unsigned i=0; i<towers->size(); i++){
 
@@ -196,10 +212,13 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	TComplex e(1,2*caloPhi,1);
 
 	if( -5.0 < caloEta && caloEta < -3.0 ){
+	    N_Q2A++;
 	    Q2A += e;
 	}
 
 	else if( 3.0 < caloEta && caloEta < 5.0 ){
+	    N_Q2B++;
+
 	    Q2B += e;
 	}
     }
@@ -298,129 +317,178 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     ach_hist[i]->Fill(ach);
 
 	     TComplex z;
-	     
-
-	     //case 1, positive
+	     int Npairs;
+             //case 1, positive
 	     z = Q2_pos * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2_pos * N_Q2A;
+	     z /= Npairs;
 	     c2_pos_case1[i][0][0]->Fill(z.Re());
 	     c2_pos_case1[i][0][1]->Fill(z.Im());
 	     
 	     z = Q2A * TComplex::Conjugate(Q2B);
+	     Npairs = N_Q2A * N_Q2B;
+	     z /= Npairs;
 	     c2_pos_case1[i][1][0]->Fill(z.Re());
 	     c2_pos_case1[i][1][1]->Fill(z.Im());
 
 	     z = Q2A * TComplex::Conjugate(Q2C_pos);
+	     Npairs = N_Q2A * N_Q2C_pos;
+	     z /= Npairs;
 	     c2_pos_case1[i][2][0]->Fill(z.Re());
 	     c2_pos_case1[i][2][1]->Fill(z.Im());
 
 	     z = Q2B * TComplex::Conjugate(Q2C_pos);
+	     Npairs = N_Q2B * N_Q2C_pos;
+	     z /= Npairs;
 	     c2_pos_case1[i][3][0]->Fill(z.Re());
 	     c2_pos_case1[i][3][1]->Fill(z.Im());
 
 	     z = Q2_pos * TComplex::Conjugate(Q2C_pos);
+	     Npairs = N_Q2_pos * N_Q2C_pos;
+	     z /= Npairs;
 	     c2_pos_case1[i][4][0]->Fill(z.Re());
 	     c2_pos_case1[i][4][1]->Fill(z.Im());
 
 	     //case1, total
 	     z = Q2 * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2 * N_Q2A;
+	     z /= Npairs;
 	     c2_tot_case1[i][0][0]->Fill(z.Re());
 	     c2_tot_case1[i][0][1]->Fill(z.Im());
 	     
 	     z = Q2A * TComplex::Conjugate(Q2B);
+	     Npairs = N_Q2A * N_Q2B;
+	     z /= Npairs;
 	     c2_tot_case1[i][1][0]->Fill(z.Re());
 	     c2_tot_case1[i][1][1]->Fill(z.Im());
 
 	     z = Q2A * TComplex::Conjugate(Q2C);
+	     Npairs = N_Q2A * N_Q2C;
+	     z /= Npairs;
 	     c2_tot_case1[i][2][0]->Fill(z.Re());
 	     c2_tot_case1[i][2][1]->Fill(z.Im());
 
 	     z = Q2B * TComplex::Conjugate(Q2C);
+	     Npairs = N_Q2B * N_Q2C;
+	     z /= Npairs;
 	     c2_tot_case1[i][3][0]->Fill(z.Re());
 	     c2_tot_case1[i][3][1]->Fill(z.Im());
 
 	     z = Q2 * TComplex::Conjugate(Q2C);
+	     Npairs = N_Q2 * N_Q2C;
+	     z /= Npairs;
 	     c2_tot_case1[i][4][0]->Fill(z.Re());
 	     c2_tot_case1[i][4][1]->Fill(z.Im());
 
 	     //case1, negative
 	     z = Q2_neg * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2_neg * N_Q2A;
+	     z /= Npairs;
 	     c2_neg_case1[i][0][0]->Fill(z.Re());
 	     c2_neg_case1[i][0][1]->Fill(z.Im());
 	     
 	     z = Q2A * TComplex::Conjugate(Q2B);
+	     Npairs = N_Q2A * N_Q2B;
+	     z /= Npairs;
 	     c2_neg_case1[i][1][0]->Fill(z.Re());
 	     c2_neg_case1[i][1][1]->Fill(z.Im());
 
 	     z = Q2A * TComplex::Conjugate(Q2C_neg);
+	     Npairs = N_Q2A * N_Q2C_neg;
+	     z /= Npairs;
 	     c2_neg_case1[i][2][0]->Fill(z.Re());
 	     c2_neg_case1[i][2][1]->Fill(z.Im());
 
 	     z = Q2B * TComplex::Conjugate(Q2C_neg);
+	     Npairs = N_Q2B * N_Q2C_neg;
+	     z /= Npairs;
 	     c2_neg_case1[i][3][0]->Fill(z.Re());
 	     c2_neg_case1[i][3][1]->Fill(z.Im());
 
 	     z = Q2_neg * TComplex::Conjugate(Q2C_neg);
+	     Npairs = N_Q2_neg * N_Q2C_neg;
+	     z /= Npairs;
 	     c2_neg_case1[i][4][0]->Fill(z.Re());
 	     c2_neg_case1[i][4][1]->Fill(z.Im());
 
 	     //case2, positive
 	     z = Q2C_pos * TComplex::Conjugate(Q2B);
+	     Npairs = N_Q2C_pos * N_Q2B;
+	     z /= Npairs;
 	     c2_pos_case2[i][0][0]->Fill(z.Re());
 	     c2_pos_case2[i][0][1]->Fill(z.Im());
 	     
 	     z = Q2B * TComplex::Conjugate(Q2_pos);
+	     Npairs = N_Q2B * N_Q2_pos;
+	     z /= Npairs;
 	     c2_pos_case2[i][1][0]->Fill(z.Re());
 	     c2_pos_case2[i][1][1]->Fill(z.Im());
 
 	     z = Q2B * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2B * N_Q2A;
+	     z /= Npairs;
 	     c2_pos_case2[i][2][0]->Fill(z.Re());
 	     c2_pos_case2[i][2][1]->Fill(z.Im());
 
 	     z = Q2_pos * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2_pos * N_Q2A;
+	     z /= Npairs;
 	     c2_pos_case2[i][3][0]->Fill(z.Re());
 	     c2_pos_case2[i][3][1]->Fill(z.Im());
 
 	     //case2, total
 	     z = Q2C * TComplex::Conjugate(Q2B);
+	     Npairs = N_Q2C * N_Q2B;
+	     z /= Npairs;
 	     c2_tot_case2[i][0][0]->Fill(z.Re());
 	     c2_tot_case2[i][0][1]->Fill(z.Im());
 	     
 	     z = Q2B * TComplex::Conjugate(Q2);
+	     Npairs = N_Q2B * N_Q2;
+	     z /= Npairs;
 	     c2_tot_case2[i][1][0]->Fill(z.Re());
 	     c2_tot_case2[i][1][1]->Fill(z.Im());
 
 	     z = Q2B * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2B * N_Q2A;
+	     z /= Npairs;
 	     c2_tot_case2[i][2][0]->Fill(z.Re());
 	     c2_tot_case2[i][2][1]->Fill(z.Im());
 
 	     z = Q2 * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2 * N_Q2A;
+	     z /= Npairs;
 	     c2_tot_case2[i][3][0]->Fill(z.Re());
 	     c2_tot_case2[i][3][1]->Fill(z.Im());
 
 	     //case2, negative
 	     z = Q2C_neg * TComplex::Conjugate(Q2B);
+	     Npairs = N_Q2C_neg * N_Q2B;
+	     z /= Npairs;
 	     c2_neg_case2[i][0][0]->Fill(z.Re());
 	     c2_neg_case2[i][0][1]->Fill(z.Im());
 	     
 	     z = Q2B * TComplex::Conjugate(Q2_neg);
+	     Npairs = N_Q2B * N_Q2_neg;
+	     z /= Npairs;
 	     c2_neg_case2[i][1][0]->Fill(z.Re());
 	     c2_neg_case2[i][1][1]->Fill(z.Im());
 
 	     z = Q2B * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2B * N_Q2A;
+	     z /= Npairs;
 	     c2_neg_case2[i][2][0]->Fill(z.Re());
 	     c2_neg_case2[i][2][1]->Fill(z.Im());
 
 	     z = Q2_neg * TComplex::Conjugate(Q2A);
+	     Npairs = N_Q2_neg * N_Q2A;
+	     z /= Npairs;
 	     c2_neg_case2[i][3][0]->Fill(z.Re());
 	     c2_neg_case2[i][3][1]->Fill(z.Im());
+	     
 	 }
     }
     
-       
-
-    // cout << "sum_wt_pos" << sum_wt_pos << endl;
-    //cout << "sum_wt_neg" << sum_wt_neg << endl;
-
 }
 
 
@@ -460,9 +528,9 @@ V2Analyzer::beginJob()
     
     ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,-0.4,0.4);
     ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,-0.4,0.4);
-    ach_hist[2] = fs->make<TH1D>("ach_2","ach_3",1000,-0.4,0.4);
-    ach_hist[3] = fs->make<TH1D>("ach_3","ach_4",1000,-0.4,0.4);
-    ach_hist[4] = fs->make<TH1D>("ach_3","ach_5",1000,-0.4,0.4);
+    ach_hist[2] = fs->make<TH1D>("ach_3","ach_3",1000,-0.4,0.4);
+    ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",1000,-0.4,0.4);
+    ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",1000,-0.4,0.4);
 
 
 }
