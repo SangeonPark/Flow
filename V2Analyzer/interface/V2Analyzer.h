@@ -304,6 +304,8 @@ class V2Analyzer : public edm::EDAnalyzer {
       TNtuple* track_Data;
       TH1D* asym_Dist;
       TH1D* NTrkHist;
+
+      /*
       TGraph* gr_pos_case1;
       TGraph* gr_neg_case1;
       TGraph* gr_tot_case1;
@@ -311,6 +313,7 @@ class V2Analyzer : public edm::EDAnalyzer {
       TGraph* gr_pos_case2;
       TGraph* gr_neg_case2;
       TGraph* gr_tot_case2;
+      */
   
       /*      TH1D* c2Hist;
       TH1D* c2Hist_pos;
@@ -344,8 +347,6 @@ class V2Analyzer : public edm::EDAnalyzer {
       TH1D* ach_hist[5];
       
       
-      
-    
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
       edm::InputTag towerSrc_;

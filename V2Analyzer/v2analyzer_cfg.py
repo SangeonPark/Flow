@@ -1,8 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
-process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",ignoreTotal = cms.untracked.int32(1) )
-process.Timing = cms.Service("Timing")
+
 
 import HLTrigger.HLTfilters.hltHighLevel_cfi
 
