@@ -186,12 +186,14 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     Handle<CaloTowerCollection> towers;
     iEvent.getByLabel(towerSrc_, towers);
 
-    for(reco::CaloTowerCollection::const_iterator hit = towers->begin(); hit!=towers->end(); hit++){
+    for(unsigned i=0; i<towers->size(); i++){
 
-	double caloEta = hit->eta();
-	double caloPhi = hit->phi();
+	const CaloTower & hit = (*towers)[i];
 
-	TComplex e(1,2*phi,1);
+	double caloEta = hit.eta();
+	double caloPhi = hit.phi();
+
+	TComplex e(1,2*caloPhi,1);
 
 	if( -5.0 < caloEta && caloEta < -3.0 ){
 	    Q2A += e;
