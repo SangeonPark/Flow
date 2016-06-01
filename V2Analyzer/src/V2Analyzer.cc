@@ -507,30 +507,30 @@ V2Analyzer::beginJob()
     for (Int_t i = 0; i < 5; i++){
 	for(Int_t j = 0 ; j < 5; j++){
 	    
-	    c2_tot_case1[i][j][0] = fs->make<TH1D>(Form("c2tot_%d_%d_cos_case1",i,j),"c2 Distribution",10000,-1,1);
-	    c2_tot_case1[i][j][1] = fs->make<TH1D>(Form("c2tot_%d_%d_sin_case1",i,j),"c2 Distribution",10000,-1,1);
-	    c2_pos_case1[i][j][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case1",i,j),"c2 Distribution",10000,-1,1);
-	    c2_pos_case1[i][j][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case1",i,j),"c2 Distribution",10000,-1,1);
-	    c2_neg_case1[i][j][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case1",i,j),"c2 Distribution",10000,-1,1);
-	    c2_neg_case1[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case1",i,j),"c2 Distribution",10000,-1,1);
+	    c2_tot_case1[i][j][0] = fs->make<TH1D>(Form("c2tot_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_tot_case1[i][j][1] = fs->make<TH1D>(Form("c2tot_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case1[i][j][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case1[i][j][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case1[i][j][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case1[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
 	}
 	for(Int_t j=0; j<4; j++){
-	    c2_tot_case2[i][j][0] = fs->make<TH1D>(Form("c2tot_%d_%d_cos_case2",i,j),"c2 Distribution",10000,-1,1);
-	    c2_tot_case2[i][j][1] = fs->make<TH1D>(Form("c2tot_%d_%d_sin_case2",i,j),"c2 Distribution",10000,-1,1);
-	    c2_pos_case2[i][j][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case2",i,j),"c2 Distribution",10000,-1,1);
-	    c2_pos_case2[i][j][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case2",i,j),"c2 Distribution",10000,-1,1);
-	    c2_neg_case2[i][j][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case2",i,j),"c2 Distribution",10000,-1,1);
-	    c2_neg_case2[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case2",i,j),"c2 Distribution",10000,-1,1);
+	    c2_tot_case2[i][j][0] = fs->make<TH1D>(Form("c2tot_%d_%d_cos_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_tot_case2[i][j][1] = fs->make<TH1D>(Form("c2tot_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case2[i][j][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case2[i][j][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case2[i][j][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case2[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
 
 	}
     }
 	    
     
-    ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",10000,-0.4,0.4);
-    ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",10000,-0.4,0.4);
-    ach_hist[2] = fs->make<TH1D>("ach_3","ach_3",10000,-0.4,0.4);
-    ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",10000,-0.4,0.4);
-    ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",10000,-0.4,0.4);
+    ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,-0.4,0.4);
+    ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,-0.4,0.4);
+    ach_hist[2] = fs->make<TH1D>("ach_3","ach_3",1000,-0.4,0.4);
+    ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",1000,-0.4,0.4);
+    ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",1000,-0.4,0.4);
 
 
 }
