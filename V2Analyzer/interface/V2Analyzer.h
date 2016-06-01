@@ -304,9 +304,13 @@ class V2Analyzer : public edm::EDAnalyzer {
       TNtuple* track_Data;
       TH1D* asym_Dist;
       TH1D* NTrkHist;
-      TGraph* gr_pos;
-      TGraph* gr_neg;
-      TGraph* gr_tot;
+      TGraph* gr_pos_case1;
+      TGraph* gr_neg_case1;
+      TGraph* gr_tot_case1;
+
+      TGraph* gr_pos_case2;
+      TGraph* gr_neg_case2;
+      TGraph* gr_tot_case2;
   
       /*      TH1D* c2Hist;
       TH1D* c2Hist_pos;
@@ -328,9 +332,15 @@ class V2Analyzer : public edm::EDAnalyzer {
     
       double Bins[6] = {-999,-0.04,-0.01,0.02,0.045,999 };
 
-      TH1D* c2_pos[5];
-      TH1D* c2_neg[5];
-      TH1D* c2_tot[5];
+      TH1D* c2_pos_case1[5][5][2];
+      TH1D* c2_neg_case1[5][5][2];
+      TH1D* c2_tot_case1[5][5][2];
+
+      TH1D* c2_pos_case2[5][4][2];
+      TH1D* c2_neg_case2[5][4][2];
+      TH1D* c2_tot_case2[5][4][2];
+
+      
       TH1D* ach_hist[5];
       
       
@@ -338,6 +348,7 @@ class V2Analyzer : public edm::EDAnalyzer {
     
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
+      edm::InputTag towerSrc_;
 
 };
 

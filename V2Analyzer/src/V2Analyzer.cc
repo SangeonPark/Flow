@@ -48,6 +48,7 @@ V2Analyzer::V2Analyzer(const edm::ParameterSet& iConfig)
     
     trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
     vertexSrc_ = iConfig.getParameter<std::string>("vertexSrc");
+    towerSrc_ = iConfig.getParameter<edm::InputTag>("towerSrc");
    //now do what ever initialization is needed
 
 }
@@ -102,6 +103,16 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     TComplex Q2_pos(0,0);
     TComplex Q2_neg(0,0);
     TComplex Q2(0,0);
+
+    TComplex Q2C_pos(0,0);
+    TComplex Q2C_neg(0,0);
+    TComplex Q2C(0,0);
+
+    TComplex Q2A(0,0);
+    TComplex Q2B(0,0);
+    
+
+    
 //    double cos_sum=0.0;
 //    double sin_sum=0.0;
 
@@ -140,25 +151,55 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    }
 	}
 
-	if(2.4<=fabs(eta) || pt < 0.3 || pt > 3.0 ) continue;
-
-
+	if(pt < 0.3 || pt > 3.0 ) continue;
+	if(2.4<=fabs(eta)) continue;
 
 	TComplex e(1,2*phi,1);
-	
-	Q2 += e;
-	N_tot++;
-	
-	
-	if(charge>0){
-	    N_pos++;
-	    Q2_pos += e;
+
+	if(eta > 0.0){
+	    Q2 += e;
+	    N_tot++;
+	    if(charge>0){
+		N_pos++;
+		Q2_pos += e;
+	    }
+	    if(charge<0){
+		N_neg++;
+		Q2_neg += e;
+	    }
 	}
-	if(charge<0){
-	    N_neg++;
-	    Q2_neg += e;
+
+	if(eta < 0.0){
+	    Q2C += e;
+	    N_tot ++;
+	    if(charge>0){
+		N_pos++;
+		Q2C_pos += e;
+	    }
+	    if(charge<0){
+		N_neg++;
+		Q2C_neg += e;
+	    }
 	}
-	
+    }
+    
+    Handle<CaloTowerCollection> towers;
+    iEvent.getByLabel(towerSrc_, towers);
+
+    for(reco::CaloTowerCollection::const_iterator hit = towers->begin(); hit!=towers->end(); hit++){
+
+	double caloEta = hit->eta();
+	double caloPhi = hit->phi();
+
+	TComplex e(1,2*phi,1);
+
+	if( -5.0 < caloEta && caloEta < -3.0 ){
+	    Q2A += e;
+	}
+
+	else if( 3.0 < caloEta && caloEta < 5.0 ){
+	    Q2B += e;
+	}
     }
 
 
@@ -230,12 +271,13 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // double wt_pos = 1.0;
     //double wt_neg = 1.0;
     //double wt = 1.0;
-
- 
-    double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1.0));
-    double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1.0));
-    double evt_avg = (Q2.Rho2()-N_tot)/(N_tot*(N_tot-1.0));
     /*
+      double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1.0));
+      double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1.0));
+      double evt_avg = (Q2.Rho2()-N_tot)/(N_tot*(N_tot-1.0));
+    */
+    
+/*
     cout << "numerator : " << cos_sum*cos_sum+sin_sum*sin_sum-N_tot << endl;
     cout << "denom : " << N_tot*(N_tot-1.0) << endl;
     cout << "evt_avg : " << evt_avg << endl;
@@ -252,9 +294,123 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     for(Int_t i=0;i<5;i++){
 	 if(Bins[i] < ach && ach <= Bins[i+1]){
 	     ach_hist[i]->Fill(ach);
-	     c2_pos[i]->Fill(evt_avg_pos);
-	     c2_neg[i]->Fill(evt_avg_neg);
-	     c2_tot[i]->Fill(evt_avg);
+
+	     TComplex z;
+	     
+
+	     //case 1, positive
+	     z = Q2_pos * TComplex::Conjugate(Q2A);
+	     c2_pos_case1[i][0][0]->Fill(z.Re());
+	     c2_pos_case1[i][0][1]->Fill(z.Im());
+	     
+	     z = Q2A * TComplex::Conjugate(Q2B);
+	     c2_pos_case1[i][1][0]->Fill(z.Re());
+	     c2_pos_case1[i][1][1]->Fill(z.Im());
+
+	     z = Q2A * TComplex::Conjugate(Q2C_pos);
+	     c2_pos_case1[i][2][0]->Fill(z.Re());
+	     c2_pos_case1[i][2][1]->Fill(z.Im());
+
+	     z = Q2B * TComplex::Conjugate(Q2C_pos);
+	     c2_pos_case1[i][3][0]->Fill(z.Re());
+	     c2_pos_case1[i][3][1]->Fill(z.Im());
+
+	     z = Q2_pos * TComplex::Conjugate(Q2C_pos);
+	     c2_pos_case1[i][4][0]->Fill(z.Re());
+	     c2_pos_case1[i][4][1]->Fill(z.Im());
+
+	     //case1, total
+	     z = Q2 * TComplex::Conjugate(Q2A);
+	     c2_tot_case1[i][0][0]->Fill(z.Re());
+	     c2_tot_case1[i][0][1]->Fill(z.Im());
+	     
+	     z = Q2A * TComplex::Conjugate(Q2B);
+	     c2_tot_case1[i][1][0]->Fill(z.Re());
+	     c2_tot_case1[i][1][1]->Fill(z.Im());
+
+	     z = Q2A * TComplex::Conjugate(Q2C);
+	     c2_tot_case1[i][2][0]->Fill(z.Re());
+	     c2_tot_case1[i][2][1]->Fill(z.Im());
+
+	     z = Q2B * TComplex::Conjugate(Q2C);
+	     c2_tot_case1[i][3][0]->Fill(z.Re());
+	     c2_tot_case1[i][3][1]->Fill(z.Im());
+
+	     z = Q2 * TComplex::Conjugate(Q2C);
+	     c2_tot_case1[i][4][0]->Fill(z.Re());
+	     c2_tot_case1[i][4][1]->Fill(z.Im());
+
+	     //case1, negative
+	     z = Q2_neg * TComplex::Conjugate(Q2A);
+	     c2_neg_case1[i][0][0]->Fill(z.Re());
+	     c2_neg_case1[i][0][1]->Fill(z.Im());
+	     
+	     z = Q2A * TComplex::Conjugate(Q2B);
+	     c2_neg_case1[i][1][0]->Fill(z.Re());
+	     c2_neg_case1[i][1][1]->Fill(z.Im());
+
+	     z = Q2A * TComplex::Conjugate(Q2C_neg);
+	     c2_neg_case1[i][2][0]->Fill(z.Re());
+	     c2_neg_case1[i][2][1]->Fill(z.Im());
+
+	     z = Q2B * TComplex::Conjugate(Q2C_neg);
+	     c2_neg_case1[i][3][0]->Fill(z.Re());
+	     c2_neg_case1[i][3][1]->Fill(z.Im());
+
+	     z = Q2_neg * TComplex::Conjugate(Q2C_neg);
+	     c2_neg_case1[i][4][0]->Fill(z.Re());
+	     c2_neg_case1[i][4][1]->Fill(z.Im());
+
+	     //case2, positive
+	     z = Q2C_pos * TComplex::Conjugate(Q2B);
+	     c2_pos_case2[i][0][0]->Fill(z.Re());
+	     c2_pos_case2[i][0][1]->Fill(z.Im());
+	     
+	     z = Q2B * TComplex::Conjugate(Q2_pos);
+	     c2_pos_case2[i][1][0]->Fill(z.Re());
+	     c2_pos_case2[i][1][1]->Fill(z.Im());
+
+	     z = Q2B * TComplex::Conjugate(Q2A);
+	     c2_pos_case2[i][2][0]->Fill(z.Re());
+	     c2_pos_case2[i][2][1]->Fill(z.Im());
+
+	     z = Q2_pos * TComplex::Conjugate(Q2A);
+	     c2_pos_case2[i][3][0]->Fill(z.Re());
+	     c2_pos_case2[i][3][1]->Fill(z.Im());
+
+	     //case2, total
+	     z = Q2C * TComplex::Conjugate(Q2B);
+	     c2_tot_case2[i][0][0]->Fill(z.Re());
+	     c2_tot_case2[i][0][1]->Fill(z.Im());
+	     
+	     z = Q2B * TComplex::Conjugate(Q2);
+	     c2_tot_case2[i][1][0]->Fill(z.Re());
+	     c2_tot_case2[i][1][1]->Fill(z.Im());
+
+	     z = Q2B * TComplex::Conjugate(Q2A);
+	     c2_tot_case2[i][2][0]->Fill(z.Re());
+	     c2_tot_case2[i][2][1]->Fill(z.Im());
+
+	     z = Q2 * TComplex::Conjugate(Q2A);
+	     c2_tot_case2[i][3][0]->Fill(z.Re());
+	     c2_tot_case2[i][3][1]->Fill(z.Im());
+
+	     //case2, negative
+	     z = Q2C_neg * TComplex::Conjugate(Q2B);
+	     c2_neg_case2[i][0][0]->Fill(z.Re());
+	     c2_neg_case2[i][0][1]->Fill(z.Im());
+	     
+	     z = Q2B * TComplex::Conjugate(Q2_neg);
+	     c2_neg_case2[i][1][0]->Fill(z.Re());
+	     c2_neg_case2[i][1][1]->Fill(z.Im());
+
+	     z = Q2B * TComplex::Conjugate(Q2A);
+	     c2_neg_case2[i][2][0]->Fill(z.Re());
+	     c2_neg_case2[i][2][1]->Fill(z.Im());
+
+	     z = Q2_neg * TComplex::Conjugate(Q2A);
+	     c2_neg_case2[i][3][0]->Fill(z.Re());
+	     c2_neg_case2[i][3][1]->Fill(z.Im());
 	 }
     }
     
@@ -278,34 +434,34 @@ V2Analyzer::beginJob()
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
 
     //list of c2 histograms
-    c2_tot[0] = fs->make<TH1D>("c2Hist_1","c2 Distribution1",1000,-1,1);
-    c2_pos[0] = fs->make<TH1D>("c2Hist_pos_1","c2 Distribution for positive charges1",1000,-1,1);
-    c2_neg[0] = fs->make<TH1D>("c2Hist_neg_1","c2 Distribution for negative charges1",1000,-1,1);
+    for (Int_t i = 0; i < 5; i++){
+	for(Int_t j = 0 ; j < 5; j++){
+	    
+	    c2_tot_case1[i][j][0] = fs->make<TH1D>(Form("c2tot_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_tot_case1[i][j][1] = fs->make<TH1D>(Form("c2tot_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case1[i][j][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case1[i][j][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case1[i][j][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case1[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
+	}
+	for(Int_t j=0; j<4; j++){
+	    c2_tot_case2[i][j][0] = fs->make<TH1D>(Form("c2tot_%d_%d_cos_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_tot_case2[i][j][1] = fs->make<TH1D>(Form("c2tot_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case2[i][j][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_pos_case2[i][j][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case2[i][j][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case2",i,j),"c2 Distribution",1000,-1,1);
+	    c2_neg_case2[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
 
-    c2_tot[1] = fs->make<TH1D>("c2Hist2","c2 Distribution2",1000,-1,1);
-    c2_pos[1] = fs->make<TH1D>("c2Hist_pos2","c2 Distribution for positive charges2",1000,-1,1);
-    c2_neg[1] = fs->make<TH1D>("c2Hist_neg2","c2 Distribution for negative charges2",1000,-1,1);
-
-    c2_tot[2] = fs->make<TH1D>("c2Hist3","c2 Distribution3",1000,-1,1);
-    c2_pos[2] = fs->make<TH1D>("c2Hist_pos3","c2 Distribution for positive charges3",1000,-1,1);
-    c2_neg[2] = fs->make<TH1D>("c2Hist_neg3","c2 Distribution for negative charges3",1000,-1,1);
-
-    c2_tot[3] = fs->make<TH1D>("c2Hist4","c2 Distribution4",1000,-1,1);
-    c2_pos[3]= fs->make<TH1D>("c2Hist_pos4","c2 Distribution for positive charges4",1000,-1,1);
-    c2_neg[3] = fs->make<TH1D>("c2Hist_neg4","c2 Distribution for negative charges4",1000,-1,1);
-
-    c2_tot[4] = fs->make<TH1D>("c2Hist5","c2 Distribution5",1000,-1,1);
-    c2_pos[4] = fs->make<TH1D>("c2Hist_pos5","c2 Distribution for positive charges5",1000,-1,1);
-    c2_neg[4] = fs->make<TH1D>("c2Hist_neg5","c2 Distribution for negative charges5",1000,-1,1);
-
-    ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,Bins[0],Bins[1]);
-    ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,Bins[1],Bins[2]);
-    ach_hist[2] = fs->make<TH1D>("ach_2","ach_3",1000,Bins[2],Bins[3]);
-    ach_hist[3] = fs->make<TH1D>("ach_3","ach_4",1000,Bins[3],Bins[4]);
-    ach_hist[4] = fs->make<TH1D>("ach_3","ach_5",1000,Bins[4],Bins[5]);
-
-
+	}
+    }
+	    
     
+    ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,-0.4,0.4);
+    ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,-0.4,0.4);
+    ach_hist[2] = fs->make<TH1D>("ach_2","ach_3",1000,-0.4,0.4);
+    ach_hist[3] = fs->make<TH1D>("ach_3","ach_4",1000,-0.4,0.4);
+    ach_hist[4] = fs->make<TH1D>("ach_3","ach_5",1000,-0.4,0.4);
+
 
 }
 
@@ -326,38 +482,102 @@ V2Analyzer::endJob()
     */
 
     double x[5];
-    double v2_pos_val[5];
-    double v2_neg_val[5];
-    double v2_tot_val[5];
-    double c2_pos_val[5];
-    double c2_neg_val[5];
-    double c2_tot_val[5];
+    double v2_pos_case1[5];
+    double v2_neg_case1[5];
+    double v2_tot_case1[5];
+    double v2_pos_case2[5];
+    double v2_neg_case2[5];
+    double v2_tot_case2[5];
+
+    double numerator;
+    double denominator;
+    double q0,q1,q2,q3;
 
     for(Int_t i=0; i<5; i++){
 	x[i]=ach_hist[i]->GetMean();
-	c2_pos_val[i]=c2_pos[i]->GetMean();
-	c2_neg_val[i]=c2_neg[i]->GetMean();
-	c2_tot_val[i]=c2_tot[i]->GetMean();
-	v2_pos_val[i]=sqrt(c2_pos_val[i]);
-	v2_neg_val[i]=sqrt(c2_neg_val[i]);
-	v2_tot_val[i]=sqrt(c2_tot_val[i]);
 
+	//case1 positive
+	q0 = c2_pos_case1[i][0][0]->GetMean();
+	q1 = c2_pos_case1[i][1][0]->GetMean();
+	q2 = c2_pos_case1[i][2][0]->GetMean();
+	q3 = c2_pos_case1[i][3][0]->GetMean();
+	numerator = q0;
+	denominator = sqrt((q1*q2)/q3);
+	v2_pos_case1[i] = numerator/denominator;
+
+	//case1 total
+	q0 = c2_tot_case1[i][0][0]->GetMean();
+	q1 = c2_tot_case1[i][1][0]->GetMean();
+	q2 = c2_tot_case1[i][2][0]->GetMean();
+	q3 = c2_tot_case1[i][3][0]->GetMean();
+	numerator = q0;
+	denominator = sqrt((q1*q2)/q3);
+	v2_tot_case1[i] = numerator/denominator;
+
+	//case1 negative
+	q0 = c2_neg_case1[i][0][0]->GetMean();
+	q1 = c2_neg_case1[i][1][0]->GetMean();
+	q2 = c2_neg_case1[i][2][0]->GetMean();
+	q3 = c2_neg_case1[i][3][0]->GetMean();
+	numerator = q0;
+	denominator = sqrt((q1*q2)/q3);
+	v2_neg_case1[i] = numerator/denominator;
+
+	//case2 positive
+	q0 = c2_pos_case2[i][0][0]->GetMean();
+	q1 = c2_pos_case2[i][1][0]->GetMean();
+	q2 = c2_pos_case2[i][2][0]->GetMean();
+	q3 = c2_pos_case2[i][3][0]->GetMean();
+	numerator = q0;
+	denominator = sqrt((q1*q2)/q3);
+	v2_pos_case2[i] = numerator/denominator;
+
+	//case2 total
+	q0 = c2_tot_case2[i][0][0]->GetMean();
+	q1 = c2_tot_case2[i][1][0]->GetMean();
+	q2 = c2_tot_case2[i][2][0]->GetMean();
+	q3 = c2_tot_case2[i][3][0]->GetMean();
+	numerator = q0;
+	denominator = sqrt((q1*q2)/q3);
+	v2_tot_case2[i] = numerator/denominator;
+
+	//case2 negative
+	q0 = c2_neg_case2[i][0][0]->GetMean();
+	q1 = c2_neg_case2[i][1][0]->GetMean();
+	q2 = c2_neg_case2[i][2][0]->GetMean();
+	q3 = c2_neg_case2[i][3][0]->GetMean();
+	numerator = q0;
+	denominator = sqrt((q1*q2)/q3);
+	v2_neg_case2[i] = numerator/denominator;
     }  
 
-    gr_pos = fs->make<TGraph>(5,x,v2_pos_val);
-    gr_neg = fs->make<TGraph>(5,x,v2_neg_val);
-    gr_tot = fs->make<TGraph>(5,x,v2_tot_val);
+    gr_pos_case1 = fs->make<TGraph>(5,x,v2_pos_case1);
+    gr_neg_case1 = fs->make<TGraph>(5,x,v2_neg_case1);
+    gr_tot_case1 = fs->make<TGraph>(5,x,v2_tot_case1);
 
-    gr_pos -> SetName("positive tracks");
-    gr_neg -> SetName("negative tracks");
-    gr_tot -> SetName("total tracks");
-    gr_pos -> SetTitle("positive tracks");
-    gr_neg -> SetTitle("negative tracks");
-    gr_tot -> SetTitle("total tracks");
-    gr_pos->SetMarkerStyle(21);
-    gr_neg->SetMarkerStyle(21);
-    gr_tot->SetMarkerStyle(21);
+    gr_pos_case1 -> SetName("positive tracks case1");
+    gr_neg_case1 -> SetName("negative tracks case1");
+    gr_tot_case1 -> SetName("total tracks case1");
+    gr_pos_case1 -> SetTitle("positive tracks case1");
+    gr_neg_case1 -> SetTitle("negative tracks case1");
+    gr_tot_case1 -> SetTitle("total tracks case1");
+    gr_pos_case1->SetMarkerStyle(21);
+    gr_neg_case1->SetMarkerStyle(21);
+    gr_tot_case1->SetMarkerStyle(21);
 
+    gr_pos_case2 = fs->make<TGraph>(5,x,v2_pos_case2);
+    gr_neg_case2 = fs->make<TGraph>(5,x,v2_neg_case2);
+    gr_tot_case2 = fs->make<TGraph>(5,x,v2_tot_case2);
+
+    gr_pos_case2 -> SetName("positive tracks case2");
+    gr_neg_case2 -> SetName("negative tracks case2");
+    gr_tot_case2 -> SetName("total tracks case2");
+    gr_pos_case2 -> SetTitle("positive tracks case2");
+    gr_neg_case2 -> SetTitle("negative tracks case2");
+    gr_tot_case2 -> SetTitle("total tracks case2");
+    gr_pos_case2->SetMarkerStyle(21);
+    gr_neg_case2->SetMarkerStyle(21);
+    gr_tot_case2->SetMarkerStyle(21);
 
     // v2graph->Add(gr_pos);
     //v2graph->Add(gr_neg);
