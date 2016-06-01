@@ -65,13 +65,9 @@ TCanvas* makeCanvas(const char* name, const char *title, bool doLogx = false, bo
 	return canvas;
 }
 
-TCanvas* makeMultiCanvas(const char* name, 
-						 const char* title,
-						 int nRows,
-						 int nColumns
-){
+TCanvas* makeMultiCanvas(const char* name,  const char* title, int nRows, int nColumns)
+{
 
-	double ratio = nRows/nColumns;
 
 	TCanvas* canvas = new TCanvas( name, title, 1, 1, 400*nRows, 400*nColumns );
 	canvas->SetFillColor      (0);
