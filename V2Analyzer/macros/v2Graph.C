@@ -32,6 +32,13 @@ using namespace std;
 void v2Graph(){
 
     TFile *f = new TFile("../PbPbData.root");
+    TH1D* c2_pos_case1[5][5][2];
+    TH1D* c2_neg_case1[5][5][2];
+    TH1D* c2_tot_case1[5][5][2];
+
+    TH1D* c2_pos_case2[5][4][2];
+    TH1D* c2_neg_case2[5][4][2];
+    TH1D* c2_tot_case2[5][4][2];
 
     for (Int_t i = 0; i < 5; i++){
 	for(Int_t j = 0 ; j < 5; j++){
