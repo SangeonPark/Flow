@@ -98,9 +98,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<reco::TrackCollection> tracks;
     iEvent.getByLabel(trackSrc_, tracks);
 
-    int N_pos = 0;
-    int N_neg = 0;
-    int N_tot = 0;
+    double N_pos = 0.0;
+    double N_neg = 0.0;
+    double N_tot = 0.0;
 
     int N_Q2 = 0;
     int N_Q2_pos = 0;
@@ -141,14 +141,10 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	double weight = 1000.0;
 
-/*
 	if( doEffCorrection_ ){
 	    weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
 	}
-
-*/
 	
-
 	//highPurity
 	if(!cand->quality(reco::TrackBase::highPurity)) continue;
 
@@ -185,16 +181,16 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	if(eta > 0.0){
 	    N_Q2++;
 	    Q2 += e;
-	    N_tot++;
+	    N_tot+=weight;
 	    W_Q2 += weight;
 	    if(charge>0){
 		N_Q2_pos++;
-		N_pos++;
+		N_pos+=weight;
 		Q2_pos += e;
 		W_Q2_pos += weight;
 	    }
 	    if(charge<0){
-		N_neg++;
+		N_neg+=weight;
 		N_Q2_neg++;
 		Q2_neg += e;
 		W_Q2_neg += weight;
@@ -203,17 +199,17 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	if(eta < 0.0){
 	    Q2C += e;
-	    N_tot++;
+	    N_tot+=weight;
 	    N_Q2C++;
 	    W_Q2C += weight;
 	    if(charge>0){
-		N_pos++;
+		N_pos+=weight;
 		N_Q2C_pos++;
 		Q2C_pos += e;
 		W_Q2C_pos += weight;
 	    }
 	    if(charge<0){
-		N_neg++;
+		N_neg+=weight;
 		N_Q2C_neg++;
 		Q2C_neg += e;
 		W_Q2C_neg += weight;
@@ -260,8 +256,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
     
-    int N_diff = N_pos - N_neg;
-    double ach = (double)N_diff/N_tot;
+
+    double N_diff = N_pos - N_neg;
+    double ach = N_diff/N_tot;
     asym_Dist->Fill(ach);
     NTrkHist->Fill(nTracks);
 
