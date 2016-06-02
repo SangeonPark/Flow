@@ -141,13 +141,12 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	double weight = 1.0;
 
-/*
+
 	if( doEffCorrection_ ){
 	    weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
+	    cout << weight; 
 	}
 
-*/
-	
 	//highPurity
 	if(!cand->quality(reco::TrackBase::highPurity)) continue;
 
