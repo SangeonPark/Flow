@@ -304,6 +304,7 @@ class V2Analyzer : public edm::EDAnalyzer {
       TNtuple* track_Data;
       TH1D* asym_Dist;
       TH1D* NTrkHist;
+      TH2D* effTable;
 
       /*
       TGraph* gr_pos_case1;
