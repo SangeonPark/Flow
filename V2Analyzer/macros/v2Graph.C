@@ -121,10 +121,10 @@ void v2Graph(){
     gr_tot_case2 -> SetTitle("total tracks case2");
 
     TCanvas* c1 = new TCanvas("c1","c1",1200,500);
-    c1->Divide(3,2,0,0);
-    c1->cd(1);
+    // c1->Divide(3,2,0,0);
+    //c1->cd(1);
     gr_pos_case1->Draw();
-
+/*
     c1->cd(2);
     gr_neg_case1->Draw();
 
@@ -139,5 +139,6 @@ void v2Graph(){
 
     c1->cd(6);
     gr_tot_case2->Draw();
+*/
     
 }
