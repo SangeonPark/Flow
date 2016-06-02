@@ -42,7 +42,7 @@ void v2Graph(){
     TH1D* ach_hist[5];
 
     for (Int_t i = 0; i < 5; i++){
-	ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1);
+	ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 				    
 	for(Int_t j = 0 ; j < 5; j++){
 	    
