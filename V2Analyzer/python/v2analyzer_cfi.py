@@ -13,6 +13,6 @@ demo = cms.EDAnalyzer('V2Analyzer',
                       etaCutMax = cms.double(2.4),
                       NTrkMin = cms.int32(185),
                       NTrkMax = cms.int32(220),
-                      doEffCorrection = cms.bool(true)
+                      doEffCorrection = cms.untracked.bool(True)
                       
 )
