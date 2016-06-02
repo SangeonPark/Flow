@@ -218,12 +218,14 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	}
     }
 
+    /*
     Q2 /= W_Q2;
     Q2_pos /= W_Q2_pos;
     Q2_neg /= W_Q2_neg;
     Q2C /= W_Q2C;
     Q2C_pos /= W_Q2C_pos;
     Q2C_neg /= W_Q2C_neg;
+    */
 
     Handle<CaloTowerCollection> towers;
     iEvent.getByLabel(towerSrc_, towers);
@@ -265,10 +267,10 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     ach_hist[i]->Fill(ach);
 
 	     TComplex z;
-	     int Npairs;
+	     double Npairs;
              //case 1, positive
 	     z = Q2_pos * TComplex::Conjugate(Q2A);
-	     Npairs = N_Q2_pos * N_Q2A;
+	     Npairs = W_Q2_pos * N_Q2A;
 	     z /= Npairs;
 	     c2_pos_case1[i][0][0]->Fill(z.Re(),Npairs);
 	     c2_pos_case1[i][0][1]->Fill(z.Im(),Npairs);
@@ -280,26 +282,26 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     c2_pos_case1[i][1][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2A * TComplex::Conjugate(Q2C_pos);
-	     Npairs = N_Q2A * N_Q2C_pos;
+	     Npairs = N_Q2A * W_Q2C_pos;
 	     z /= Npairs;
 	     c2_pos_case1[i][2][0]->Fill(z.Re(),Npairs);
 	     c2_pos_case1[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2B * TComplex::Conjugate(Q2C_pos);
-	     Npairs = N_Q2B * N_Q2C_pos;
+	     Npairs = N_Q2B * W_Q2C_pos;
 	     z /= Npairs;
 	     c2_pos_case1[i][3][0]->Fill(z.Re(),Npairs);
 	     c2_pos_case1[i][3][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2_pos * TComplex::Conjugate(Q2C_pos);
-	     Npairs = N_Q2_pos * N_Q2C_pos;
+	     Npairs = W_Q2_pos * W_Q2C_pos;
 	     z /= Npairs;
 	     c2_pos_case1[i][4][0]->Fill(z.Re(),Npairs);
 	     c2_pos_case1[i][4][1]->Fill(z.Im(),Npairs);
 
 	     //case1, total
 	     z = Q2 * TComplex::Conjugate(Q2A);
-	     Npairs = N_Q2 * N_Q2A;
+	     Npairs = W_Q2 * N_Q2A;
 	     z /= Npairs;
 	     c2_tot_case1[i][0][0]->Fill(z.Re(),Npairs);
 	     c2_tot_case1[i][0][1]->Fill(z.Im(),Npairs);
@@ -311,26 +313,26 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     c2_tot_case1[i][1][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2A * TComplex::Conjugate(Q2C);
-	     Npairs = N_Q2A * N_Q2C;
+	     Npairs = N_Q2A * W_Q2C;
 	     z /= Npairs;
 	     c2_tot_case1[i][2][0]->Fill(z.Re(),Npairs);
 	     c2_tot_case1[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2B * TComplex::Conjugate(Q2C);
-	     Npairs = N_Q2B * N_Q2C;
+	     Npairs = N_Q2B * W_Q2C;
 	     z /= Npairs;
 	     c2_tot_case1[i][3][0]->Fill(z.Re(),Npairs);
 	     c2_tot_case1[i][3][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2 * TComplex::Conjugate(Q2C);
-	     Npairs = N_Q2 * N_Q2C;
+	     Npairs = W_Q2 * W_Q2C;
 	     z /= Npairs;
 	     c2_tot_case1[i][4][0]->Fill(z.Re(),Npairs);
 	     c2_tot_case1[i][4][1]->Fill(z.Im(),Npairs);
 
 	     //case1, negative
 	     z = Q2_neg * TComplex::Conjugate(Q2A);
-	     Npairs = N_Q2_neg * N_Q2A;
+	     Npairs = W_Q2_neg * N_Q2A;
 	     z /= Npairs;
 	     c2_neg_case1[i][0][0]->Fill(z.Re(),Npairs);
 	     c2_neg_case1[i][0][1]->Fill(z.Im(),Npairs);
@@ -342,32 +344,32 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     c2_neg_case1[i][1][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2A * TComplex::Conjugate(Q2C_neg);
-	     Npairs = N_Q2A * N_Q2C_neg;
+	     Npairs = N_Q2A * W_Q2C_neg;
 	     z /= Npairs;
 	     c2_neg_case1[i][2][0]->Fill(z.Re(),Npairs);
 	     c2_neg_case1[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2B * TComplex::Conjugate(Q2C_neg);
-	     Npairs = N_Q2B * N_Q2C_neg;
+	     Npairs = N_Q2B * W_Q2C_neg;
 	     z /= Npairs;
 	     c2_neg_case1[i][3][0]->Fill(z.Re(),Npairs);
 	     c2_neg_case1[i][3][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2_neg * TComplex::Conjugate(Q2C_neg);
-	     Npairs = N_Q2_neg * N_Q2C_neg;
+	     Npairs = W_Q2_neg * W_Q2C_neg;
 	     z /= Npairs;
 	     c2_neg_case1[i][4][0]->Fill(z.Re(),Npairs);
 	     c2_neg_case1[i][4][1]->Fill(z.Im(),Npairs);
 
 	     //case2, positive
 	     z = Q2C_pos * TComplex::Conjugate(Q2B);
-	     Npairs = N_Q2C_pos * N_Q2B;
+	     Npairs = W_Q2C_pos * N_Q2B;
 	     z /= Npairs;
 	     c2_pos_case2[i][0][0]->Fill(z.Re(),Npairs);
 	     c2_pos_case2[i][0][1]->Fill(z.Im(),Npairs);
 	     
 	     z = Q2B * TComplex::Conjugate(Q2_pos);
-	     Npairs = N_Q2B * N_Q2_pos;
+	     Npairs = N_Q2B * W_Q2_pos;
 	     z /= Npairs;
 	     c2_pos_case2[i][1][0]->Fill(z.Re(),Npairs);
 	     c2_pos_case2[i][1][1]->Fill(z.Im(),Npairs);
@@ -379,20 +381,20 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     c2_pos_case2[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2_pos * TComplex::Conjugate(Q2A);
-	     Npairs = N_Q2_pos * N_Q2A;
+	     Npairs = W_Q2_pos * N_Q2A;
 	     z /= Npairs;
 	     c2_pos_case2[i][3][0]->Fill(z.Re(),Npairs);
 	     c2_pos_case2[i][3][1]->Fill(z.Im(),Npairs);
 
 	     //case2, total
 	     z = Q2C * TComplex::Conjugate(Q2B);
-	     Npairs = N_Q2C * N_Q2B;
+	     Npairs = W_Q2C * N_Q2B;
 	     z /= Npairs;
 	     c2_tot_case2[i][0][0]->Fill(z.Re(),Npairs);
 	     c2_tot_case2[i][0][1]->Fill(z.Im(),Npairs);
 	     
 	     z = Q2B * TComplex::Conjugate(Q2);
-	     Npairs = N_Q2B * N_Q2;
+	     Npairs = N_Q2B * W_Q2;
 	     z /= Npairs;
 	     c2_tot_case2[i][1][0]->Fill(z.Re(),Npairs);
 	     c2_tot_case2[i][1][1]->Fill(z.Im(),Npairs);
@@ -404,20 +406,20 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     c2_tot_case2[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2 * TComplex::Conjugate(Q2A);
-	     Npairs = N_Q2 * N_Q2A;
+	     Npairs = W_Q2 * N_Q2A;
 	     z /= Npairs;
 	     c2_tot_case2[i][3][0]->Fill(z.Re(),Npairs);
 	     c2_tot_case2[i][3][1]->Fill(z.Im(),Npairs);
 
 	     //case2, negative
 	     z = Q2C_neg * TComplex::Conjugate(Q2B);
-	     Npairs = N_Q2C_neg * N_Q2B;
+	     Npairs = W_Q2C_neg * N_Q2B;
 	     z /= Npairs;
 	     c2_neg_case2[i][0][0]->Fill(z.Re(),Npairs);
 	     c2_neg_case2[i][0][1]->Fill(z.Im(),Npairs);
 	     
 	     z = Q2B * TComplex::Conjugate(Q2_neg);
-	     Npairs = N_Q2B * N_Q2_neg;
+	     Npairs = N_Q2B * W_Q2_neg;
 	     z /= Npairs;
 	     c2_neg_case2[i][1][0]->Fill(z.Re(),Npairs);
 	     c2_neg_case2[i][1][1]->Fill(z.Im(),Npairs);
@@ -429,7 +431,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     c2_neg_case2[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2_neg * TComplex::Conjugate(Q2A);
-	     Npairs = N_Q2_neg * N_Q2A;
+	     Npairs = W_Q2_neg * N_Q2A;
 	     z /= Npairs;
 	     c2_neg_case2[i][3][0]->Fill(z.Re(),Npairs);
 	     c2_neg_case2[i][3][1]->Fill(z.Im(),Npairs);
