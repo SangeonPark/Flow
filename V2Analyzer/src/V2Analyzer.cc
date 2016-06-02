@@ -21,9 +21,6 @@
 // system include files
 #include "Flow/V2Analyzer/interface/V2Analyzer.h"
 
-
-
-
 //
 // constants, enums and typedefs
 //
@@ -43,12 +40,22 @@ V2Analyzer::V2Analyzer(const edm::ParameterSet& iConfig)
     dzSigCut_ = iConfig.getParameter<double>("dzSigCut");
     etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
     etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
+    etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
+    etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
+    
+
+
     NTrkMin_ = iConfig.getParameter<int>("NTrkMin");
     NTrkMax_ = iConfig.getParameter<int>("NTrkMax");
     
     trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
     vertexSrc_ = iConfig.getParameter<std::string>("vertexSrc");
     towerSrc_ = iConfig.getParameter<edm::InputTag>("towerSrc");
+    
+    doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
+    
+
+    
    //now do what ever initialization is needed
 
 }
@@ -102,6 +109,13 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     int N_Q2C_pos = 0;
     int N_Q2C_neg = 0;
 
+    double W_Q2 = 0.0;
+    double W_Q2_pos = 0.0;
+    double W_Q2_neg = 0.0;
+    double W_Q2C = 0.0;
+    double W_Q2C_pos = 0.0;
+    double W_Q2C_neg = 0.0;
+
     int nTracks = 0;
     int nTracks_pos = 0;
     int nTracks_neg = 0;
@@ -117,13 +131,6 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     TComplex Q2A(0,0);
     TComplex Q2B(0,0);
-    
-
-    
-//    double cos_sum=0.0;
-//    double sin_sum=0.0;
-
-   
 
     for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
@@ -132,6 +139,13 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	double pt = cand->pt();
 	double phi = cand->phi();
 
+	double weight = 0.0;
+
+
+	if( doEffCorrection_ ){
+	    weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
+	}
+	
 	//highPurity
 	if(!cand->quality(reco::TrackBase::highPurity)) continue;
 
@@ -163,19 +177,24 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	TComplex e(1,2*phi,1);
 
+	e *= weight; 
+
 	if(eta > 0.0){
 	    N_Q2++;
 	    Q2 += e;
 	    N_tot++;
+	    W_Q2 += weight;
 	    if(charge>0){
 		N_Q2_pos++;
 		N_pos++;
 		Q2_pos += e;
+		W_Q2_pos += weight;
 	    }
 	    if(charge<0){
 		N_neg++;
 		N_Q2_neg++;
 		Q2_neg += e;
+		W_Q2_neg += weight;
 	    }
 	}
 
@@ -183,19 +202,29 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    Q2C += e;
 	    N_tot++;
 	    N_Q2C++;
+	    W_Q2C += weight;
 	    if(charge>0){
 		N_pos++;
 		N_Q2C_pos++;
 		Q2C_pos += e;
+		W_Q2C_pos += weight;
 	    }
 	    if(charge<0){
 		N_neg++;
 		N_Q2C_neg++;
 		Q2C_neg += e;
+		W_Q2C_neg += weight;
 	    }
 	}
     }
-    
+
+    Q2 /= W_Q2;
+    Q2_pos /= W_Q2_pos;
+    Q2_neg /= W_Q2_neg;
+    Q2C /= W_Q2C;
+    Q2C_pos /= W_Q2C_pos;
+    Q2C_neg /= W_Q2C_neg;
+
     Handle<CaloTowerCollection> towers;
     iEvent.getByLabel(towerSrc_, towers);
 
@@ -211,76 +240,18 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	TComplex e(1,2*caloPhi,1);
 
-	if( -5.0 < caloEta && caloEta < -3.0 ){
+	if( -etaHFUpp_ < caloEta && caloEta < -etaHFLow_ ){
 	    N_Q2A++;
 	    Q2A += e;
 	}
 
-	else if( 3.0 < caloEta && caloEta < 5.0 ){
+	else if( etaHFLow_ < caloEta && caloEta < etaHFUpp_ ){
 	    N_Q2B++;
 
 	    Q2B += e;
 	}
     }
 
-
-    /*
-    int Npairs = 0;
-    for( reco::TrackCollection::const_iterator cand1 = tracks->begin(); cand1 != tracks->end(); cand1++){
-
-	double eta1 = cand1->eta();
-//	double charge1 = (double)cand1->charge();
-	double pt1 = cand1->pt();
-	double phi1 = cand1->phi();
-
-	//highPurity
-	if(!cand1->quality(reco::TrackBase::highPurity)) continue;
-
-	//DCA
-	math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
-	double dzbest1 = cand1->dz(bestvtx);
-	double dxybest1 = cand1->dxy(bestvtx);
-	double dzerror1 = sqrt(cand1->dzError()*cand1->dzError()+bestvzError*bestvzError);
-	double dxyerror1 = sqrt(cand1->d0Error()*cand1->d0Error()+bestvxError*bestvyError);
-	double dzos1 = dzbest1/dzerror1;
-	double dxyos1 = dxybest1/dxyerror1;
-	if( dzSigCut_ <= fabs(dzos1) || dxySigCut_ <= fabs(dxyos1) ) continue;
-
-	//ptError
-	if(fabs(cand1->ptError())/cand1->pt() > 0.1 ) continue;
-	if(2.4<=fabs(eta1) || pt1 < 0.3 || pt1 > 3.0 ) continue;
-	
-	for( reco::TrackCollection::const_iterator cand2 = tracks->begin(); cand2 != tracks->end(); cand2++){
-
-	     double eta2 = cand2->eta();
-//	     double charge2 = (double)cand2->charge();
-	     double pt2 = cand2->pt();
-	     double phi2 = cand2->phi();
-
-	     //highPurity
-	     if(!cand2->quality(reco::TrackBase::highPurity)) continue;
-
-	     //DCA
-	     math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
-	     double dzbest2 = cand2->dz(bestvtx);
-	     double dxybest2 = cand2->dxy(bestvtx);
-	     double dzerror2 = sqrt(cand2->dzError()*cand2->dzError()+bestvzError*bestvzError);
-	     double dxyerror2 = sqrt(cand2->d0Error()*cand2->d0Error()+bestvxError*bestvyError);
-	     double dzos2 = dzbest2/dzerror2;
-	     double dxyos2 = dxybest2/dxyerror2;
-	     if( dzSigCut_ <= fabs(dzos2) || dxySigCut_ <= fabs(dxyos2) ) continue;
-
-	     //ptError
-	     if(fabs(cand2->ptError())/cand2->pt() > 0.1 ) continue;
-	     if(2.4<=fabs(eta2) || pt2 < 0.3 || pt2 > 3.0 ) continue;
-
-	     if(cand1 == cand2) continue;
-	     cos_sum += cos(2*(phi1-phi2));
-	     Npairs++;
-	}
-	 
-    }
-    */
     
     if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
     
@@ -289,29 +260,6 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     asym_Dist->Fill(ach);
     NTrkHist->Fill(nTracks);
 
-    // double wt_pos = 1.0;
-    //double wt_neg = 1.0;
-    //double wt = 1.0;
-    /*
-      double evt_avg_pos = (Q2_pos.Rho2()-N_pos)/(N_pos*(N_pos-1.0));
-      double evt_avg_neg = (Q2_neg.Rho2()-N_neg)/(N_neg*(N_neg-1.0));
-      double evt_avg = (Q2.Rho2()-N_tot)/(N_tot*(N_tot-1.0));
-    */
-    
-/*
-    cout << "numerator : " << cos_sum*cos_sum+sin_sum*sin_sum-N_tot << endl;
-    cout << "denom : " << N_tot*(N_tot-1.0) << endl;
-    cout << "evt_avg : " << evt_avg << endl;
-    if(evt_avg < -0.008){
-	cout << "exist------------------------" <<endl;
-    }
-    */
-
-    /*
-    c2Hist->Fill(evt_avg);
-    c2Hist_pos->Fill(evt_avg_pos);
-    c2Hist_neg->Fill(evt_avg_neg);
-    */
     for(Int_t i=0;i<5;i++){
 	 if(Bins[i] < ach && ach <= Bins[i+1]){
 	     ach_hist[i]->Fill(ach);
@@ -499,9 +447,12 @@ V2Analyzer::beginJob()
     edm::Service<TFileService> fs;
     TH1D::SetDefaultSumw2();
 
-//    track_Data = fs->make<TNtuple>("track_Data","track_Data","pt:eta:phi:charge:dzos:dxyos:nhit");
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+
+    edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24");  
+    TFile f1(fip1.fullPath().c_str(),"READ");
+    effTable = (TH2D*)f1.Get("recoHist");
 
     //list of c2 histograms
     for (Int_t i = 0; i < 5; i++){
@@ -532,127 +483,15 @@ V2Analyzer::beginJob()
     ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",1000,-0.4,0.4);
     ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",1000,-0.4,0.4);
 
+    
+
 
 }
 
 // ------------ method called once each job just after ending the event loop  ------------
 void
 V2Analyzer::endJob() 
-{
-    //using namespace std;
-	
-    /*
-    cout<< "sum of weighted average" << sum_wtdavg_pos <<endl;
-    cout << "sum of weights_positive : " << sum_wt_pos << endl;
-    cout << "sum of weights_negative : " << sum_wt_neg << endl;
-    cout << "sum of weights : " << sum_wt << endl;
-
-
-    */
-/*
-    edm::Service<TFileService> fs;
-    double x[5];
-    double v2_pos_case1[5];
-    double v2_neg_case1[5];
-    double v2_tot_case1[5];
-    double v2_pos_case2[5];
-    double v2_neg_case2[5];
-    double v2_tot_case2[5];
-
-    double numerator;
-    double denominator;
-    double q0,q1,q2,q3;
-
-    for(Int_t i=0; i<5; i++){
-	x[i]=ach_hist[i]->GetMean();
-
-	//case1 positive
-	q0 = c2_pos_case1[i][0][0]->GetMean();
-	q1 = c2_pos_case1[i][1][0]->GetMean();
-	q2 = c2_pos_case1[i][2][0]->GetMean();
-	q3 = c2_pos_case1[i][3][0]->GetMean();
-	numerator = q0;
-	denominator = sqrt((q1*q2)/q3);
-	v2_pos_case1[i] = numerator/denominator;
-
-	//case1 total
-	q0 = c2_tot_case1[i][0][0]->GetMean();
-	q1 = c2_tot_case1[i][1][0]->GetMean();
-	q2 = c2_tot_case1[i][2][0]->GetMean();
-	q3 = c2_tot_case1[i][3][0]->GetMean();
-	numerator = q0;
-	denominator = sqrt((q1*q2)/q3);
-	v2_tot_case1[i] = numerator/denominator;
-
-	//case1 negative
-	q0 = c2_neg_case1[i][0][0]->GetMean();
-	q1 = c2_neg_case1[i][1][0]->GetMean();
-	q2 = c2_neg_case1[i][2][0]->GetMean();
-	q3 = c2_neg_case1[i][3][0]->GetMean();
-	numerator = q0;
-	denominator = sqrt((q1*q2)/q3);
-	v2_neg_case1[i] = numerator/denominator;
-
-	//case2 positive
-	q0 = c2_pos_case2[i][0][0]->GetMean();
-	q1 = c2_pos_case2[i][1][0]->GetMean();
-	q2 = c2_pos_case2[i][2][0]->GetMean();
-	q3 = c2_pos_case2[i][3][0]->GetMean();
-	numerator = q0;
-	denominator = sqrt((q1*q2)/q3);
-	v2_pos_case2[i] = numerator/denominator;
-
-	//case2 total
-	q0 = c2_tot_case2[i][0][0]->GetMean();
-	q1 = c2_tot_case2[i][1][0]->GetMean();
-	q2 = c2_tot_case2[i][2][0]->GetMean();
-	q3 = c2_tot_case2[i][3][0]->GetMean();
-	numerator = q0;
-	denominator = sqrt((q1*q2)/q3);
-	v2_tot_case2[i] = numerator/denominator;
-
-	//case2 negative
-	q0 = c2_neg_case2[i][0][0]->GetMean();
-	q1 = c2_neg_case2[i][1][0]->GetMean();
-	q2 = c2_neg_case2[i][2][0]->GetMean();
-	q3 = c2_neg_case2[i][3][0]->GetMean();
-	numerator = q0;
-	denominator = sqrt((q1*q2)/q3);
-	v2_neg_case2[i] = numerator/denominator;
-    }  
-
-    gr_pos_case1 = fs->make<TGraph>(5,x,v2_pos_case1);
-    gr_neg_case1 = fs->make<TGraph>(5,x,v2_neg_case1);
-    gr_tot_case1 = fs->make<TGraph>(5,x,v2_tot_case1);
-
-    gr_pos_case1 -> SetName("positive tracks case1");
-    gr_neg_case1 -> SetName("negative tracks case1");
-    gr_tot_case1 -> SetName("total tracks case1");
-    gr_pos_case1 -> SetTitle("positive tracks case1");
-    gr_neg_case1 -> SetTitle("negative tracks case1");
-    gr_tot_case1 -> SetTitle("total tracks case1");
-    gr_pos_case1->SetMarkerStyle(21);
-    gr_neg_case1->SetMarkerStyle(21);
-    gr_tot_case1->SetMarkerStyle(21);
-
-    gr_pos_case2 = fs->make<TGraph>(5,x,v2_pos_case2);
-    gr_neg_case2 = fs->make<TGraph>(5,x,v2_neg_case2);
-    gr_tot_case2 = fs->make<TGraph>(5,x,v2_tot_case2);
-
-    gr_pos_case2 -> SetName("positive tracks case2");
-    gr_neg_case2 -> SetName("negative tracks case2");
-    gr_tot_case2 -> SetName("total tracks case2");
-    gr_pos_case2 -> SetTitle("positive tracks case2");
-    gr_neg_case2 -> SetTitle("negative tracks case2");
-    gr_tot_case2 -> SetTitle("total tracks case2");
-    gr_pos_case2->SetMarkerStyle(21);
-    gr_neg_case2->SetMarkerStyle(21);
-    gr_tot_case2->SetMarkerStyle(21);
-*/
-
-    // v2graph->Add(gr_pos);
-    //v2graph->Add(gr_neg);
-    
+{    
 }
 
 // ------------ method called when starting to processes a run  ------------

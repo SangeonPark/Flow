@@ -328,8 +328,11 @@ class V2Analyzer : public edm::EDAnalyzer {
       double dzSigCut_;
       double etaCutMin_;
       double etaCutMax_;
+      double etaHFLow_;
+      double etaHFUpp_;
       int NTrkMin_;
       int NTrkMax_;
+      bool doEffCorrection_;
 
       
     
