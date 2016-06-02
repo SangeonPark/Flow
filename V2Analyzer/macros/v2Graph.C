@@ -63,14 +63,7 @@ void v2Graph(){
 
 	}
     }
-
-    TGraph* gr_pos_case1;
-    TGraph* gr_neg_case1;
-    TGraph* gr_tot_case1;
-    TGraph* gr_pos_case2;
-    TGraph* gr_neg_case2;
-    TGraph* gr_tot_case2;
-    
+ 
     double x[5];
     double v2_pos_case1[5];
     double v2_neg_case1[5];
@@ -132,7 +125,13 @@ void v2Graph(){
 	numerator = q0;
 	denominator = sqrt((q1*q2)/q3);
 	v2_neg_case2[i] = numerator/denominator;
-    }  
+    }
+    TGraph *gr_pos_case1 = new TGraph(5,x,v2_pos_case1);
+    TGraph *gr_neg_case1 = new TGraph(5,x,v2_neg_case1);
+    TGraph *gr_tot_case1 = new TGraph(5,x,v2_tot_case1);
+    TGraph *gr_pos_case2 = new TGraph(5,x,v2_pos_case2);
+    TGraph *gr_neg_case2 = new TGraph(5,x,v2_neg_case2);
+    TGraph *gr_tot_case2 = new TGraph(5,x,v2_tot_case2);
 
     gr_pos_case1 -> SetName("positive tracks case1");
     gr_neg_case1 -> SetName("negative tracks case1");
@@ -167,6 +166,5 @@ void v2Graph(){
 
     c1->cd(6);
     gr_tot_case2->Draw();
-
     
 }
