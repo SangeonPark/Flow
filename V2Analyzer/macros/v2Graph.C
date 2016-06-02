@@ -1,4 +1,30 @@
-#include "RiceStyle.h"
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <string>
+
+#include "TString.h"
+#include "TF1.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TH3.h"
+#include "TMath.h"
+#include "TTree.h"
+#include "TChain.h"
+#include "TFile.h"
+#include "TCanvas.h"
+#include "TSystem.h"
+#include "TROOT.h"
+#include "TGraph.h"
+#include "TGraphErrors.h"
+#include "TGraphAsymmErrors.h"
+#include "TMultiGraph.h"
+#include "TCanvas.h"
+#include "TPad.h"
+#include "TLegend.h"
+#include "TLatex.h"
+#include "TLine.h"
+#include "TAxis.h"
 
 using namespace std;
 
@@ -123,7 +149,7 @@ void v2Graph(){
     TCanvas* c1 = new TCanvas("c1","c1");
     // c1->Divide(3,2,0,0);
     //c1->cd(1);
-    gr_pos_case1->Draw();
+    gr_pos_case1->Draw("A*");
 /*
     c1->cd(2);
     gr_neg_case1->Draw();
