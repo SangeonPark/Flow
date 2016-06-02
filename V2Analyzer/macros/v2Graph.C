@@ -39,8 +39,11 @@ void v2Graph(){
     TH1D* c2_pos_case2[5][4][2];
     TH1D* c2_neg_case2[5][4][2];
     TH1D* c2_tot_case2[5][4][2];
+    TH1D* ach_hist[5];
 
     for (Int_t i = 0; i < 5; i++){
+	ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1);
+				    
 	for(Int_t j = 0 ; j < 5; j++){
 	    
 	    c2_tot_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case1",i,j));
