@@ -14,7 +14,7 @@ process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
         'root://cms-xrd-global.cern.ch//store/user/davidlw/HIMinBiasUPC/PR2011_MBPPRereco_TRKANASKIM_v6/ccf03100d177f42de0f9cdc7627799d3/pPb_HM_1000_1_lq0.root',
         'root://cms-xrd-global.cern.ch//store/user/davidlw/HIMinBiasUPC/PR2011_MBPPRereco_TRKANASKIM_v6/ccf03100d177f42de0f9cdc7627799d3/pPb_HM_1001_1_Jfy.root',
-        'root://cms-xrd-global.cern.ch//store/user/davidlw/HIMinBiasUPC/PR2011_MBPPRereco_TRKANASKIM_v6/ccf03100d177f42de0f9cdc7627799d3/pPb_HM_1002_1_nsm.root',
+        #'root://cms-xrd-global.cern.ch//store/user/davidlw/HIMinBiasUPC/PR2011_MBPPRereco_TRKANASKIM_v6/ccf03100d177f42de0f9cdc7627799d3/pPb_HM_1002_1_nsm.root',
         'root://cms-xrd-global.cern.ch//store/user/davidlw/HIMinBiasUPC/PR2011_MBPPRereco_TRKANASKIM_v6/ccf03100d177f42de0f9cdc7627799d3/pPb_HM_1003_1_DON.root',
         #'root://cms-xrd-global.cern.ch//store/user/davidlw/HIMinBiasUPC/PR2011_MBPPRereco_TRKANASKIM_v6/ccf03100d177f42de0f9cdc7627799d3/pPb_HM_1004_1_jR1.root',
         #'root://xrootd-cms.infn.it//store/user/davidlw/HIMinBiasUPC/PR2011_MBPPRereco_TRKANASKIM_v6/ccf03100d177f42de0f9cdc7627799d3/pPb_HM_1005_1_CRF.root',

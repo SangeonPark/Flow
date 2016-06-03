@@ -1,30 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <sstream>
-#include <string>
-
-#include "TString.h"
-#include "TF1.h"
-#include "TH1.h"
-#include "TH2.h"
-#include "TH3.h"
-#include "TMath.h"
-#include "TTree.h"
-#include "TChain.h"
-#include "TFile.h"
-#include "TCanvas.h"
-#include "TSystem.h"
-#include "TROOT.h"
-#include "TGraph.h"
-#include "TGraphErrors.h"
-#include "TGraphAsymmErrors.h"
-#include "TMultiGraph.h"
-#include "TCanvas.h"
-#include "TPad.h"
-#include "TLegend.h"
-#include "TLatex.h"
-#include "TLine.h"
-#include "TAxis.h"
+#include "RiceStyle.h"
 
 using namespace std;
 
@@ -70,6 +44,8 @@ void v2Graph(){
     double v2_pos_case2[5];
     double v2_neg_case2[5];
     double v2_tot_case2[5];
+    double v2_diff_case1[5];
+    double v2_diff_case2[5];
     double numerator;
     double denominator;
     double q0,q1,q2,q3;
@@ -124,6 +100,9 @@ void v2Graph(){
 	numerator = q0;
 	denominator = sqrt((q1*q2)/q3);
 	v2_neg_case2[i] = numerator/denominator;
+
+	v2_diff_case1[i] = v2_neg_case1[i] - v2_pos_case1[i];
+	v2_diff_case2[i] = v2_neg_case2[i] - v2_pos_case2[i];
     }
     TGraph *gr_pos_case1 = new TGraph(5,x,v2_pos_case1);
     TGraph *gr_neg_case1 = new TGraph(5,x,v2_neg_case1);
@@ -131,6 +110,11 @@ void v2Graph(){
     TGraph *gr_pos_case2 = new TGraph(5,x,v2_pos_case2);
     TGraph *gr_neg_case2 = new TGraph(5,x,v2_neg_case2);
     TGraph *gr_tot_case2 = new TGraph(5,x,v2_tot_case2);
+    
+    TGraph *gr_diff_case1 = new TGraph(5,x,v2_diff_case1);
+    TGraph *gr_diff_case2 = new TGraph(5,x,v2_diff_case2);
+
+    
 
     gr_pos_case1 -> SetName("positive tracks case1");
     gr_neg_case1 -> SetName("negative tracks case1");
@@ -139,6 +123,8 @@ void v2Graph(){
     gr_neg_case1 -> SetTitle("negative tracks case1");
     gr_tot_case1 -> SetTitle("total tracks case1");
 
+    gr_diff_case1 -> SetTitle("difference case1");
+
     gr_pos_case2 -> SetName("positive tracks case2");
     gr_neg_case2 -> SetName("negative tracks case2");
     gr_tot_case2 -> SetName("total tracks case2");
@@ -146,8 +132,13 @@ void v2Graph(){
     gr_neg_case2 -> SetTitle("negative tracks case2");
     gr_tot_case2 -> SetTitle("total tracks case2");
 
+    gr_diff_case2 -> SetTitle("difference case2");
+
+
     TCanvas* c1 = new TCanvas("c1","c1");
-     c1->Divide(3,2,0,0);
+    TCanvas* c2 = new TCanvas("c2","c2");
+    
+    c1->Divide(3,2,0,0);
     c1->cd(1);
     gr_pos_case1->Draw("AL*");
 
@@ -165,6 +156,18 @@ void v2Graph(){
 
     c1->cd(6);
     gr_tot_case2->Draw("AL*");
+
+    c2->Divide(2,1,0,0);
+    c2->cd(1);
+    gr_diff_case1->Draw("AL*");
+
+    c2->cd(2);
+    gr_diff_case2->Draw("AL*");
+
+    cout << "slope case1 : " << (v2_diff_case1[4]-v2_diff_case1[0])/(x[4]-x[0]) << endl;
+    cout << "slope case2 : " << (v2_diff_case2[4]-v2_diff_case2[0])/(x[4]-x[0]) << endl;
+	
+    
 
     
 }
