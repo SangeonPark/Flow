@@ -171,7 +171,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    }
 	}
 
-	if(pt < 0.3 || pt > 3.0 ) continue;
+	if(pt < 0.3 || pt > 0.8 ) continue;
 	if(2.4<=fabs(eta)) continue;
 
 	TComplex e(1,2*phi,1);
@@ -452,7 +452,7 @@ V2Analyzer::beginJob()
     asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
     NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
 
-    edm::FileInPath fip1("Flow/V2Analyzer/data/EPOS_eff.root");  
+    edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root");  
     TFile f1(fip1.fullPath().c_str(),"READ");
     effTable = (TH2D*)f1.Get("recoHist");
 

@@ -30,7 +30,7 @@ using namespace std;
 
 void v2Graph(){
 
-    TFile *f = new TFile("../../../rootfiles/v2pPb_notcrab.root");
+    TFile *f = new TFile("../../../rootfiles/PbPbcrabData.root");
     TH1D* c2_pos_case1[5][5][2];
     TH1D* c2_neg_case1[5][5][2];
     TH1D* c2_tot_case1[5][5][2];
