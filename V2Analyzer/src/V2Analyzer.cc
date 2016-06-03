@@ -454,7 +454,7 @@ V2Analyzer::beginJob()
 
     edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root");  
     TFile f1(fip1.fullPath().c_str(),"READ");
-    effTable = (TH2D*)f1.Get("recoHist");
+    effTable = (TH2D*)f1.Get("rTotalEff3D");
 
     //list of c2 histograms
     for (Int_t i = 0; i < 5; i++){
