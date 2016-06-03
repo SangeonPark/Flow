@@ -139,7 +139,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	double pt = cand->pt();
 	double phi = cand->phi();
 
-	double weight = 1000.0;
+	double weight = 1.0;
 
 	if( doEffCorrection_ ){
 	    weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
