@@ -171,7 +171,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	    }
 	}
 
-	if(pt < 0.3 || pt > 0.8 ) continue;
+	if(pt < 0.3 || pt > 3.0 ) continue;
 	if(2.4<=fabs(eta)) continue;
 
 	TComplex e(1,2*phi,1);
