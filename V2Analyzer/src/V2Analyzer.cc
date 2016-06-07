@@ -240,7 +240,7 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	const CaloTower & hit = (*towers)[i];
 
 	double caloEta = hit.eta();
-	double caloPhi = hit.phi();.
+	double caloPhi = hit.phi();
 	if(reverseBeam_) { caloEta *= -1.0;}
 
 

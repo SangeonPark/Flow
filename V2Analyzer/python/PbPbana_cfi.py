@@ -14,6 +14,7 @@ demo = cms.EDAnalyzer('V2Analyzer',
                       etaHFUpp = cms.double(5.0),
                       NTrkMin = cms.int32(220),
                       NTrkMax = cms.int32(1000000),
-                      doEffCorrection = cms.bool(True)
+                      doEffCorrection = cms.bool(True),
+                      reverseBeam = cms.bool(False)
                       
 )
