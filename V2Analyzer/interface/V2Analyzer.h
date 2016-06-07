@@ -334,6 +334,7 @@ class V2Analyzer : public edm::EDAnalyzer {
       int NTrkMin_;
       int NTrkMax_;
       bool doEffCorrection_;
+      bool reverseBeam_;
 
       
     

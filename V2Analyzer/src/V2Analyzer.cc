@@ -53,6 +53,7 @@ V2Analyzer::V2Analyzer(const edm::ParameterSet& iConfig)
     towerSrc_ = iConfig.getParameter<edm::InputTag>("towerSrc");
     
     doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
+    reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
     
 
     
@@ -173,6 +174,8 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	if(pt < 0.3 || pt > 3.0 ) continue;
 	if(2.4<=fabs(eta)) continue;
+ 	if(reverseBeam_) { eta *= -1.0;}
+
 
 	TComplex e(1,2*phi,1);
 
@@ -237,7 +240,9 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	const CaloTower & hit = (*towers)[i];
 
 	double caloEta = hit.eta();
-	double caloPhi = hit.phi();
+	double caloPhi = hit.phi();.
+	if(reverseBeam_) { caloEta *= -1.0;}
+
 
 	TComplex e(1,2*caloPhi,1);
 
