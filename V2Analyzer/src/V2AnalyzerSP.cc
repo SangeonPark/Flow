@@ -94,10 +94,6 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
- 	int N_Q2 = 0;
- 	int N_Q2_pos = 0;
- 	int N_Q2_neg = 0;
-
 
  	double W_Q2C = 0.0;
  	double W_Q2pluseta_pos = 0.0;
