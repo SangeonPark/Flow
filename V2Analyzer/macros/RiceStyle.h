@@ -412,7 +412,7 @@ TGraphAsymmErrors* makeEfficiency(TH1D* hist1, TH1D* hist2, const char*Draw = "c
 TLatex* makeLatex(const char* txt,  double x, double y){
 
 	TLatex* r = new TLatex(x, y, txt);
-	r->SetTextSize(0.05);
+	r->SetTextSize(0.04);
 	r->SetNDC();
 	return r;
 

@@ -19,7 +19,7 @@
 
 
 // system include files
-#include "Flow/V2Analyzer/interface/V2Analyzer.h"
+#include "Flow/V2Analyzer/interface/V2AnalyzerBase.h"
 
 //
 // constants, enums and typedefs
@@ -376,14 +376,14 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     z = Q2B * TComplex::Conjugate(Q2_pos);
 	     Npairs = N_Q2B * W_Q2_pos;
 	     z /= Npairs;
-	     c2_pos_case2[i][1][0]->Fill(z.Re(),Npairs);
-	     c2_pos_case2[i][1][1]->Fill(z.Im(),Npairs);
+	     c2_pos_case2[i][2][0]->Fill(z.Re(),Npairs);
+	     c2_pos_case2[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2B * TComplex::Conjugate(Q2A);
 	     Npairs = N_Q2B * N_Q2A;
 	     z /= Npairs;
-	     c2_pos_case2[i][2][0]->Fill(z.Re(),Npairs);
-	     c2_pos_case2[i][2][1]->Fill(z.Im(),Npairs);
+	     c2_pos_case2[i][1][0]->Fill(z.Re(),Npairs);
+	     c2_pos_case2[i][1][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2_pos * TComplex::Conjugate(Q2A);
 	     Npairs = W_Q2_pos * N_Q2A;
@@ -401,14 +401,14 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     z = Q2B * TComplex::Conjugate(Q2);
 	     Npairs = N_Q2B * W_Q2;
 	     z /= Npairs;
-	     c2_tot_case2[i][1][0]->Fill(z.Re(),Npairs);
-	     c2_tot_case2[i][1][1]->Fill(z.Im(),Npairs);
+	     c2_tot_case2[i][2][0]->Fill(z.Re(),Npairs);
+	     c2_tot_case2[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2B * TComplex::Conjugate(Q2A);
 	     Npairs = N_Q2B * N_Q2A;
 	     z /= Npairs;
-	     c2_tot_case2[i][2][0]->Fill(z.Re(),Npairs);
-	     c2_tot_case2[i][2][1]->Fill(z.Im(),Npairs);
+	     c2_tot_case2[i][1][0]->Fill(z.Re(),Npairs);
+	     c2_tot_case2[i][1][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2 * TComplex::Conjugate(Q2A);
 	     Npairs = W_Q2 * N_Q2A;
@@ -426,14 +426,14 @@ V2Analyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	     z = Q2B * TComplex::Conjugate(Q2_neg);
 	     Npairs = N_Q2B * W_Q2_neg;
 	     z /= Npairs;
-	     c2_neg_case2[i][1][0]->Fill(z.Re(),Npairs);
-	     c2_neg_case2[i][1][1]->Fill(z.Im(),Npairs);
+	     c2_neg_case2[i][2][0]->Fill(z.Re(),Npairs);
+	     c2_neg_case2[i][2][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2B * TComplex::Conjugate(Q2A);
 	     Npairs = N_Q2B * N_Q2A;
 	     z /= Npairs;
-	     c2_neg_case2[i][2][0]->Fill(z.Re(),Npairs);
-	     c2_neg_case2[i][2][1]->Fill(z.Im(),Npairs);
+	     c2_neg_case2[i][1][0]->Fill(z.Re(),Npairs);
+	     c2_neg_case2[i][1][1]->Fill(z.Im(),Npairs);
 
 	     z = Q2_neg * TComplex::Conjugate(Q2A);
 	     Npairs = W_Q2_neg * N_Q2A;
