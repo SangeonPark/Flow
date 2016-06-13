@@ -198,7 +198,6 @@ Implementation:
  			TComplex z(0,0);
  			TComplex zSum(0,0);
  			double Npairs=0.0;
- 			double pairSum=0.0; 
 
  			for (int j = 0; j < 12; j++)
  			{
