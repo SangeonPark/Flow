@@ -394,7 +394,7 @@ class V2AnalyzerCumulant : public edm::EDAnalyzer {
 
 
    private:
-      virtual void beginJob() ;ssh
+      virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
       virtual void endJob() ;
 
