@@ -241,14 +241,12 @@ Implementation:
 
 //list of c2 histograms
  	for (Int_t i = 0; i < 5; i++){
- 		for(Int_t j = 0 ; j < 4; j++){
 
- 			c2_pos[i][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
- 			c2_pos[i][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
- 			c2_neg[i][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
- 			c2_neg[i][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case1",i,j),"c2 Distribution",1000,-1,1);
+ 		c2_pos[i][0] = fs->make<TH1D>(Form("c2pos_%d_cos",i),"c2 Distribution",1000,-1,1);
+ 		c2_pos[i][1] = fs->make<TH1D>(Form("c2pos_%d_sin",i),"c2 Distribution",1000,-1,1);
+ 		c2_neg[i][0] = fs->make<TH1D>(Form("c2neg_%d_cos",i),"c2 Distribution",1000,-1,1);
+ 		c2_neg[i][1] = fs->make<TH1D>(Form("c2neg_%d_sin",i),"c2 Distribution",1000,-1,1);
 
- 		}
  	}
 
  	ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,-0.4,0.4);
