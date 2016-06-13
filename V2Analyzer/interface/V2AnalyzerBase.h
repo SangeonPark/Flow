@@ -376,6 +376,57 @@ class V2AnalyzerSP : public edm::EDAnalyzer {
       TH1D* c2_pos_case2[5][4][2];
       TH1D* c2_neg_case2[5][4][2];
       TH1D* c2_tot_case2[5][4][2];
+
+      TH1D* ach_hist[5];
+      
+      edm::InputTag trackSrc_;
+      std::string vertexSrc_;
+      edm::InputTag towerSrc_;
+
+};
+
+class V2AnalyzerCumulant : public edm::EDAnalyzer {
+   public:
+      explicit V2AnalyzerCumulant(const edm::ParameterSet&);
+      ~V2AnalyzerCumulant();
+
+      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+
+
+   private:
+      virtual void beginJob() ;
+      virtual void analyze(const edm::Event&, const edm::EventSetup&);
+      virtual void endJob() ;
+
+      virtual void beginRun(edm::Run const&, edm::EventSetup const&);
+      virtual void endRun(edm::Run const&, edm::EventSetup const&);
+      virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+      virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+
+      // ----------member data ---------------------------
+
+      TNtuple* track_Data;
+      TH1D* asym_Dist;
+      TH1D* NTrkHist;
+      TH2D* effTable;
+      
+      double dxySigCut_;
+      double dzSigCut_;
+      double etaCutMin_;
+      double etaCutMax_;
+      double etaHFLow_;
+      double etaHFUpp_;
+      int NTrkMin_;
+      int NTrkMax_;
+      bool doEffCorrection_;
+      bool reverseBeam_;      
+
+      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
+
+      TH1D* c2_pos[5][2];
+      TH1D* c2_neg[5][2];
+
+
       TH1D* ach_hist[5];
       
       edm::InputTag trackSrc_;

@@ -192,8 +192,8 @@ Implementation:
 
  			}
  		}
-  		if(-2.4 <= eta && eta < -1.0){
-  			N_tot += weight;
+ 		if(-2.4 <= eta && eta < -1.0){
+ 			N_tot += weight;
  			if(charge > 0.0){
  				N_pos+=weight;
  				Q2minuseta_pos += e;
