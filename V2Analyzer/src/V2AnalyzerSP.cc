@@ -228,6 +228,8 @@ Implementation:
 
  		TComplex e(1,2*caloPhi,1);
 
+ 		e*=w;
+
 
  		if( -etaHFUpp_ <= caloEta && caloEta < -etaHFLow_ ){
  			W_Q2A+=w;
