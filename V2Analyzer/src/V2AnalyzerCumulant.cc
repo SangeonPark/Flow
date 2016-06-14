@@ -165,7 +165,7 @@ Implementation:
  		{
  			double lb = 0.4*i-2.4;
  			double ub = 0.4*i-2.0;
- 			if(lb <= eta && eta<=ub){
+ 			if(lb <= eta && eta < ub){
  				if(charge > 0){
  					Q2_pos[i] += e; 
  					WQ2_pos[i] += weight;
@@ -180,7 +180,9 @@ Implementation:
  				
  			}
  		}
+ 		
  	}
+
 
  	if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
 
