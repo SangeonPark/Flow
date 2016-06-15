@@ -4,7 +4,7 @@ using namespace std;
 
 void SPGraph(){
 
-	TFile *f = new TFile("../../../rootfiles/SPmethodpPb.root");
+	TFile *f = new TFile("../../../rootfiles/SPpPbMerged.root");
 	TH1D* c2_pos_case1[5][4][2];
 	TH1D* c2_neg_case1[5][4][2];
 	TH1D* c2_tot_case1[5][4][2];
@@ -55,11 +55,7 @@ void SPGraph(){
 
 	double v2_pos[5];
 	double v2_neg[5];
-
 	double v2_diff[5];
-
-
-
 	double numerator;
 	double denominator;
 	double q0,q1,q2,q3;
@@ -105,7 +101,7 @@ void SPGraph(){
 	TGraph *gr_diff = new TGraph(5,x,v2_diff);
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.02,0.15);
+	base->GetYaxis()->SetRangeUser(0.06,0.08);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{2}");
 	base->SetStats(0);

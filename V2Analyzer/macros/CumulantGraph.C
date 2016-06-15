@@ -4,7 +4,7 @@ using namespace std;
 
 void CumulantGraph(){
 
-	TFile *f = new TFile("../../../rootfiles/CumulantMethodpPb.root");
+	TFile *f = new TFile("../../../rootfiles/CumulantpPbMerged.root");
 	TH1D* c2_pos[5][2];
 	TH1D* c2_neg[5][2];
 
@@ -58,7 +58,7 @@ void CumulantGraph(){
 	TGraph *gr_diff = new TGraph(5,x,v2_diff);
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.06,0.09);
+	base->GetYaxis()->SetRangeUser(0.06,0.08);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{2}");
 	base->SetStats(0);
