@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    V2AnalyzerSP
-// Class:      V2AnalyzerSP
+// Package:    V3AnalyzerSP
+// Class:      V3AnalyzerSP
 // 
-/**\class V2AnalyzerSP V2AnalyzerSP.cc Flow/V2AnalyzerSP/src/V2AnalyzerSP.cc
+/**\class V3AnalyzerSP V3AnalyzerSP.cc Flow/V2Analyzer/src/V3AnalyzerSP.cc
 
 Description: [one line class summary]
 
@@ -32,7 +32,7 @@ Implementation:
 //
 // constructors and destructor
 //
- V2AnalyzerSP::V2AnalyzerSP(const edm::ParameterSet& iConfig)
+ V3AnalyzerSP::V3AnalyzerSP(const edm::ParameterSet& iConfig)
  {
 
  	dxySigCut_ = iConfig.getParameter<double>("dxySigCut");
@@ -57,7 +57,7 @@ Implementation:
  }
 
 
- V2AnalyzerSP::~V2AnalyzerSP()
+ V3AnalyzerSP::~V3AnalyzerSP()
  {
 
 // do anything here that needs to be done at desctruction time
@@ -71,7 +71,7 @@ Implementation:
 //
 
 // ------------ method called for each event  ------------
- void V2AnalyzerSP::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+ void V3AnalyzerSP::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  {
  	using namespace edm;
  	using namespace std;
@@ -368,7 +368,7 @@ Implementation:
 
 
 // ------------ method called once each job just before starting event loop  ------------
- void V2AnalyzerSP::beginJob()    
+ void V3AnalyzerSP::beginJob()    
  {
  	edm::Service<TFileService> fs;
  	TH1D::SetDefaultSumw2();
@@ -405,37 +405,37 @@ Implementation:
 
 // ------------ method called once each job just after ending the event loop  ------------
  void
- V2AnalyzerSP::endJob() 
+ V3AnalyzerSP::endJob() 
  {    
  }
 
 // ------------ method called when starting to processes a run  ------------
  void 
- V2AnalyzerSP::beginRun(edm::Run const&, edm::EventSetup const&)
+ V3AnalyzerSP::beginRun(edm::Run const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when ending the processing of a run  ------------
  void 
- V2AnalyzerSP::endRun(edm::Run const&, edm::EventSetup const&)
+ V3AnalyzerSP::endRun(edm::Run const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when starting to processes a luminosity block  ------------
  void 
- V2AnalyzerSP::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+ V3AnalyzerSP::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
  void 
- V2AnalyzerSP::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+ V3AnalyzerSP::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
  void
- V2AnalyzerSP::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+ V3AnalyzerSP::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 //The following says we do not know what parameters are allowed so do no validation
 // Please change this to state exactly what you do use, even if it is no parameters
  	edm::ParameterSetDescription desc;
@@ -444,4 +444,4 @@ Implementation:
  }
 
 //define this as a plug-in
- DEFINE_FWK_MODULE(V2AnalyzerSP);
+ DEFINE_FWK_MODULE(V3AnalyzerSP);
