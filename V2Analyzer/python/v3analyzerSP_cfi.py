@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
-demo = cms.EDAnalyzer('V2AnalyzerSP',
+demo = cms.EDAnalyzer('V3AnalyzerSP',
                       vertexSrc = cms.string('offlinePrimaryVertices'),
                       trackSrc = cms.InputTag('generalTracks'),
                       towerSrc = cms.InputTag('towerMaker'),
