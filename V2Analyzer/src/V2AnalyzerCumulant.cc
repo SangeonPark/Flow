@@ -45,8 +45,7 @@ Implementation:
  	NTrkMin_ = iConfig.getParameter<int>("NTrkMin");
  	NTrkMax_ = iConfig.getParameter<int>("NTrkMax");
  	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
- 	const int NBins = NEtaBins_;
- 	double Binsize = 4.8/(double)NBins;
+ 	
 
  	trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
  	vertexSrc_ = iConfig.getParameter<std::string>("vertexSrc");
@@ -106,6 +105,9 @@ Implementation:
  	int nTracks_neg = 0;
 
 //define the flow vectors and weight
+
+ 	const int NBins = NEtaBins_;
+ 	double Binsize = 4.8/(double)NBins;
 
  	TComplex Q2_pos[NBins];
  	TComplex Q2_neg[NBins];
