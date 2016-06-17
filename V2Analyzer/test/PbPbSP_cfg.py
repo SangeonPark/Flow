@@ -27,15 +27,12 @@ process.source = cms.Source("PoolSource",
 	#'root://xrootd-cms.infn.it//store/user/davidlw/PAHighPt/PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Rereco_ReTracking_v18/28b2b9cce04ec3f20baeb96fbd2295a8/pPb_HM_1001_1_Ab9.root',
 	#'root://xrootd-cms.infn.it//store/user/davidlw/PAHighPt/PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Rereco_ReTracking_v18/28b2b9cce04ec3f20baeb96fbd2295a8/pPb_HM_1002_1_mXl.root'
 
-
-
-
     )
 )
 
 #loads analyzer
-process.load("Flow.V2Analyzer.PbPbSP_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPbSP185260.root"))
+process.load("Flow.V2Analyzer.v3analyzerSP_cfi")
+process.TFileService = cms.Service("TFileService",fileName = cms.string("v3_ScalarProduct_185_260_PbPb.root"))
 
 
 process.p = cms.Path(process.demo)

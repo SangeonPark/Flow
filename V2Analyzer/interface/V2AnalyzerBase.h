@@ -418,6 +418,7 @@ class V2AnalyzerCumulant : public edm::EDAnalyzer {
       double etaHFUpp_;
       int NTrkMin_;
       int NTrkMax_;
+      int NEtaBins_;
       bool doEffCorrection_;
       bool reverseBeam_;      
 

@@ -44,6 +44,9 @@ Implementation:
 
  	NTrkMin_ = iConfig.getParameter<int>("NTrkMin");
  	NTrkMax_ = iConfig.getParameter<int>("NTrkMax");
+ 	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
+ 	const int NBins = NEtaBins_;
+ 	double Binsize = 4.8/(double)NBins;
 
  	trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
  	vertexSrc_ = iConfig.getParameter<std::string>("vertexSrc");
@@ -51,6 +54,7 @@ Implementation:
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
+
 
 //now do what ever initialization is needed
 
@@ -103,11 +107,11 @@ Implementation:
 
 //define the flow vectors and weight
 
- 	TComplex Q2_pos[12];
- 	TComplex Q2_neg[12];
+ 	TComplex Q2_pos[NBins];
+ 	TComplex Q2_neg[NBins];
  	
- 	double WQ2_pos[12];
- 	double WQ2_neg[12];
+ 	double WQ2_pos[NBins];
+ 	double WQ2_neg[NBins];
 
 
 
@@ -161,10 +165,10 @@ Implementation:
  		if( charge > 0){ N_pos+= weight;}
  		if( charge < 0){ N_neg+= weight;}
 
- 		for (int i = 0; i < 12; ++i)
+ 		for (int i = 0; i < NBins; ++i)
  		{
- 			double lb = 0.4*i-2.4;
- 			double ub = 0.4*i-2.0;
+ 			double lb = Binsize*i-2.4;
+ 			double ub = Binsize*(i+1)-2.4;
  			if(lb <= eta && eta < ub){
  				if(charge > 0){
  					Q2_pos[i] += e; 
@@ -201,11 +205,11 @@ Implementation:
  			TComplex zSum(0,0);
  			double Npairs=0.0;
 
- 			for (int j = 0; j < 12; j++)
+ 			for (int j = 0; j < NBins; j++)
  			{
- 				for(int k = 0; k < 12; k++){
+ 				for(int k = 0; k < NBins; k++){
 
- 					if(abs(j-k)<=5) continue;
+ 					if(abs(j-k) <= (2.0/Binsize)) continue;
 
  					z = Q2_pos[j] * TComplex::Conjugate(Q2_pos[k]);
  					Npairs = WQ2_pos[j] * WQ2_pos[k];
