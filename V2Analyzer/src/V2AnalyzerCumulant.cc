@@ -212,9 +212,15 @@ Implementation:
 
  					if(abs(j-k) <= (2.0/Binsize)) continue;
 
+ 					cout << "j: " << j << " k: " << k << endl; 
+
  					z = Q2_pos[j] * TComplex::Conjugate(Q2_pos[k]);
  					Npairs = WQ2_pos[j] * WQ2_pos[k];
  					z /= Npairs;
+
+ 					cout << "Real: " << z.Re() << " Im: " << z.Im() << endl;
+
+
  					c2_pos[i][0] -> Fill(z.Re(), Npairs);
  					c2_pos[i][1] -> Fill(z.Im(), Npairs);
 
