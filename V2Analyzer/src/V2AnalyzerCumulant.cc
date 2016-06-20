@@ -204,7 +204,6 @@ Implementation:
  			ach_hist[i]->Fill(ach);
 
  			TComplex z(0,0);
- 			TComplex zSum(0,0);
  			double Npairs=0.0;
 
  			for (int j = 0; j < NBins; j++)
@@ -229,7 +228,6 @@ Implementation:
  			} 			
  		}
  	}
-
  }
 
 
