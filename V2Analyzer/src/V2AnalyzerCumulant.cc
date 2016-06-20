@@ -111,10 +111,19 @@ Implementation:
 
  	TComplex Q2_pos[NBins];
  	TComplex Q2_neg[NBins];
-
-
  	double WQ2_pos[NBins];
  	double WQ2_neg[NBins];
+
+ 	for (int i = 0; i < NBins; ++i)
+ 	{
+ 		Q2_pos[i].Re() = 0; 
+ 		Q2_pos[i].Im() = 0;
+ 		Q2_neg[i].Re() = 0;
+ 		Q2_neg[i].Im() = 0;
+ 		WQ2_pos[i] = 0.0;
+ 		WQ2_neg[i] = 0.0;
+
+ 	}
 
  	cout << Q2_pos[0].Re() << WQ2_pos[0] << WQ2_neg[0] << endl; 
 
