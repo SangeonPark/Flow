@@ -109,11 +109,11 @@ Implementation:
  	const int NBins = NEtaBins_;
  	double Binsize = 4.8/(double)NBins;
 
- 	TComplex Q2_pos[NBins];
- 	TComplex Q2_neg[NBins];
+ 	TComplex Q2_pos[NBins]={0,0};
+ 	TComplex Q2_neg[NBins]={0,0};
  	
- 	double WQ2_pos[NBins];
- 	double WQ2_neg[NBins];
+ 	double WQ2_pos[NBins]={0.0};
+ 	double WQ2_neg[NBins]={0.0};
 
 
 
