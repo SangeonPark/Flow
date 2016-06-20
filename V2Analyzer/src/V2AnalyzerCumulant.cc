@@ -123,7 +123,6 @@ Implementation:
 
  	}
 
- 	cout << Q2_pos[0].Re() << WQ2_pos[0] << WQ2_neg[0] << endl; 
 
 
 
