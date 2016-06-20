@@ -109,11 +109,13 @@ Implementation:
  	const int NBins = NEtaBins_;
  	double Binsize = 4.8/(double)NBins;
 
- 	TComplex Q2_pos[NBins]={0,0};
- 	TComplex Q2_neg[NBins]={0,0};
+ 	TComplex Q2_pos[NBins];
+ 	TComplex Q2_neg[NBins];
+
+ 	cout << Q2_pos[0].Re() << endl;
  	
- 	double WQ2_pos[NBins]={0.0};
- 	double WQ2_neg[NBins]={0.0};
+ 	double WQ2_pos[NBins];
+ 	double WQ2_neg[NBins];
 
 
 
@@ -212,13 +214,11 @@ Implementation:
 
  					if(abs(j-k) <= (2.0/Binsize)) continue;
 
- 					cout << "j: " << j << " k: " << k << endl; 
 
  					z = Q2_pos[j] * TComplex::Conjugate(Q2_pos[k]);
  					Npairs = WQ2_pos[j] * WQ2_pos[k];
  					z /= Npairs;
 
- 					cout << "Real: " << z.Re() << " Im: " << z.Im() << endl;
 
 
  					c2_pos[i][0] -> Fill(z.Re(), Npairs);
