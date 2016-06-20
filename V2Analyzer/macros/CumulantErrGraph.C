@@ -24,7 +24,7 @@ void CumulantErrGraph(){
 
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/PbPbCumulanterrcalc/leaveout%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/errcalc_v3_PbPb_Cumulant/leaveout%d.root",n+1));
 
 
 		for (Int_t i = 0; i < 5; i++){
@@ -53,7 +53,7 @@ void CumulantErrGraph(){
 
 	}
 	
-	f = new TFile("../../../rootfiles/PbPbCumulantMerged.root");
+	f = new TFile("../../../rootfiles/v3_Cumulant_PbPb_Merged.root");
 
 
 
@@ -105,9 +105,9 @@ void CumulantErrGraph(){
 	}	
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.095,0.105);
+	base->GetYaxis()->SetRangeUser(0.0,0.05);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
-	base->GetYaxis()->SetTitle("v_{2}");
+	base->GetYaxis()->SetTitle("v_{3}");
 
 	TGraphErrors *gr_pos = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
@@ -129,13 +129,13 @@ void CumulantErrGraph(){
 
 	base->GetYaxis()->SetTitleOffset(1.4);
 	base->GetXaxis()->SetTitleOffset(1.1);
-	base->GetYaxis()->SetNdivisions(510); 
+	base->GetYaxis()->SetNdivisions(505); 
 	base->GetXaxis()->SetNdivisions(505); 
 	base->SetStats(0);
 	gStyle->SetOptTitle(0);
 
 	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=2.76TeV",0.15,0.82) ;
-	TLatex* text_b = makeLatex("N_{trk}^{offline} [220, #infty)",0.15,0.74) ;
+	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
 	TLatex* text_d = makeLatex("Cumulant Method",0.15,0.58) ;
 
@@ -172,7 +172,7 @@ void CumulantErrGraph(){
 	gr_diff->GetYaxis()->SetRangeUser(-0.004,0.004);
 	gr_diff->GetXaxis()->SetLimits(-0.1,0.1);
 	gr_diff->GetXaxis()->SetTitle("A_{ch}");
-	gr_diff->GetYaxis()->SetTitle("v_{2}(-) - v_{2}(+)");
+	gr_diff->GetYaxis()->SetTitle("v_{3}(-) - v_{3}(+)");
 	gr_diff->GetYaxis()->SetTitleOffset(1.1);
 	gr_diff->GetXaxis()->SetTitleOffset(1.1);
 	gr_diff->GetYaxis()->SetNdivisions(505); 
