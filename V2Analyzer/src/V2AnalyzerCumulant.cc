@@ -116,10 +116,8 @@ Implementation:
 
  	for (int i = 0; i < NBins; ++i)
  	{
- 		Q2_pos[i].Re() = 0; 
- 		Q2_pos[i].Im() = 0;
- 		Q2_neg[i].Re() = 0;
- 		Q2_neg[i].Im() = 0;
+ 		Q2_pos[i](0,0); 
+ 		Q2_neg[i](0,0);
  		WQ2_pos[i] = 0.0;
  		WQ2_neg[i] = 0.0;
 
