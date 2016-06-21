@@ -269,6 +269,7 @@ private:
       TH1D* asym_Dist;
       TH1D* NTrkHist;
       TH2D* effTable;
+      TH1D* cbinHist;
       
       double dxySigCut_;
       double dzSigCut_;
