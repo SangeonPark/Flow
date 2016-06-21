@@ -1,5 +1,17 @@
 import FWCore.ParameterSet.Config as cms
 
+import HLTrigger.HLTfilters.hltHighLevel_cfi
+hltHM = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
+hltHM.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
+                  'HLT_PAPixelTracks_Multiplicity130_v*',
+                  'HLT_PAPixelTracks_Multiplicity160_v*'
+                  #'HLT_PAPixelTracks_Multiplicity190_v*'
+                  #'HLT_PAPixelTracks_Multiplicity220_v*'
+]
+
+hltHM.andOr = cms.bool(True)
+hltHM.throw = cms.bool(False)
+
 demo = cms.EDAnalyzer('V3AnalyzerSP',
                       vertexSrc = cms.string('offlinePrimaryVertices'),
                       trackSrc = cms.InputTag('generalTracks'),
