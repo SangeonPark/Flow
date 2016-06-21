@@ -106,8 +106,6 @@
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMapRecord.h"
 #include "DataFormats/L1GlobalTrigger/interface/L1GlobalTriggerObjectMap.h"
 
-#include "L1Trigger/GlobalTrigger/interface/L1GlobalTrigger.h"
-
 #include "DataFormats/Math/interface/Point3D.h"
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
