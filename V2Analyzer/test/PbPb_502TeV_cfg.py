@@ -53,7 +53,7 @@ process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 process.demo.useCentrality = True
 process.demo.doEffCorrection = True
 
-process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_centrality.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_Cumulant_centralitycut.root"))
 process.p = cms.Path(  process.hfCoincFilter *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *

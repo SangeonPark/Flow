@@ -8,7 +8,7 @@ process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 
 ntrkRange = [60,80,100,120,140]
 
-outputName = "multicrab_v2vsAch_PbPb_Cumulant_502TeV"
+outputName = "multicrab_502TeV_v2vsAch_PbPb_Cumulant"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -40,12 +40,12 @@ if __name__ == '__main__':
       except ClientException as cle:
           print "Failed submitting task: %s" % (cle)
    
-   for num in range(0,5):
+   for num in range(0,4):
 		
 	print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])
       		
-	process.ana.Nmin = ntrkRange[num]
-	process.ana.Nmax = ntrkRange[num+1]
+	process.demo.Nmin = ntrkRange[num]
+	process.demo.Nmax = ntrkRange[num+1]
        	RequestName = outputName + "_" + str(num)
        	DataSetName = '/HIMinimumBias5/HIRun2015-02May2016-v1/AOD'
        	config.General.requestName = RequestName
