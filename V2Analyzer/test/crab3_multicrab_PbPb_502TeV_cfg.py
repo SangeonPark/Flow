@@ -8,7 +8,7 @@ process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 
 ntrkRange = [60,80,100,120,140,160,180]
 
-outputName = "multicrab_502TeV_v2vsAch_PbPb_Cumulant_right"
+outputName = "multicrab_502TeV_v2vsAch_PbPb_Cumulant_fixed"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -22,7 +22,7 @@ config.Data.unitsPerJob = 15
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 config.Data.publication = False
 config.Data.outputDatasetTag = outputName
-
+config.Data.allowNonValidInputDataset = True
 config.Site.storageSite = 'T3_US_Rice'
 
 if __name__ == '__main__':
