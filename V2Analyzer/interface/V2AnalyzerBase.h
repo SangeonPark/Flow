@@ -282,14 +282,14 @@
 //
 
 class V2Analyzer : public edm::EDAnalyzer {
-   public:
+public:
       explicit V2Analyzer(const edm::ParameterSet&);
       ~V2Analyzer();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
-   private:
+private:
       virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
       virtual void endJob() ;
@@ -333,14 +333,14 @@ class V2Analyzer : public edm::EDAnalyzer {
 };
 
 class V2AnalyzerSP : public edm::EDAnalyzer {
-   public:
+public:
       explicit V2AnalyzerSP(const edm::ParameterSet&);
       ~V2AnalyzerSP();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
-   private:
+private:
       virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
       virtual void endJob() ;
@@ -386,14 +386,14 @@ class V2AnalyzerSP : public edm::EDAnalyzer {
 };
 
 class V2AnalyzerCumulant : public edm::EDAnalyzer {
-   public:
+public:
       explicit V2AnalyzerCumulant(const edm::ParameterSet&);
       ~V2AnalyzerCumulant();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
-   private:
+private:
       virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
       virtual void endJob() ;
@@ -437,14 +437,14 @@ class V2AnalyzerCumulant : public edm::EDAnalyzer {
 };
 
 class V3AnalyzerSP : public edm::EDAnalyzer {
-   public:
+public:
       explicit V3AnalyzerSP(const edm::ParameterSet&);
       ~V3AnalyzerSP();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
-   private:
+private:
       virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
       virtual void endJob() ;
@@ -490,14 +490,14 @@ class V3AnalyzerSP : public edm::EDAnalyzer {
 };
 
 class V3AnalyzerCumulant : public edm::EDAnalyzer {
-   public:
+public:
       explicit V3AnalyzerCumulant(const edm::ParameterSet&);
       ~V3AnalyzerCumulant();
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
 
-   private:
+private:
       virtual void beginJob() ;
       virtual void analyze(const edm::Event&, const edm::EventSetup&);
       virtual void endJob() ;
@@ -522,6 +522,8 @@ class V3AnalyzerCumulant : public edm::EDAnalyzer {
       double etaHFUpp_;
       int NTrkMin_;
       int NTrkMax_;
+      int NEtaBins_;
+
       bool doEffCorrection_;
       bool reverseBeam_;      
 
