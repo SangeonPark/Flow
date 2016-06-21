@@ -276,11 +276,14 @@ private:
       double etaCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
-      int NTrkMin_;
-      int NTrkMax_;
+      int Nmin_;
+      int Nmax_;
       int NEtaBins_;
       bool doEffCorrection_;
-      bool reverseBeam_;      
+      bool reverseBeam_;
+      bool useCentrality_;
+
+      std::vector<double> centBins_;      
 
       double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
 

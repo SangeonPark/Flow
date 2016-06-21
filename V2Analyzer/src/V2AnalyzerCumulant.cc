@@ -44,8 +44,6 @@ Implementation:
 
  	Nmin_ = iConfig.getParameter<int>("Nmin");
  	Nmax_ = iConfig.getParameter<int>("Nmax");
- 	CentMin_ = iConfig.getParameter<int>("CentMin");
- 	CentMax_ = iConfig.getParameter<int>("CentMax");
  	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
  	
 
