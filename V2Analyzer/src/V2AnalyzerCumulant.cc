@@ -247,6 +247,7 @@ Implementation:
  	double ach = N_diff/N_tot;
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
+ 	cout << nTracks << endl; 
 
  	for(Int_t i=0;i<5;i++){
 
