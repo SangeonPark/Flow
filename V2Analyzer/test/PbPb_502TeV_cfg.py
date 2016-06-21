@@ -46,16 +46,14 @@ process.source = cms.Source("PoolSource",
 process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 
 #define the cuts
-#process.ana.Nmin = 185
-#process.ana.Nmax = 260
+#process.demo.Nmin = 185
+#process.demo.Nmax = 260
 
-#process.ana.eff = 1
-#process.ana.useCentrality = True
-
-
+#process.demo.eff = 1
+process.demo.useCentrality = True
 process.demo.doEffCorrection = True
 
-process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_centrality.root"))
 process.p = cms.Path(  process.hfCoincFilter *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
