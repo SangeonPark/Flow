@@ -8,7 +8,7 @@ process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 
 ntrkRange = [60,80,100,120,140,160,180]
 
-outputName = "multicrab_502TeV_v2vsAch_PbPb_Cumulant"
+outputName = "multicrab_502TeV_v2vsAch_PbPb_Cumulant_right"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -42,12 +42,11 @@ if __name__ == '__main__':
    
    for num in range(0,6):
 		
-	print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])
-      		
-	process.demo.Nmin = ntrkRange[num]
-	process.demo.Nmax = ntrkRange[num+1]
-       	RequestName = outputName + "_" + str(num)
-       	DataSetName = '/HIMinimumBias5/HIRun2015-02May2016-v1/AOD'
-       	config.General.requestName = RequestName
-       	config.Data.inputDataset = DataSetName
-submit(config)
+	 print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])      		
+	 process.demo.Nmin = ntrkRange[num]
+ 	 process.demo.Nmax = ntrkRange[num+1]
+     RequestName = outputName + "_" + str(num)
+     DataSetName = '/HIMinimumBias5/HIRun2015-02May2016-v1/AOD'
+     config.General.requestName = RequestName
+     config.Data.inputDataset = DataSetName
+     submit(config)
