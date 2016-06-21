@@ -293,8 +293,8 @@ Implementation:
  	edm::Service<TFileService> fs;
  	TH1D::SetDefaultSumw2();
 
- 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
- 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+ 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
+ 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
 
 
