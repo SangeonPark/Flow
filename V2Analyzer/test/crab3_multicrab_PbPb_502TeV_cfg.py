@@ -40,11 +40,10 @@ if __name__ == '__main__':
       except ClientException as cle:
           print "Failed submitting task: %s" % (cle)
    
-   for num in range(0,6):
-		
-	 print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])      		
-	 process.demo.Nmin = ntrkRange[num]
- 	 process.demo.Nmax = ntrkRange[num+1]
+   for num in range(0,6):		
+	   print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])      		
+	   process.demo.Nmin = ntrkRange[num]
+ 	   process.demo.Nmax = ntrkRange[num+1]
      RequestName = outputName + "_" + str(num)
      DataSetName = '/HIMinimumBias5/HIRun2015-02May2016-v1/AOD'
      config.General.requestName = RequestName
