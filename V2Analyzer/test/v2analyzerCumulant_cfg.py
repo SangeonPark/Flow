@@ -3,27 +3,8 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process("Demo")
 
 
-import HLTrigger.HLTfilters.hltHighLevel_cfi
+process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",ignoreTotal = cms.untracked.int32(1) )
 
-
-process.hltHM = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
-
-process.hltHM.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
-
-                          'HLT_PAPixelTracks_Multiplicity130_v*',
-
-                          'HLT_PAPixelTracks_Multiplicity160_v*'
-
-                          #'HLT_PAPixelTracks_Multiplicity190_v*'
-
-                          #'HLT_PAPixelTracks_Multiplicity220_v*'
-
-]
-
-
-
-process.hltHM.andOr = cms.bool(True)
-process.hltHM.throw = cms.bool(False)
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1000)
@@ -49,4 +30,4 @@ process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
 process.TFileService = cms.Service("TFileService",fileName = cms.string("Cmlt_pPb_24bins.root"))
 
 
-process.p = cms.Path(process.hltHM*process.demo)
+process.p = cms.Path(process.demo)

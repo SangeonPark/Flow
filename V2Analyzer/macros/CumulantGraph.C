@@ -4,7 +4,7 @@ using namespace std;
 
 void CumulantGraph(){
 
-	TFile *f = new TFile("../../../rootfiles/CumulantpPbMerged.root");
+	TFile *f = new TFile("../../../rootfiles/Cmlt_pPb_24bins.root");
 	TH1D* c2_pos[5][2];
 	TH1D* c2_neg[5][2];
 
