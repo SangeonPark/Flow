@@ -33,48 +33,43 @@ config.Data.outputDatasetTag = outputName
 config.Site.storageSite = 'T3_US_Rice'
 
 if __name__ == '__main__':
- from CRABAPI.RawCommand import crabCommand
- from CRABClient.ClientExceptions import ClientException
- from httplib import HTTPException
+  from CRABAPI.RawCommand import crabCommand
+  from CRABClient.ClientExceptions import ClientException
+  from httplib import HTTPException
 
- config.General.workArea = outputName
+  config.General.workArea = outputName
+  def submit(config):
+        try:
+            crabCommand('submit', config = config)
+        except HTTPException as hte:
+            print "Failed submitting task: %s" % (hte.headers)
+        except ClientException as cle:
+            print "Failed submitting task: %s" % (cle)
 
- def submit(config):
-  try:
-   crabCommand('submit', config = config)
- except HTTPException as hte:
-   print "Failed submitting task: %s" % (hte.headers)
- except ClientException as cle:
-  print "Failed submitting task: %s" % (cle)
+ sampleName = ["/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Rereco_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER",
+      "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER",
+      "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Reverse_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER"]
+      beam = [False,False,True]
 
-  sampleName = ["/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Rereco_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER",
-  "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER",
-  "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Reverse_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER"]
-  beam = [False,False,True]
-
-  paths = 2;
+    paths = 2;
 
   for num in range(0,3):
+        print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
+        if paths == 0:
+         process.hltHM.HLTPaths = [hltPathNames[0]]
+        if paths == 1:
+           process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1]]
+        if paths == 2:
+             process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2]]
+        if paths == 3:
+               process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
 
-   print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
-
-
-
-   if paths == 0:
-     process.hltHM.HLTPaths = [hltPathNames[0]]
-     if paths == 1:
-       process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1]]
-       if paths == 2:
-         process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2]]
-         if paths == 3:
-           process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
-
-           process.demo.reverseBeam = beam[num]       
-           RequestName = outputName + "_" + str(num)
-           DataSetName = sampleName[num]
-           config.General.requestName = RequestName
-           config.Data.inputDataset = DataSetName
-           submit(config)
+        process.demo.reverseBeam = beam[num]       
+        RequestName = outputName + "_" + str(num)
+        DataSetName = sampleName[num]
+        config.General.requestName = RequestName
+        config.Data.inputDataset = DataSetName
+        submit(config)
 
 # python crab3_ppTrackingAnalyzer.py to execute 
 # ./multicrab -c status -w crab_projects/ to check status 
