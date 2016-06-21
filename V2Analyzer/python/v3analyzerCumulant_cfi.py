@@ -1,5 +1,17 @@
 import FWCore.ParameterSet.Config as cms
 
+import HLTrigger.HLTfilters.hltHighLevel_cfi
+hltHM = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
+hltHM.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
+                  'HLT_PAPixelTracks_Multiplicity130_v*',
+                  'HLT_PAPixelTracks_Multiplicity160_v*'
+                  #'HLT_PAPixelTracks_Multiplicity190_v*'
+                  #'HLT_PAPixelTracks_Multiplicity220_v*'
+]
+
+hltHM.andOr = cms.bool(True)
+hltHM.throw = cms.bool(False)
+
 demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       vertexSrc = cms.string('offlinePrimaryVertices'),
                       trackSrc = cms.InputTag('generalTracks'),
@@ -13,8 +25,8 @@ demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       etaCutMax = cms.double(2.4),
                       NTrkMin = cms.int32(185),
                       NTrkMax = cms.int32(260),
+                      NEtaBins = cms.int32(24),
                       doEffCorrection = cms.bool(True),
-                      reverseBeam = cms.bool(False)
-
+                      reverseBeam = cms.bool(True)
                       
 )
