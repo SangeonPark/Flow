@@ -16,7 +16,7 @@ config.JobType.allowUndistributedCMSSW = True
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'PbPb_502TeV_cfg.py'
-config.Data.inputDBS = 'phys03'
+config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 15
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
