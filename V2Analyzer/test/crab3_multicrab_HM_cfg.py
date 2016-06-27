@@ -54,7 +54,7 @@ if __name__ == '__main__':
    for paths in range(0,5):
    	  for num in range(0,3):
 		
-       	print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
+                print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
 		print 'double check that multipclicity range is from %r to %r' % (ntrkRange[paths], ntrkRange[paths+1])
 		
 		process.demo.Nmin = ntrkRange[paths]
@@ -72,8 +72,8 @@ if __name__ == '__main__':
 			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3],hltPathNames[4]]
 
 		process.demo.reverseBeam = beam[num]       
-       	RequestName = outputName + '_' + str(paths) + "_" + str(num)
-       	DataSetName = sampleName[num]
-       	config.General.requestName = RequestName
-       	config.Data.inputDataset = DataSetName
+                RequestName = outputName + '_' + str(paths) + "_" + str(num)
+                DataSetName = sampleName[num]
+                config.General.requestName = RequestName
+                config.Data.inputDataset = DataSetName
 		submit(config)
