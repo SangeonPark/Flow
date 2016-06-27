@@ -24,7 +24,7 @@ void CumulantErrGraph(){
 
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/errcalc_v3_PbPb_Cumulant/leaveout%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/errcalc_v2Cumulant_48bins_pPb/leaveout%d.root",n+1));
 
 
 		for (Int_t i = 0; i < 5; i++){
@@ -53,7 +53,7 @@ void CumulantErrGraph(){
 
 	}
 	
-	f = new TFile("../../../rootfiles/v3_Cumulant_PbPb_Merged.root");
+	f = new TFile("../../../rootfiles/sampling_v2Cumulant_48bins_pPb/v2Cumulant_48bins_Merged.root");
 
 
 
@@ -105,7 +105,7 @@ void CumulantErrGraph(){
 	}	
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.0,0.05);
+	base->GetYaxis()->SetRangeUser(0.065,	0.075);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}");
 
@@ -146,7 +146,6 @@ void CumulantErrGraph(){
 	leg->SetFillStyle(0);
 	leg->AddEntry(gr_pos, "pos","p");
 	leg->AddEntry(gr_neg , "neg","p");
-
 
 
 	

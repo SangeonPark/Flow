@@ -27,7 +27,7 @@ process.source = cms.Source("PoolSource",
 
 #loads analyzer
 process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("Cmlt_pPb_24bins.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("pPb_cumulant48.root"))
 
 
 process.p = cms.Path(process.demo)
