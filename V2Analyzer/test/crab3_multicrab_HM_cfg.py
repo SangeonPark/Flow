@@ -52,10 +52,9 @@ if __name__ == '__main__':
    beam = [False,False,True]
 
    for paths in range(0,5):
-   	for num in range(0,3):
+   	  for num in range(0,3):
 		
        	print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
-       		
 		print 'double check that multipclicity range is from %r to %r' % (ntrkRange[paths], ntrkRange[paths+1])
 		
 		process.demo.Nmin = ntrkRange[paths]
