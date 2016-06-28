@@ -43,17 +43,17 @@ process.source = cms.Source("PoolSource",
 )
 )
 
-process.load("Flow.V2Analyzer.PbPbSP_cfi")
+process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 
 #define the cuts
 #process.demo.Nmin = 185
 #process.demo.Nmax = 260
 
 #process.demo.eff = 1
-#process.demo.useCentrality = False
+process.demo.useCentrality = True
 process.demo.doEffCorrection = True
 
-process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_ScalarProduct_v3_185_260.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_Cumulant_v3.root"))
 process.p = cms.Path(  process.hfCoincFilter *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *

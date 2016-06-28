@@ -239,7 +239,7 @@ Implementation:
  	}
 
 
- 	if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
+// 	if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
 
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;

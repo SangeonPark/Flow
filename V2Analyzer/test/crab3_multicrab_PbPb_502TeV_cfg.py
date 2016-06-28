@@ -8,7 +8,7 @@ process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 
 ntrkRange = [60,80,100,120,140,160,180]
 
-outputName = "multicrab_502TeV_v2vsAch_PbPb_Cumulant_fixed"
+outputName = "multicrab_502TeV_PbPb_v3_vs_centrality_Cumulant"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
