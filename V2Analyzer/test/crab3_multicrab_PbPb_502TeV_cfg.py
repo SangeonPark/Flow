@@ -6,9 +6,9 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 
-ntrkRange = [90,120,150,185,220,260,300,350,400,500]
+ntrkRange = [60,80,100,120,140,160,180]
 
-outputName = "multicrab_502TeV_PbPb_v3_vs_multiplicitiesNtrkOff_Cumulant"
+outputName = "multicrab_502TeV_PbPb_v3_vs_centrality_Cumulant_ver2_correct"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -40,8 +40,8 @@ if __name__ == '__main__':
       except ClientException as cle:
           print "Failed submitting task: %s" % (cle)
    
-   for num in range(0,9):		
-		print 'double check that ntrkoffline range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])      		
+   for num in range(0,6):		
+		print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])      		
 		process.demo.Nmin = ntrkRange[num]
 		process.demo.Nmax = ntrkRange[num+1]
 		RequestName = outputName + "_" + str(num)
