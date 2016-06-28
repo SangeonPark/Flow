@@ -376,9 +376,9 @@ Implementation:
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
 
- 	edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root");  
+ 	edm::FileInPath fip1("Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root");  
  	TFile f1(fip1.fullPath().c_str(),"READ");
- 	effTable = (TH2D*)f1.Get("rTotalEff3D");
+ 	effTable = (TH2D*)f1.Get("rTotalEff3D_1");
 
 //list of c2 histograms
  	for (Int_t i = 0; i < 5; i++){
