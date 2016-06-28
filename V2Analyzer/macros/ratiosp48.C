@@ -2,95 +2,193 @@
 
 using namespace std;
 
-void ratioof2448bins(){
+void ratiosp48(){
 
 	TFile *f;
-	TH1D* c2_pos[5][2];
-	TH1D* c2_neg[5][2];
+	TH1D* c2_pos_case1[5][4][2];
+	TH1D* c2_neg_case1[5][4][2];
+	TH1D* c2_tot_case1[5][4][2];
+
+	TH1D* c2_pos_case2[5][4][2];
+	TH1D* c2_neg_case2[5][4][2];
+	TH1D* c2_tot_case2[5][4][2];
 
 	TH1D* ach_hist[5];
-	double x[5];
 
+	TH1D* c2_pos[5][4];
+	TH1D* c2_neg[5][4];
+
+	double x[5];
 	double v2_pos[5];
 	double v2_neg[5];
-	double v2_pos_24[5];
-	double v2_neg_24[5];
+	double v2_diff[5];
 	double v2_pos_48[5];
 	double v2_neg_48[5];
-	double v2_pos_ratio[5];
-	double v2_neg_ratio[5];
-	double v2_diff[5];
-	double err_neg[5];
+
 	double err_pos[5];
-	double err_neg_24[5];
-	double err_pos_24[5];
+	double err_neg[5];
 	double err_diff[5];
-	double err_pos_ratio[5];
-	double err_neg_ratio[5];
+
+	double numerator;
+	double denominator;
+	double q0,q1,q2,q3;
 	double cmean;
+
+
 	double v2_pos_sample[5][10];
 	double v2_neg_sample[5][10];
 	double v2_diff_sample[5][10];
 
+	double v2_pos_sp[5];
+	double v2_neg_sp[5];
+	double err_pos_sp[5];
+	double err_neg_sp[5];
+	double err_pos_ratio[5];
+	double err_neg_ratio[5];
+	double v2_pos_ratio[5];
+	double v2_neg_ratio[5];
+
+
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/errcalc_v2Cumulant_24bins_pPb/leaveout%d.root",n+1));
-
-
+		f = new TFile(Form("../../../rootfiles/errcalc_v2ScalarProduct_pPb/leaveout%d.root",n+1));
 		for (Int_t i = 0; i < 5; i++){
-			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+			for(Int_t j = 0 ; j < 4; j++){
 
-			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-			c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
 
-			c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-			c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
+				c2_pos_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case1",i,j));
+				c2_pos_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case1",i,j));
+				c2_neg_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case1",i,j));
+				c2_neg_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case1",i,j));
+				c2_pos_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case2",i,j));
+				c2_pos_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case2",i,j));
+				c2_neg_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case2",i,j));
+				c2_neg_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case2",i,j));
+
+			}
 
 		}
+
+		for (int i = 0; i < 5; ++i)
+		{
+			for(int j = 0; j < 4; j++){
+
+				c2_pos[i][j] =  new TH1D(*c2_pos_case1[i][j][0]);
+				c2_pos[i][j] -> Add(c2_pos_case2[i][j][0],1.);
+
+				c2_neg[i][j] = new TH1D(*c2_neg_case1[i][j][0]);
+				c2_neg[i][j] -> Add(c2_neg_case2[i][j][0],1.);
+
+
+			}
+
+		}
+
+
 		for(Int_t i=0; i<5; i++){
 
-
 //positive
-			cmean = c2_pos[i][0] -> GetMean();
-			v2_pos_sample[i][n] = sqrt(cmean);
+			q0 = c2_pos[i][0]->GetMean();
+			q1 = c2_pos[i][1]->GetMean();
+			q2 = c2_pos[i][2]->GetMean();
+			q3 = c2_pos[i][3]->GetMean();
 
-			cmean = c2_neg[i][0] -> GetMean();
-			v2_neg_sample[i][n] = sqrt(cmean);
+			numerator = q0;
+			denominator = sqrt((q1*q2)/q3);
+			v2_pos_sample[i][n] = numerator/denominator;
 
-			v2_diff_sample[i][n] = v2_neg_sample[i][n] - v2_pos_sample[i][n];
+//negative
+			q0 = c2_neg[i][0]->GetMean();
+			q1 = c2_neg[i][1]->GetMean();
+			q2 = c2_neg[i][2]->GetMean();
+			q3 = c2_neg[i][3]->GetMean();
+			numerator = q0;
+			denominator = sqrt((q1*q2)/q3);
+			v2_neg_sample[i][n] = numerator/denominator;
+
+
+			v2_diff_sample[i][n] = v2_neg_sample[i][n]-v2_pos_sample[i][n];
+
+
+		}	
+
+	}
+
+	f = new TFile("../../../rootfiles/sampling_v2ScalarProduct_pPb/v2ScalarProduct_Merged.root");
+
+
+
+
+	for (Int_t i = 0; i < 5; i++){
+
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+		
+		for(Int_t j = 0 ; j < 4; j++){
+			
+
+			c2_pos_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case1",i,j));
+			c2_pos_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case1",i,j));
+			c2_neg_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case1",i,j));
+			c2_neg_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case1",i,j));
+			c2_pos_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case2",i,j));
+			c2_pos_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case2",i,j));
+			c2_neg_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case2",i,j));
+			c2_neg_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case2",i,j));
 
 		}
 
 	}
-	
-	f = new TFile("../../../rootfiles/sampling_v2Cumulant_24bins_pPb/v2Cumulant_24bins_Merged.root");
 
-	for (Int_t i = 0; i < 5; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+	for (int i = 0; i < 5; ++i)
+	{
+		for(int j = 0; j < 4; j++){
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
+			c2_pos[i][j] =  new TH1D(*c2_pos_case1[i][j][0]);
+			c2_pos[i][j] -> Add(c2_pos_case2[i][j][0],1.);
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
+			c2_neg[i][j] = new TH1D(*c2_neg_case1[i][j][0]);
+			c2_neg[i][j] -> Add(c2_neg_case2[i][j][0],1.);
+
+
+		}
 		
 	}
+
+
 	for(Int_t i=0; i<5; i++){
+		
 
 		x[i]=ach_hist[i]->GetMean();
 
-//v2 positive
-		cmean = c2_pos[i][0] -> GetMean();
-		v2_pos[i] = sqrt(cmean);
+
+
+//positive
+		q0 = c2_pos[i][0]->GetMean();
+		q1 = c2_pos[i][1]->GetMean();
+		q2 = c2_pos[i][2]->GetMean();
+		q3 = c2_pos[i][3]->GetMean();
+
+		numerator = q0;
+		denominator = sqrt((q1*q2)/q3);
+		cout << "q0:" << q0 << " q1:" << q1 <<" q2:" <<q2 << " q3:" << q3 << endl; 
+		v2_pos[i] = numerator/denominator;
+
+
 
 //negative
-		cmean = c2_neg[i][0] -> GetMean();
-		v2_neg[i] = sqrt(cmean);
+		q0 = c2_neg[i][0]->GetMean();
+		q1 = c2_neg[i][1]->GetMean();
+		q2 = c2_neg[i][2]->GetMean();
+		q3 = c2_neg[i][3]->GetMean();
+		numerator = q0;
+		denominator = sqrt((q1*q2)/q3);
+		v2_neg[i] = numerator/denominator;
 
-		//difference
-		v2_diff[i] = v2_neg[i] - v2_pos[i];
+//difference
+		v2_diff[i] = v2_neg[i]-v2_pos[i];
 
-//error bars
+//err calc
+
 		double variance_pos = 0.0;
 		double variance_neg = 0.0;
 		double variance_diff = 0.0;
@@ -107,26 +205,21 @@ void ratioof2448bins(){
 		err_neg[i] = sqrt(variance_neg);
 		err_diff[i] = sqrt(variance_diff);
 
-		v2_pos_24[i] = v2_pos[i];
-		v2_neg_24[i] = v2_neg[i];
-		err_pos_24[i] = err_pos[i];
-		err_neg_24[i] = err_neg[i];
-
-
+		v2_pos_sp[i]=v2_pos[i];
+		v2_neg_sp[i]=v2_neg[i];
+		err_pos_sp[i]=err_pos[i];
+		err_neg_sp[i]=err_neg[i];
 	}	
-
-
-	TGraphErrors *gr_pos_24 = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
-	TGraphErrors *gr_neg_24 = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
-	TGraphErrors *gr_diff_24 = new TGraphErrors(5,x,v2_diff,NULL,err_diff);
-
+	
+	TGraphErrors *gr_pos_sp = new TGraphErrors(5,x,v2_pos,NULL,err_pos_sp);
+	TGraphErrors *gr_neg_sp = new TGraphErrors(5,x,v2_neg,NULL,err_neg_sp);
+	TGraphErrors *gr_diff_sp = new TGraphErrors(5,x,v2_diff,NULL,err_diff);
 
     //Define a linear function
 	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
-	gr_diff_24->Fit(fit1);
-
+	gr_diff_sp->Fit(fit1);
 
 	for (int n = 0; n < 10; ++n){
 		f = new TFile(Form("../../../rootfiles/errcalc_v2Cumulant_48bins_pPb/leaveout%d.root",n+1));
@@ -205,25 +298,23 @@ void ratioof2448bins(){
 		v2_pos_48[i] = v2_pos[i];
 		v2_neg_48[i] = v2_neg[i];
 
-		v2_pos_ratio[i] = v2_pos_24[i]/v2_pos_48[i];
-		v2_neg_ratio[i] = v2_neg_24[i]/v2_neg_48[i];
+		v2_pos_ratio[i] = v2_pos_sp[i]/v2_pos_48[i];
+		v2_neg_ratio[i] = v2_neg_sp[i]/v2_neg_48[i];
 
 		double variance = 0.0;
-		variance += ((v2_pos_24[i]*v2_pos_24[i])/(v2_pos_48[i]*v2_pos_48[i]*v2_pos_48[i]*v2_pos_48[i]))*(err_pos[i]*err_pos[i]);
-		variance += (err_pos_24[i]*err_pos_24[i])/(v2_pos_48[i]*v2_pos_48[i]);
+		variance += ((v2_pos_sp[i]*v2_pos_sp[i])/(v2_pos_48[i]*v2_pos_48[i]*v2_pos_48[i]*v2_pos_48[i]))*(err_pos[i]*err_pos[i]);
+		variance += (err_pos_sp[i]*err_pos_sp[i])/(v2_pos_48[i]*v2_pos_48[i]);
 		err_pos_ratio[i] = sqrt(variance);
 
 		variance = 0.0;
-		variance += ((v2_neg_24[i]*v2_neg_24[i])/(v2_neg_48[i]*v2_neg_48[i]*v2_neg_48[i]*v2_neg_48[i]))*(err_neg[i]*err_neg[i]);
-		variance += (err_neg_24[i]*err_neg_24[i])/(v2_neg_48[i]*v2_neg_48[i]);
+		variance += ((v2_neg_sp[i]*v2_neg_sp[i])/(v2_neg_48[i]*v2_neg_48[i]*v2_neg_48[i]*v2_neg_48[i]))*(err_neg[i]*err_neg[i]);
+		variance += (err_neg_sp[i]*err_neg_sp[i])/(v2_neg_48[i]*v2_neg_48[i]);
 		err_neg_ratio[i] = sqrt(variance);
 	}
 
 	TGraphErrors *gr_pos_48 = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg_48 = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff_48 = new TGraphErrors(5,x,v2_diff,NULL,err_diff);
-
-
     //Define a linear function
 	TF1* fit2 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 	fit2->SetLineColor(kRed);
@@ -232,20 +323,24 @@ void ratioof2448bins(){
 
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.065,	0.075);
+	base->GetYaxis()->SetRangeUser(0.065,0.075);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{2}");
+
+
+
+
 	TCanvas* c3 = new TCanvas("c3","c3",1,1,1200,600);
 	c3->Divide(2,1,0.01,0.01);
 
-	gr_neg_24 -> SetMarkerStyle(20);
-	gr_neg_24 -> SetMarkerColor(kBlue);
-	gr_pos_24 -> SetMarkerStyle(34);
-	gr_pos_24 -> SetMarkerColor(kRed);
-	gr_pos_24 -> SetFillStyle(0);
-	gr_pos_24 -> SetFillColor(0);
-	gr_neg_24 -> SetFillStyle(0);
-	gr_neg_24 -> SetFillColor(0);
+	gr_neg_sp -> SetMarkerStyle(20);
+	gr_neg_sp -> SetMarkerColor(kBlue);
+	gr_pos_sp -> SetMarkerStyle(28);
+	gr_pos_sp -> SetMarkerColor(kRed);
+	gr_pos_sp->SetFillStyle(0);
+	gr_pos_sp->SetFillColor(0);
+	gr_neg_sp->SetFillStyle(0);
+	gr_neg_sp->SetFillColor(0);
 
 	gr_neg_48 -> SetMarkerStyle(20);
 	gr_neg_48 -> SetMarkerColor(kYellow);
@@ -266,43 +361,38 @@ void ratioof2448bins(){
 	TLatex* text_a = makeLatex("p-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
 	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-	TLatex* text_d = makeLatex("Cumulant Method",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(gr_pos_24, "pos 24 bins","p");
-	leg->AddEntry(gr_neg_24 ,"neg 24 bins","p");
-	leg->AddEntry(gr_pos_48 ,"pos 48 bins","p");
-	leg->AddEntry(gr_neg_48 ,"neg 48 bins","p");
+	leg->AddEntry(gr_pos_sp, "pos SP","p");
+	leg->AddEntry(gr_neg_sp , "neg SP","p");
+
+	leg->AddEntry(gr_pos_48 ,"pos 48bins","p");
+	leg->AddEntry(gr_neg_48 ,"neg 48bins","p");
+
 
 
 	
 	c3->cd(1);
 	base->Draw("");
-	gr_pos_24->Draw("PSame");
-	gr_neg_24->Draw("PSame");
+	gr_pos_sp->Draw("PSame");
+	gr_neg_sp->Draw("PSame");
 	gr_pos_48->Draw("PSame");
 	gr_neg_48->Draw("PSame");
-
 	text_a->DrawClone("Same");
 	text_b->DrawClone("Same");
 	text_c->DrawClone("Same");
-	text_d->DrawClone("Same");
 
 	leg->DrawClone("Same");
-
-
-
-
 
 
 	TH1D* base2 = new TH1D("base2","base2",100,-0.1,0.1);
 	base2->GetYaxis()->SetRangeUser(0.98,1.02);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle("v_{2}(24bins) / v_{2}(48bins)");
+	base2->GetYaxis()->SetTitle("v_{2}(sp) / v_{2}(48bins)");
 	base2->GetYaxis()->SetTitleOffset(1.4);
 	base2->GetXaxis()->SetTitleOffset(1.1);
 	base2->GetYaxis()->SetNdivisions(506); 

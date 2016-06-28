@@ -42,8 +42,8 @@ Implementation:
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
 
- 	NTrkMin_ = iConfig.getParameter<int>("NTrkMin");
- 	NTrkMax_ = iConfig.getParameter<int>("NTrkMax");
+ 	Nmin_ = iConfig.getParameter<int>("Nmin");
+ 	Nmax_ = iConfig.getParameter<int>("Nmax");
  	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
  	
 
@@ -239,7 +239,7 @@ Implementation:
  	}
 
 
- 	if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
+ 	if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
 
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;

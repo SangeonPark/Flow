@@ -39,7 +39,7 @@ void SPErrMerged(){
 
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/errcalc_v3ScalarProduct_pPb/leaveout%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/errcalc_v2ScalarProduct_pPb/leaveout%d.root",n+1));
 
 		for (Int_t i = 0; i < 5; i++){
 			for(Int_t j = 0 ; j < 4; j++){
@@ -103,7 +103,7 @@ void SPErrMerged(){
 
 	}
 
-	f = new TFile("../../../rootfiles/sampling_v3ScalarProduct_pPb/v3ScalarProduct_Merged.root");
+	f = new TFile("../../../rootfiles/sampling_v2ScalarProduct_pPb/v2ScalarProduct_Merged.root");
 
 
 
@@ -159,6 +159,7 @@ void SPErrMerged(){
 
 		numerator = q0;
 		denominator = sqrt((q1*q2)/q3);
+		cout << "q0:" << q0 << " q1:" << q1 <<" q2:" <<q2 << " q3:" << q3 << endl; 
 		v2_pos[i] = numerator/denominator;
 
 
@@ -193,11 +194,14 @@ void SPErrMerged(){
 		err_neg[i] = sqrt(variance_neg);
 		err_diff[i] = sqrt(variance_diff);
 
+		cout << "errpos:" << err_pos[i] << endl;
+
+
 		
 	}	
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.00,0.05);
+	base->GetYaxis()->SetRangeUser(0.065,0.075);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}");
 
@@ -266,15 +270,15 @@ void SPErrMerged(){
 	gr_diff->GetYaxis()->SetTitle("v_{3}(-) - v_{3}(+)");
 	gr_diff->GetYaxis()->SetTitleOffset(1.1);
 	gr_diff->GetXaxis()->SetTitleOffset(1.1);
-	    gr_diff->GetYaxis()->SetNdivisions(505); 
-    gr_diff->GetXaxis()->SetNdivisions(505); 
+	gr_diff->GetYaxis()->SetNdivisions(505); 
+	gr_diff->GetXaxis()->SetNdivisions(505); 
 	TLatex* text1 = makeLatex(Form("slope r = %f #pm %f",fit1->GetParameter(1),fit1->GetParError(1)),0.15,0.8) ;
 	
 	gr_diff->Draw("A*");
 	text1->DrawClone("Same");
 	fit1->DrawClone("Same");
 
-		TF1 *fa1 = new TF1("fa1","0",-10,10); 
+	TF1 *fa1 = new TF1("fa1","0",-10,10); 
 	fa1->SetLineColor(kBlack);
 	fa1->SetLineWidth(1);
 	fa1->DrawClone("Same");
