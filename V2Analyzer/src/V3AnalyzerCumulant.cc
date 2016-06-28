@@ -54,6 +54,9 @@ Implementation:
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
 
+ 	centBins_ = iConfig.getUntrackedParameter<std::vector<double>>("centBins");
+
+
 
 //now do what ever initialization is needed
 
@@ -92,6 +95,43 @@ Implementation:
 
  	edm::Handle<reco::TrackCollection> tracks;
  	iEvent.getByLabel(trackSrc_, tracks);
+
+ 	//centrality range selection
+
+ 	Handle<CaloTowerCollection> towers;
+ 	iEvent.getByLabel(towerSrc_, towers);
+
+ 	double etHFtowerSumPlus = 0.0;
+ 	double etHFtowerSumMinus = 0.0;
+ 	double etHFtowerSum = 0.0;
+
+ 	if( useCentrality_ ){
+
+ 		for( unsigned i = 0; i<towers->size(); ++ i){
+ 			const CaloTower & tower = (*towers)[ i ];
+ 			double eta = tower.eta();
+ 			bool isHF = tower.ietaAbs() > 29;
+ 			if(isHF && eta > 0){
+ 				etHFtowerSumPlus += tower.pt();
+ 			}
+ 			if(isHF && eta < 0){
+ 				etHFtowerSumMinus += tower.pt();
+ 			}
+ 		}
+ 		etHFtowerSum=etHFtowerSumPlus + etHFtowerSumMinus;
+
+ 		int bin = -1;
+ 		for(int j=0; j<200; j++){
+ 			if( etHFtowerSum >= centBins_[j] ){
+ 				bin = j; break;
+ 			}
+ 		}
+
+ 		int hiBin = bin;
+ 		cbinHist->Fill( hiBin );
+ 		if( hiBin < Nmin_ || hiBin >= Nmax_ ) return;
+
+ 	}
 
 //variables for charge asymmetry calculation
  	double N_pos = 0.0;
@@ -251,8 +291,10 @@ Implementation:
  	edm::Service<TFileService> fs;
  	TH1D::SetDefaultSumw2();
 
- 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
- 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+ 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
+ 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
+ 	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
+
 
  	edm::FileInPath fip1("Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root");  
  	TFile f1(fip1.fullPath().c_str(),"READ");

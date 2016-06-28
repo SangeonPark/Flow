@@ -377,6 +377,8 @@ private:
       TH1D* asym_Dist;
       TH1D* NTrkHist;
       TH2D* effTable;
+      TH1D* cbinHist;
+
       
       double dxySigCut_;
       double dzSigCut_;
@@ -390,6 +392,9 @@ private:
 
       bool doEffCorrection_;
       bool reverseBeam_;      
+
+      std::vector<double> centBins_;      
+
 
       double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
 

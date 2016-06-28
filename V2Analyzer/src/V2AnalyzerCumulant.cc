@@ -164,9 +164,6 @@ Implementation:
 
  	}
 
-
-
-
  	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
  		double eta = cand->eta();
