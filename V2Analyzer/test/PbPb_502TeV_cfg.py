@@ -50,7 +50,7 @@ process.load("Flow.V2Analyzer.PbPbSP_cfi")
 #process.demo.Nmax = 260
 
 #process.demo.eff = 1
-process.demo.useCentrality = False
+#process.demo.useCentrality = False
 process.demo.doEffCorrection = True
 
 process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_ScalarProduct_v3_185_260.root"))
