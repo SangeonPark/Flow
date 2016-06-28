@@ -389,9 +389,13 @@ private:
       int NTrkMin_;
       int NTrkMax_;
       int NEtaBins_;
+      int Nmin_;
+      int Nmax_;
 
       bool doEffCorrection_;
       bool reverseBeam_;      
+      bool useCentrality_;
+
 
       std::vector<double> centBins_;      
 
