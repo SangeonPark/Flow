@@ -25,7 +25,7 @@ demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       etaCutMax = cms.double(2.4),
                       NTrkMin = cms.int32(185),
                       NTrkMax = cms.int32(260),
-                      NEtaBins = cms.int32(24),
+                      NEtaBins = cms.int32(48),
                       doEffCorrection = cms.bool(True),
                       reverseBeam = cms.bool(True)
                       

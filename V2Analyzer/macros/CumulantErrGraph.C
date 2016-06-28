@@ -56,9 +56,6 @@ void CumulantErrGraph(){
 	f = new TFile("../../../rootfiles/sampling_v2Cumulant_48bins_pPb/v2Cumulant_48bins_Merged.root");
 
 
-
-
-
 	for (Int_t i = 0; i < 5; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
@@ -105,9 +102,9 @@ void CumulantErrGraph(){
 	}	
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.065,	0.075);
+	base->GetYaxis()->SetRangeUser(0.065, 0.075);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
-	base->GetYaxis()->SetTitle("v_{3}");
+	base->GetYaxis()->SetTitle("v_{2}");
 
 	TGraphErrors *gr_pos = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
@@ -134,10 +131,10 @@ void CumulantErrGraph(){
 	base->SetStats(0);
 	gStyle->SetOptTitle(0);
 
-	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=2.76TeV",0.15,0.82) ;
+	TLatex* text_a = makeLatex("p-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
 	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-	TLatex* text_d = makeLatex("Cumulant Method",0.15,0.58) ;
+	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);
@@ -171,7 +168,7 @@ void CumulantErrGraph(){
 	gr_diff->GetYaxis()->SetRangeUser(-0.004,0.004);
 	gr_diff->GetXaxis()->SetLimits(-0.1,0.1);
 	gr_diff->GetXaxis()->SetTitle("A_{ch}");
-	gr_diff->GetYaxis()->SetTitle("v_{3}(-) - v_{3}(+)");
+	gr_diff->GetYaxis()->SetTitle("v_{2}(-) - v_{2}(+)");
 	gr_diff->GetYaxis()->SetTitleOffset(1.1);
 	gr_diff->GetXaxis()->SetTitleOffset(1.1);
 	gr_diff->GetYaxis()->SetNdivisions(505); 

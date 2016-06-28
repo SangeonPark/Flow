@@ -39,7 +39,7 @@ void SPErrMerged(){
 
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/errcalc_v3_PbPb_SP/leaveout%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/errcalc_v3ScalarProduct_pPb/leaveout%d.root",n+1));
 
 		for (Int_t i = 0; i < 5; i++){
 			for(Int_t j = 0 ; j < 4; j++){
@@ -103,7 +103,7 @@ void SPErrMerged(){
 
 	}
 
-	f = new TFile("../../../rootfiles/Merged_v3_SP_PbPb.root");
+	f = new TFile("../../../rootfiles/sampling_v3ScalarProduct_pPb/v3ScalarProduct_Merged.root");
 
 
 
@@ -225,7 +225,7 @@ void SPErrMerged(){
 	base->SetStats(0);
 	gStyle->SetOptTitle(0);
 
-	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=2.76TeV",0.15,0.82) ;
+	TLatex* text_a = makeLatex("p-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
 	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
 	TLatex* text_d = makeLatex("Scalar Product Method",0.15,0.58) ;
