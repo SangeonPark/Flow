@@ -386,8 +386,6 @@ private:
       double etaCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
-      int NTrkMin_;
-      int NTrkMax_;
       int NEtaBins_;
       int Nmin_;
       int Nmax_;
