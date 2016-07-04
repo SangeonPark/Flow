@@ -17,7 +17,7 @@ demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       doEffCorrection = cms.bool(True),
                       reverseBeam = cms.bool(False),
 
-                      useCentrality = cms.bool(True),
+                      useCentrality = cms.bool(False),
                       Nmin = cms.int32(185),
                       Nmax = cms.int32(260),
                       

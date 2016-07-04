@@ -39,7 +39,7 @@ void SPErrMerged(){
 
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/errcalc_v2ScalarProduct_pPb/leaveout%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/errcalc_v3_PbPb5TeV_SP/leaveout%d.root",n+1));
 
 		for (Int_t i = 0; i < 5; i++){
 			for(Int_t j = 0 ; j < 4; j++){
@@ -103,7 +103,7 @@ void SPErrMerged(){
 
 	}
 
-	f = new TFile("../../../rootfiles/sampling_v2ScalarProduct_pPb/v2ScalarProduct_Merged.root");
+	f = new TFile("../../../rootfiles/errcalc_v3_PbPb5TeV_SP/v3_SP_PbPb_502TeV_Merged.root");
 
 
 
@@ -190,8 +190,12 @@ void SPErrMerged(){
 		variance_pos *= 0.9;
 		variance_neg *= 0.9;
 		variance_diff *= 0.9;
+
+
 		err_pos[i] = sqrt(variance_pos);
 		err_neg[i] = sqrt(variance_neg);
+		variance_diff = err_pos[i]*err_pos[i]+err_neg[i]*err_neg[i];
+
 		err_diff[i] = sqrt(variance_diff);
 
 		cout << "errpos:" << err_pos[i] << endl;
@@ -201,7 +205,7 @@ void SPErrMerged(){
 	}	
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.065,0.075);
+	base->GetYaxis()->SetRangeUser(0.02,0.03);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}");
 
@@ -232,7 +236,7 @@ void SPErrMerged(){
 	TLatex* text_a = makeLatex("p-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
 	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-	TLatex* text_d = makeLatex("Scalar Product Method",0.15,0.58) ;
+	//TLatex* text_d = makeLatex("Scalar Product Method",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);
@@ -252,7 +256,7 @@ void SPErrMerged(){
 	text_a->DrawClone("Same");
 	text_b->DrawClone("Same");
 	text_c->DrawClone("Same");
-	text_d->DrawClone("Same");
+	//text_d->DrawClone("Same");
 
 	leg->DrawClone("Same");
 

@@ -112,8 +112,10 @@ void slopevscentrality(){
 			variance_diff *= 0.9;
 			err_pos[i] = sqrt(variance_pos);
 			err_neg[i] = sqrt(variance_neg);
+
+			variance_diff = err_pos[i]*err_pos[i]+err_neg[i]*err_neg[i];
+
 			err_diff[i] = sqrt(variance_diff);
-			cout << err_diff[i] << endl;
 
 
 		}
@@ -124,6 +126,7 @@ void slopevscentrality(){
 		r = fit1->GetParameter(1);
 		statErr[n] = fit1->GetParError(1);
 		y_slope[n] = r;
+		cout << y_slope[n] << endl;
 
 	}
 
@@ -147,7 +150,7 @@ void slopevscentrality(){
 		star_sysplus[i]/=100;
 	}
 
-	TGraphErrors* slopevscent = new TGraphErrors(5,x_centrality,y_slope,NULL,statErr);
+	TGraphErrors* slopevscent = new TGraphErrors(6,x_centrality,y_slope,NULL,statErr);
 	TGraphErrors* ALICE = new TGraphErrors(8,x_alice,y_alice,NULL,alice_statErrors);
 	TGraphErrors* STAR = new TGraphErrors(9,x_star,y_star,NULL,star_statErrors);
 	TGraphAsymmErrors* ALICE_sys = new TGraphAsymmErrors(8, x_alice, y_alice, xsysalice, xsysalice, alice_sysminus, alice_sysplus);
@@ -203,10 +206,10 @@ void slopevscentrality(){
 	ALICE_sys->SetFillColor(2);
 	ALICE_sys->SetFillStyle(3001);
 
-	ALICE_sys->Draw("2Same");
+//	ALICE_sys->Draw("2Same");
 	STAR_sys->SetFillColor(6);
 	STAR_sys->SetFillStyle(3001);
-	STAR_sys->Draw("2Same");
+//	STAR_sys->Draw("2Same");
 
 	leg->DrawClone("PSame");
 

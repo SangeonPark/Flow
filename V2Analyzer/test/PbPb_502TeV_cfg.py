@@ -39,7 +39,7 @@ process.NoScraping = cms.EDFilter("FilterOutScraping",
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-'/store/hidata/HIRun2015/HIMinimumBias5/AOD/02May2016-v1/10000/006477CE-3326-E611-8C08-003048F317E6.root'
+'/store/hidata/HIRun2015/HIMinimumBias5/AOD/02May2016-v1/70000/303B46F5-C127-E611-BF7C-90B11C441C8C.root'
 )
 )
 
@@ -53,7 +53,7 @@ process.load("Flow.V2Analyzer.PbPbCumulant_cfi")
 process.demo.useCentrality = True
 process.demo.doEffCorrection = True
 
-process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_Cumulant_v3.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("PbPb_502TeV_Cumulant_v3_checking.root"))
 process.p = cms.Path(  process.hfCoincFilter *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
