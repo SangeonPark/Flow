@@ -101,11 +101,13 @@ Implementation:
  	Handle<CaloTowerCollection> towers;
  	iEvent.getByLabel(towerSrc_, towers);
 
+
+/*
  	double etHFtowerSumPlus = 0.0;
  	double etHFtowerSumMinus = 0.0;
  	double etHFtowerSum = 0.0;
 
-/*
+
  	if( useCentrality_ ){
 
  		for( unsigned i = 0; i<towers->size(); ++ i){
