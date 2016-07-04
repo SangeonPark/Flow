@@ -105,6 +105,7 @@ Implementation:
  	double etHFtowerSumMinus = 0.0;
  	double etHFtowerSum = 0.0;
 
+/*
  	if( useCentrality_ ){
 
  		for( unsigned i = 0; i<towers->size(); ++ i){
@@ -132,6 +133,7 @@ Implementation:
  		if( hiBin < Nmin_ || hiBin >= Nmax_ ) return;
 
  	}
+ 	*/
 
 //variables for charge asymmetry calculation
  	double N_pos = 0.0;
