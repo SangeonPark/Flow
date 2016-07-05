@@ -46,7 +46,7 @@ if __name__ == '__main__':
    for num in range(0,3):
 	
        print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
-       process.ana.reverseBeam = beam[num]       
+       process.demo.reverseBeam = beam[num]       
        RequestName = outputName + '_' + str(num)
        DataSetName = sampleName[num]
        config.General.requestName = RequestName
