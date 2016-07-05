@@ -24,7 +24,7 @@ void CumulantErrGraph_v3(){
 
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/errcalc_v3_PbPb_5TeV_Cumulant/leaveout%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/sampling_v3_PbPb_5TeV_Cumulant/leaveout%d.root",n+1));
 
 
 		for (Int_t i = 0; i < 5; i++){
@@ -53,7 +53,7 @@ void CumulantErrGraph_v3(){
 
 	}
 	
-	f = new TFile("../../../rootfiles/errcalc_v3_PbPb_5TeV_Cumulant/v3_5TeVPbPb_Cumulant_Merged.root");
+	f = new TFile("../../../rootfiles/sampling_v3_PbPb_5TeV_Cumulant/Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -115,7 +115,7 @@ void CumulantErrGraph_v3(){
 	}			
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.00, 0.05);
+	base->GetYaxis()->SetRangeUser(0.02, 0.03);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}");
 
@@ -148,7 +148,7 @@ void CumulantErrGraph_v3(){
 	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
 	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
+//	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);
@@ -167,7 +167,7 @@ void CumulantErrGraph_v3(){
 	text_a->DrawClone("Same");
 	text_b->DrawClone("Same");
 	text_c->DrawClone("Same");
-	text_d->DrawClone("Same");
+//	text_d->DrawClone("Same");
 
 	leg->DrawClone("Same");
 

@@ -102,6 +102,8 @@ Implementation:
  	Handle<CaloTowerCollection> towers;
  	iEvent.getByLabel(towerSrc_, towers);
 
+
+/*
  	double etHFtowerSumPlus = 0.0;
  	double etHFtowerSumMinus = 0.0;
  	double etHFtowerSum = 0.0;
@@ -133,6 +135,8 @@ Implementation:
  		if( hiBin < Nmin_ || hiBin >= Nmax_ ) return;
 
  	}
+
+*/
 
 //variables for charge asymmetry calculation
  	double N_pos = 0.0;

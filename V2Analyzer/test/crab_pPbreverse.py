@@ -1,4 +1,4 @@
-### this is an example for running on RECO
+	### this is an example for running on RECO
 ### the name must be changed crab.cfg for actual running
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB

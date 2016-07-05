@@ -27,7 +27,7 @@ process.source = cms.Source("PoolSource",
 
 #loads analyzer
 process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("pPb_cumulant48.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("v2_ach_pPb_185_260_0705.root"))
 
 
-process.p = cms.Path(process.demo)
+process.p = cms.Path(process.hltHM*process.demo)
