@@ -24,7 +24,7 @@ void CumulantErrGraph_v3(){
 
 
 	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/sampling_v3_PbPb_5TeV_Cumulant/leaveout%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/v3Cumulant_pPb/leaveout%d.root",n+1));
 
 
 		for (Int_t i = 0; i < 5; i++){
@@ -53,7 +53,7 @@ void CumulantErrGraph_v3(){
 
 	}
 	
-	f = new TFile("../../../rootfiles/sampling_v3_PbPb_5TeV_Cumulant/Merged.root");
+	f = new TFile("../../../rootfiles/v3Cumulant_pPb/Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -145,7 +145,7 @@ void CumulantErrGraph_v3(){
 	base->SetStats(0);
 	gStyle->SetOptTitle(0);
 
-	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
+	TLatex* text_a = makeLatex("p-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
 	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
 //	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
