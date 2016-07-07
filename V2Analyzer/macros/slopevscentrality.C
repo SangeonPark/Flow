@@ -15,9 +15,6 @@ void slopevscentrality(){
 	double y_slope[6];
 	double statErr[6];
 
-	double v2_pos_sample[5][10][6];
-	double v2_neg_sample[5][10][6];
-	double v2_diff_sample[5][10][6];
 	double variance_pos = 0.0;
 	double variance_neg = 0.0;
 	double variance_diff = 0.0;
@@ -25,41 +22,8 @@ void slopevscentrality(){
 	double err_pos[5];
 	double err_diff[5];
 	double cmean;
-
-	for(int k = 0;k < 6;k++){
-		for (int n = 0; n < 10; ++n){
-
-			f = new TFile(Form("../../../rootfiles/errcalc_slopevscentrality/bin%d/leaveout%d.root",k+1,n+1));
-
-			for (Int_t i = 0; i < 5; i++){
-				ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
-
-				c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-				c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
-
-				c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-				c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
-
-			}
-			for(Int_t i=0; i<5; i++){
-
-//positive
-				cmean = c2_pos[i][0] -> GetMean();
-				v2_pos_sample[i][n][k] = sqrt(cmean);
-
-				cmean = c2_neg[i][0] -> GetMean();
-				v2_neg_sample[i][n][k] = sqrt(cmean);
-
-				v2_diff_sample[i][n][k] = v2_neg_sample[i][n][k] - v2_pos_sample[i][n][k];
-
-			}
-
-		}
-
-	}
-
-
-
+	double errmean;
+	double sum;
 
 	for (int n = 0; n <6; ++n)
 	{
@@ -89,33 +53,29 @@ void slopevscentrality(){
 
 			cmean = c2_pos[i][0] -> GetMean();
 			v2_pos[i] = sqrt(cmean);
+			errmean = c2_pos[i][0] -> GetMeanError();
+			variance_pos = (errmean*errmean)/(4*cmean);
+
 
 			cmean = c2_neg[i][0] -> GetMean();
 			v2_neg[i] = sqrt(cmean);
+			errmean = c2_neg[i][0] -> GetMeanError();
+			variance_neg = (errmean*errmean)/(4*cmean);
 
-			v2_diff[i] = v2_neg[i] - v2_pos[i];
+			v2_diff[i] = (v2_neg[i] - v2_pos[i]);
+
+			sum = v2_pos[i] + v2_neg[i];
+
+			variance_diff = variance_pos+variance_neg;
 
 
 //error calculation
-			variance_pos = 0.0;
-			variance_neg = 0.0;
-			variance_diff = 0.0;
-			
-			for (int k = 0; k < 10; ++k)
-			{
-				variance_pos += (v2_pos_sample[i][k][n]-v2_pos[i])*(v2_pos_sample[i][k][n]-v2_pos[i]);
-				variance_neg += (v2_neg_sample[i][k][n]-v2_neg[i])*(v2_neg_sample[i][k][n]-v2_neg[i]);
-				variance_diff += (v2_diff_sample[i][k][n]-v2_diff[i])*(v2_diff_sample[i][k][n]-v2_diff[i]);
-			}
-			variance_pos *= 0.9;
-			variance_neg *= 0.9;
-			variance_diff *= 0.9;
+
 			err_pos[i] = sqrt(variance_pos);
 			err_neg[i] = sqrt(variance_neg);
-
-			variance_diff = err_pos[i]*err_pos[i]+err_neg[i]*err_neg[i];
-
 			err_diff[i] = sqrt(variance_diff);
+
+
 
 
 		}
@@ -126,7 +86,7 @@ void slopevscentrality(){
 		r = fit1->GetParameter(1);
 		statErr[n] = fit1->GetParError(1);
 		y_slope[n] = r;
-		cout << y_slope[n] << endl;
+		cout << statErr[n] << endl;
 
 	}
 
