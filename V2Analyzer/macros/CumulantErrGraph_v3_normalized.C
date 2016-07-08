@@ -25,7 +25,7 @@ void CumulantErrGraph_v3_normalized(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v3Cumulant_PbPb/Merged.root");
+	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_185300/PbPb_v3_0707_Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -136,10 +136,10 @@ void CumulantErrGraph_v3_normalized(){
 	base->Draw("");
 	gr_pos->Draw("PSame");
 	gr_neg->Draw("PSame");
-	text_a->DrawClone("Same");
-	text_b->DrawClone("Same");
-	text_c->DrawClone("Same");
-	text_d->DrawClone("Same");
+//	text_a->DrawClone("Same");
+//	text_b->DrawClone("Same");
+//	text_c->DrawClone("Same");
+//	text_d->DrawClone("Same");
 
 	leg->DrawClone("Same");
 
