@@ -178,6 +178,8 @@ Implementation:
  		gen_WQ2_neg[i] = 0.0;
 
  	}
+ 	edm::Handle<reco::GenParticleCollection> genParticleCollection;
+ 	iEvent.getByLabel(genParticleSrc_, genParticleCollection);
 
  	int genNTrk = 0;
 
@@ -298,9 +300,6 @@ Implementation:
 
  //	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
-
- 	edm::Handle<reco::GenParticleCollection> genParticleCollection;
- 	iEvent.getByLabel(genParticleSrc_, genParticleCollection);
 
  	double N_pos_gen=0.0;
  	double N_neg_gen=0.0;
