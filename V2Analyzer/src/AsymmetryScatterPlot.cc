@@ -101,7 +101,7 @@ Implementation:
  	Handle<CaloTowerCollection> towers;
  	iEvent.getByLabel(towerSrc_, towers);
 
-
+cout << "point 1" << endl;
 
  	double etHFtowerSumPlus = 0.0;
  	double etHFtowerSumMinus = 0.0;
@@ -254,6 +254,8 @@ Implementation:
  		
  	}
 
+ 	cout << "point2" << endl;
+
 //Cut on NTrackOffline (Should be disabled if useCentrality = True)	
  	if(!useCentrality_){
 
@@ -277,6 +279,8 @@ Implementation:
  	double N_pos_gen=0.0;
  	double N_neg_gen=0.0;
  	double N_tot_gen=0.0;
+
+ 	cout << "point3" << endl;
 
  	for(unsigned it=0; it<genParticleCollection->size(); ++it) {
 
