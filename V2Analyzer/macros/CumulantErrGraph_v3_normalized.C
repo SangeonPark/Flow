@@ -86,7 +86,7 @@ void CumulantErrGraph_v3_normalized(){
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
 
-	base->GetYaxis()->SetRangeUser(0.02, 0.03);
+	base->GetYaxis()->SetRangeUser(0.024, 0.034);
 
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}");
@@ -118,9 +118,9 @@ void CumulantErrGraph_v3_normalized(){
 	gStyle->SetOptTitle(0);
 
 	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
-	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
+	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 300)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
+	TLatex* text_d = makeLatex("-2.4 < #eta < 2.4",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);
@@ -136,10 +136,10 @@ void CumulantErrGraph_v3_normalized(){
 	base->Draw("");
 	gr_pos->Draw("PSame");
 	gr_neg->Draw("PSame");
-//	text_a->DrawClone("Same");
-//	text_b->DrawClone("Same");
-//	text_c->DrawClone("Same");
-//	text_d->DrawClone("Same");
+	text_a->DrawClone("Same");
+    text_b->DrawClone("Same");
+  	text_c->DrawClone("Same");
+	text_d->DrawClone("Same");
 
 	leg->DrawClone("Same");
 

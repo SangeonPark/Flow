@@ -119,10 +119,10 @@ void CumulantErrGraph_v2_normalized(){
 	base->SetStats(0);
 	gStyle->SetOptTitle(0);
 
-	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
+	TLatex* text_a = makeLatex("p-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
 	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
+	TLatex* text_d = makeLatex("-2.4 < #eta < 2.4",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);

@@ -18,42 +18,14 @@ void CumulantErrGraph_v2(){
 	double err_pos[5];
 	double err_diff[5];
 	double cmean;
-	double v2_pos_sample[5][10];
-	double v2_neg_sample[5][10];
-	double v2_diff_sample[5][10];
+	double errmean;
+	double sum;
+	double variance_pos;
+	double variance_neg;
+	double variance_diff;
 
 
-	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/v2Cumulant_PbPb/leaveout%d.root",n+1));
-
-
-		for (Int_t i = 0; i < 5; i++){
-			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
-
-			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-			c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
-
-			c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-			c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
-
-		}
-		for(Int_t i=0; i<5; i++){
-
-
-//positive
-			cmean = c2_pos[i][0] -> GetMean();
-			v2_pos_sample[i][n] = sqrt(cmean);
-
-			cmean = c2_neg[i][0] -> GetMean();
-			v2_neg_sample[i][n] = sqrt(cmean);
-
-			v2_diff_sample[i][n] = (v2_neg_sample[i][n] - v2_pos_sample[i][n]);
-
-		}
-
-	}
-	
-	f = new TFile("../../../rootfiles/v2Cumulant_PbPb/Merged.root");
+	f = new TFile("../../../rootfiles/slope_vs_centrality/PbPb502_1.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -74,28 +46,28 @@ void CumulantErrGraph_v2(){
 		cmean = c2_pos[i][0] -> GetMean();
 		v2_pos[i] = sqrt(cmean);
 
+		errmean = c2_pos[i][0] -> GetMeanError();
+		variance_pos = (errmean*errmean)/(4*cmean);
+
 //negative
 		cmean = c2_neg[i][0] -> GetMean();
 		v2_neg[i] = sqrt(cmean);
 
+		errmean = c2_neg[i][0] -> GetMeanError();
+		variance_neg = (errmean*errmean)/(4*cmean);
+
 		//difference
 		v2_diff[i] = (v2_neg[i] - v2_pos[i]);
 
-//error bars
-		double variance_pos = 0.0;
-		double variance_neg = 0.0;
-		double variance_diff = 0.0;
-		for (int k = 0; k < 10; ++k)
-		{
-			variance_pos += (v2_pos_sample[i][k]-v2_pos[i])*(v2_pos_sample[i][k]-v2_pos[i]);
-			variance_neg += (v2_neg_sample[i][k]-v2_neg[i])*(v2_neg_sample[i][k]-v2_neg[i]);
-		}
-		variance_pos *= 0.9;
-		variance_neg *= 0.9;
+		sum = v2_pos[i] + v2_neg[i];
+
+		variance_diff = variance_pos + variance_neg;
+
+
+	//error bars
+
 		err_pos[i] = sqrt(variance_pos);
 		err_neg[i] = sqrt(variance_neg);
-		variance_diff = err_pos[i]*err_pos[i]+err_neg[i]*err_neg[i];
-
 		err_diff[i] = sqrt(variance_diff);
 
 
@@ -113,7 +85,11 @@ void CumulantErrGraph_v2(){
 	}		
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.09, 0.10);
+//PbPb
+	//base->GetYaxis()->SetRangeUser(0.094, 0.10);
+//p-Pb 
+	base->GetYaxis()->SetRangeUser(0.095, 0.105);
+
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{2}");
 
@@ -143,10 +119,10 @@ void CumulantErrGraph_v2(){
 	base->SetStats(0);
 	gStyle->SetOptTitle(0);
 
-	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
-	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
+	TLatex* text_a = makeLatex("CMS #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
+	TLatex* text_b = makeLatex("30-40% PbPb",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
+	TLatex* text_d = makeLatex("-2.4 < #eta < 2.4",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);

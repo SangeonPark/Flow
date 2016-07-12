@@ -4,6 +4,7 @@ using namespace std;
 
 void CumulantErrGraph_v3(){
 
+
 	TFile *f;
 	TH1D* c2_pos[5][2];
 	TH1D* c2_neg[5][2];
@@ -18,42 +19,14 @@ void CumulantErrGraph_v3(){
 	double err_pos[5];
 	double err_diff[5];
 	double cmean;
-	double v2_pos_sample[5][10];
-	double v2_neg_sample[5][10];
-	double v2_diff_sample[5][10];
+	double errmean;
+	double sum;
+	double variance_pos;
+	double variance_neg;
+	double variance_diff;
 
 
-	for (int n = 0; n < 10; ++n){
-		f = new TFile(Form("../../../rootfiles/v3Cumulant_pPb/leaveout%d.root",n+1));
-
-
-		for (Int_t i = 0; i < 5; i++){
-			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
-
-			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-			c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
-
-			c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-			c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
-
-		}
-		for(Int_t i=0; i<5; i++){
-
-
-//positive
-			cmean = c2_pos[i][0] -> GetMean();
-			v2_pos_sample[i][n] = sqrt(cmean);
-
-			cmean = c2_neg[i][0] -> GetMean();
-			v2_neg_sample[i][n] = sqrt(cmean);
-
-			v2_diff_sample[i][n] = (v2_neg_sample[i][n] - v2_pos_sample[i][n]);
-
-		}
-
-	}
-	
-	f = new TFile("../../../rootfiles/v3Cumulant_pPb/Merged.root");
+	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_cent_30_40/Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -74,30 +47,27 @@ void CumulantErrGraph_v3(){
 		cmean = c2_pos[i][0] -> GetMean();
 		v2_pos[i] = sqrt(cmean);
 
+		errmean = c2_pos[i][0] -> GetMeanError();
+		variance_pos = (errmean*errmean)/(4*cmean);
+
 //negative
 		cmean = c2_neg[i][0] -> GetMean();
 		v2_neg[i] = sqrt(cmean);
 
+		errmean = c2_neg[i][0] -> GetMeanError();
+		variance_neg = (errmean*errmean)/(4*cmean);
+
 		//difference
 		v2_diff[i] = (v2_neg[i] - v2_pos[i]);
 
-//error bars
-		double variance_pos = 0.0;
-		double variance_neg = 0.0;
-		double variance_diff = 0.0;
-		for (int k = 0; k < 10; ++k)
-		{
-			variance_pos += (v2_pos_sample[i][k]-v2_pos[i])*(v2_pos_sample[i][k]-v2_pos[i]);
-			variance_neg += (v2_neg_sample[i][k]-v2_neg[i])*(v2_neg_sample[i][k]-v2_neg[i]);
-			variance_diff += (v2_diff_sample[i][k]-v2_diff[i])*(v2_diff_sample[i][k]-v2_diff[i]);
-		}
-		variance_pos *= 0.9;
-		variance_neg *= 0.9;
-		variance_diff *= 0.9;
+		sum = v2_pos[i] + v2_neg[i];
+
+		variance_diff = variance_pos + variance_neg;
+
+	//error bars
+
 		err_pos[i] = sqrt(variance_pos);
 		err_neg[i] = sqrt(variance_neg);
-
-		//variance_diff = err_pos[i]*err_pos[i]+err_neg[i]*err_neg[i];
 		err_diff[i] = sqrt(variance_diff);
 
 
@@ -112,10 +82,12 @@ void CumulantErrGraph_v3(){
 	cout << endl << "v2 error" <<endl;
 	for(i=0;i<5;i++){
 		cout << err_diff[i] << ", ";
-	}			
+	}		
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(0.02, 0.03);
+
+	base->GetYaxis()->SetRangeUser(0.03, 0.04);
+
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}");
 
@@ -145,10 +117,10 @@ void CumulantErrGraph_v3(){
 	base->SetStats(0);
 	gStyle->SetOptTitle(0);
 
-	TLatex* text_a = makeLatex("p-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
-	TLatex* text_b = makeLatex("N_{trk}^{offline} [185, 260)",0.15,0.74) ;
+	TLatex* text_a = makeLatex("Pb-Pb #sqrt{s_{NN}}=5.02TeV",0.15,0.82) ;
+	TLatex* text_b = makeLatex("30-40%",0.15,0.74) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.15,0.66) ;
-//	TLatex* text_d = makeLatex("Cumulant Method(48bins)",0.15,0.58) ;
+	TLatex* text_d = makeLatex("-2.4 < #eta < 2.4",0.15,0.58) ;
 
 
 	TLegend* leg = new TLegend(.60,.70,.80,.85);
@@ -165,9 +137,9 @@ void CumulantErrGraph_v3(){
 	gr_pos->Draw("PSame");
 	gr_neg->Draw("PSame");
 	text_a->DrawClone("Same");
-	text_b->DrawClone("Same");
-	text_c->DrawClone("Same");
-//	text_d->DrawClone("Same");
+    text_b->DrawClone("Same");
+  	text_c->DrawClone("Same");
+	text_d->DrawClone("Same");
 
 	leg->DrawClone("Same");
 
@@ -179,7 +151,7 @@ void CumulantErrGraph_v3(){
 	gr_diff->Fit(fit1);
 
 	c3->cd(2);
-	gr_diff->GetYaxis()->SetRangeUser(-0.004,0.004);
+	gr_diff->GetYaxis()->SetRangeUser(-0.002,0.002);
 	gr_diff->GetXaxis()->SetLimits(-0.1,0.1);
 	gr_diff->GetXaxis()->SetTitle("A_{ch}");
 	gr_diff->GetYaxis()->SetTitle("v_{3}(-) - v_{3}(+)");

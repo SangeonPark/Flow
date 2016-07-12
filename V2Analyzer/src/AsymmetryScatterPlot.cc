@@ -1,9 +1,9 @@
-// -*- C++ -*-
+g// -*- C++ -*-
 //
-// Package:    V2AnalyzerCumulant
-// Class:      V2AnalyzerCumulant
+// Package:    AsymmetryScatterPlot
+// Class:      AsymmetryScatterPlot
 // 
-/**\class V2AnalyzerCumulant V2AnalyzerCumulant.cc Flow/V2Analyzer/src/V2AnalyzerCumulant.cc
+/**\class AsymmetryScatterPlot AsymmetryScatterPlot.cc Flow/V2Analyzer/src/AsymmetryScatterPlot.cc
 
 Description: [one line class summary]
 
@@ -32,7 +32,7 @@ Implementation:
 //
 // constructors and destructor
 //
- V2AnalyzerCumulant::V2AnalyzerCumulant(const edm::ParameterSet& iConfig)
+ AsymmetryScatterPlot::AsymmetryScatterPlot(const edm::ParameterSet& iConfig)
  {
 
  	dxySigCut_ = iConfig.getParameter<double>("dxySigCut");
@@ -50,6 +50,7 @@ Implementation:
  	trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
  	vertexSrc_ = iConfig.getParameter<std::string>("vertexSrc");
  	towerSrc_ = iConfig.getParameter<edm::InputTag>("towerSrc");
+ 	genParticleSrc_ = iConfig.getParameter<edm::InputTag>("genParticleSrc");
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
@@ -57,14 +58,12 @@ Implementation:
 
  	centBins_ = iConfig.getUntrackedParameter<std::vector<double>>("centBins");
 
-
-
 //now do what ever initialization is needed
 
  }
 
 
- V2AnalyzerCumulant::~V2AnalyzerCumulant()
+ AsymmetryScatterPlot::~AsymmetryScatterPlot()
  {
 
 // do anything here that needs to be done at desctruction time
@@ -78,7 +77,7 @@ Implementation:
 //
 
 // ------------ method called for each event  ------------
- void V2AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+ void AsymmetryScatterPlot::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  {
  	using namespace edm;
  	using namespace std;
@@ -143,6 +142,10 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
+//variables for charge asymmetry calculation- without efficiency correction
+ 	double N_pos_noeffcorr = 0.0;
+ 	double N_neg_noeffcorr = 0.0;
+ 	double N_tot_noeffcorr = 0.0;
 
 //NTrackOffline values
  	int nTracks = 0;
@@ -196,6 +199,7 @@ Implementation:
 //ptError
  		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
 
+//calculating NtrkOff
  		if(fabs(eta)<2.4 && pt > 0.4){
  			nTracks++;
  			if(charge>0){
@@ -206,18 +210,27 @@ Implementation:
  			}
  		}
 
+//kinematic cuts
  		if(pt < 0.3 || pt > 3.0 ) continue;
  		if(eta<-2.4 || 2.4 <= eta) continue;
+
+//reversebeam for merging reverse data
  		if(reverseBeam_) { eta *= -1.0;}
 
-
- 		TComplex e(1,2*phi,1);
-
- 		e *= weight; 
+//calculating charge asymmetry
  		N_tot += weight;
  		if( charge > 0){ N_pos+= weight;}
  		if( charge < 0){ N_neg+= weight;}
 
+//calculating non-weighted charge asymmetry
+ 		N_tot_noeffcorr += 1.0;
+ 		if( charge > 0 ){ N_pos_noeffcorr += 1.0;}
+ 		if( charge < 0 ){ N_neg_noeffcorr += 1.0;}
+
+//Filling Q vectors in order to calculate c2
+ 		/*
+ 		TComplex e(1,2*phi,1);
+ 		e *= weight; 
  		for (int i = 0; i < NBins; ++i)
  		{
  			double lb = Binsize*i-2.4;
@@ -237,6 +250,7 @@ Implementation:
  				
  			}
  		}
+ 		*/
  		
  	}
 
@@ -250,9 +264,47 @@ Implementation:
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
- 	asym_Dist->Fill(ach);
+
+ 	double N_diff_noeffcorr = N_pos_noeffcorr - N_neg_noeffcorr;
+ 	double ach_noeffcorr = N_diff_noeffcorr/N_tot_noeffcorr;
+
+ //	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
+ 	edm::Handle<reco::GenParticleCollection> genParticleCollection;
+ 	iEvent.getByLabel(genParticleSrc_, genParticleCollection);
+
+ 	double N_pos_gen=0.0;
+ 	double N_neg_gen=0.0;
+ 	double N_tot_gen=0.0;
+
+ 	for(unsigned it=0; it<genParticleCollection->size(); ++it) {
+
+ 		const reco::GenParticle & genCand = (*genParticleCollection)[it];
+ 		int status = genCand.status();
+ 		double genpt = genCand.pt();
+ 		double geneta = genCand.eta();
+ 		int gencharge = genCand.charge();
+
+ 		if( status != 1  || gencharge == 0 ) continue;
+ 		if( fabs(geneta) > 2.4 ) continue;
+ 		if( genpt < 0.3 || genpt > 3.0 ) continue;
+
+ 		if( gencharge > 0){ N_pos_gen+=1.0; N_tot_gen+=1.0; }
+ 		if( gencharge < 0){ N_neg_gen+=1.0; N_tot_gen+=1.0; }
+
+ 	}
+
+ 	double N_diff_gen = N_pos_gen - N_neg_gen;
+ 	double ach_gen = N_diff_gen/N_tot_gen;
+
+ 	scatterHist_effcorr->Fill(ach,ach_gen);
+ 	scatterHist_noeffcorr->Fill(ach_noeffcorr,ach_gen);
+
+
+
+//calculating c2 values from filled Q vectors
+ 	/*
  	for(Int_t i=0;i<5;i++){
 
  		if(Bins[i] < ach && ach <= Bins[i+1]){
@@ -287,26 +339,35 @@ Implementation:
  			} 			
  		}
  	}
+ 	*/
+ 	
+
  }
 
 
 
 // ------------ method called once each job just before starting event loop  ------------
- void V2AnalyzerCumulant::beginJob()    
+ void AsymmetryScatterPlot::beginJob()    
  {
  	edm::Service<TFileService> fs;
  	TH1D::SetDefaultSumw2();
+ 	TH2D::SetDefaultSumw2();
 
- 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
+// 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
-
+ 	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",100,-0.3,0,3,100,-0.3,0.3);
+ 	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",100,-0.3,0,3,100,-0.3,0.3);
 
  	edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root");  
  	TFile f1(fip1.fullPath().c_str(),"READ");
  	effTable = (TH2D*)f1.Get("rTotalEff3D");
 
+
+
+
 //list of c2 histograms
+ 	/*
  	for (Int_t i = 0; i < 5; i++){
 
  		c2_pos[i][0] = fs->make<TH1D>(Form("c2pos_%d_cos",i),"c2 Distribution",1000,-1,1);
@@ -321,42 +382,43 @@ Implementation:
  	ach_hist[2] = fs->make<TH1D>("ach_3","ach_3",1000,-0.4,0.4);
  	ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",1000,-0.4,0.4);
  	ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",1000,-0.4,0.4);
+ 	*/
 
  }
 
 // ------------ method called once each job just after ending the event loop  ------------
  void
- V2AnalyzerCumulant::endJob() 
+ AsymmetryScatterPlot::endJob() 
  {    
  }
 
 // ------------ method called when starting to processes a run  ------------
  void 
- V2AnalyzerCumulant::beginRun(edm::Run const&, edm::EventSetup const&)
+ AsymmetryScatterPlot::beginRun(edm::Run const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when ending the processing of a run  ------------
  void 
- V2AnalyzerCumulant::endRun(edm::Run const&, edm::EventSetup const&)
+ AsymmetryScatterPlot::endRun(edm::Run const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when starting to processes a luminosity block  ------------
  void 
- V2AnalyzerCumulant::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+ AsymmetryScatterPlot::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
  void 
- V2AnalyzerCumulant::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+ AsymmetryScatterPlot::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
  void
- V2AnalyzerCumulant::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+ AsymmetryScatterPlot::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 //The following says we do not know what parameters are allowed so do no validation
 // Please change this to state exactly what you do use, even if it is no parameters
  	edm::ParameterSetDescription desc;
@@ -365,4 +427,4 @@ Implementation:
  }
 
 //define this as a plug-in
- DEFINE_FWK_MODULE(V2AnalyzerCumulant);
+ DEFINE_FWK_MODULE(AsymmetryScatterPlot);
