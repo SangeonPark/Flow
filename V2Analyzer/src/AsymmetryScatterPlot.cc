@@ -1,4 +1,4 @@
-g// -*- C++ -*-
+// -*- C++ -*-
 //
 // Package:    AsymmetryScatterPlot
 // Class:      AsymmetryScatterPlot
