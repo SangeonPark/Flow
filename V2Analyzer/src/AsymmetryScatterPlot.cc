@@ -155,7 +155,7 @@ cout << "point 1" << endl;
 //define the flow vectors and weight
 
  	const int NBins = NEtaBins_;
- 	double Binsize = 4.8/(double)NBins;
+ //	double Binsize = 4.8/(double)NBins;
 
  	TComplex Q2_pos[NBins];
  	TComplex Q2_neg[NBins];
@@ -176,7 +176,7 @@ cout << "point 1" << endl;
  		double eta = cand->eta();
  		double charge = (double)cand->charge();
  		double pt = cand->pt();
- 		double phi = cand->phi();
+// 		double phi = cand->phi();
  		double weight = 1.0;
 
  		if( doEffCorrection_ ){
