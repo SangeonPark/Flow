@@ -157,6 +157,7 @@ cout << "point 1" << endl;
  	const int NBins = NEtaBins_;
  //	double Binsize = 4.8/(double)NBins;
 
+/*
  	TComplex Q2_pos[NBins];
  	TComplex Q2_neg[NBins];
  	double WQ2_pos[NBins];
@@ -170,6 +171,7 @@ cout << "point 1" << endl;
  		WQ2_neg[i] = 0.0;
 
  	}
+*/
 
  	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
