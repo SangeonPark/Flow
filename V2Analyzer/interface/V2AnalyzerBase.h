@@ -436,6 +436,7 @@ private:
       TH1D* NTrkHist;
       TH2D* effTable;
       TH1D* cbinHist;
+      TH1D* GenNTrkHist;
       TH2D* scatterHist_effcorr;
       TH2D* scatterHist_noeffcorr;
 
@@ -460,9 +461,12 @@ private:
 
       TH1D* c2_pos[5][2];
       TH1D* c2_neg[5][2];
+      TH1D* gen_c2_neg[5][2];
+      TH1D* gen_c2_pos[5][2];
 
 
       TH1D* ach_hist[5];
+      TH1D* gen_ach_hist[5];
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
