@@ -154,7 +154,7 @@ cout << "point 1" << endl;
 
 //define the flow vectors and weight
 
- 	const int NBins = NEtaBins_;
+// 	const int NBins = NEtaBins_;
  //	double Binsize = 4.8/(double)NBins;
 
 /*
@@ -362,8 +362,8 @@ cout << "point 1" << endl;
 // 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
- 	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",100,-0.3,0,3,100,-0.3,0.3);
- 	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",100,-0.3,0,3,100,-0.3,0.3);
+ 	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",100,-0.3,0.3,100,-0.3,0.3);
+ 	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",100,-0.3,0.3,100,-0.3,0.3);
 
  	edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root");  
  	TFile f1(fip1.fullPath().c_str(),"READ");
