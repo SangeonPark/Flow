@@ -253,7 +253,7 @@ Implementation:
  		*/
  		
  	}
- 	cout << nTracks << endl;
+ //	cout << nTracks << endl;
 
 //Cut on NTrackOffline (Should be disabled if useCentrality = True)	
  	if(!useCentrality_){
