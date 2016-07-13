@@ -4,16 +4,16 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("CMEandCorrelation.ThreePointCorrelator.threepointcorrelatoretagap_cfi")
+process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
-outputName = "multicrab_CME_QvsdEta_pPb_EPOS_v36"
+outputName = "multicrab_CMW_v2_pPb_EPOS_0713"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'threepointcorrelatoretagap_cfg.py'
+config.JobType.psetName = 'asymmetryscatterplot_cfg.py'
 config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 10
@@ -21,7 +21,7 @@ config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 config.Data.publication = False
 config.Data.outputDatasetTag = outputName
 
-config.Site.storageSite = 'T2_US_MIT'
+config.Site.storageSite = 'T3_US_Rice'
 
 if __name__ == '__main__':
    from CRABAPI.RawCommand import crabCommand
