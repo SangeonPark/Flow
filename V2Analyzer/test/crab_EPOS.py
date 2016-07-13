@@ -13,7 +13,7 @@ config.JobType.allowUndistributedCMSSW = True
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'asymmetryscatterplot_cfg.py'
 
-config.Data.inputDBS = 'global'
+config.Data.inputDBS = 'phys03'
 config.Data.allowNonValidInputDataset = True
 
 
