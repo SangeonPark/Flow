@@ -3,7 +3,7 @@
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
-outputName = 'CMW_v2_pPb_EPOS_HighMultiplicity_0713'
+outputName = 'CMW_v2_pPb_EPOS_HighMultiplicity_1_0713'
 config.General.requestName = outputName
 config.General.workArea = outputName
 config.General.transferOutputs = True

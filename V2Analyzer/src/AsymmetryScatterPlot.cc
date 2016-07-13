@@ -298,7 +298,7 @@ Implementation:
  	double N_diff_noeffcorr = N_pos_noeffcorr - N_neg_noeffcorr;
  	double ach_noeffcorr = N_diff_noeffcorr/N_tot_noeffcorr;
 
- //	asym_Dist->Fill(ach);
+ 	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
  	double N_pos_gen=0.0;
@@ -360,7 +360,6 @@ Implementation:
 
  		if(Bins[i] < ach && ach <= Bins[i+1]){
  			ach_hist[i]->Fill(ach);
- 			gen_ach_hist[i]->Fill(ach_gen);
 
  			TComplex z(0,0);
  			double Npairs=0.0;
@@ -384,6 +383,22 @@ Implementation:
  					c2_neg[i][0] -> Fill(z.Re(), Npairs);
  					c2_neg[i][1] -> Fill(z.Im(), Npairs);
 
+
+
+ 				}
+ 			} 			
+ 		}
+ 		if(Bins[i] < ach_gen && ach_gen <= Bins[i+1]){
+ 			gen_ach_hist[i]->Fill(ach_gen);
+ 			TComplex z(0,0);
+ 			double Npairs=0.0;
+ 			for (int j = 0; j < NBins; j++)
+ 			{
+ 				for(int k = 0; k < NBins; k++){
+
+ 					if(abs(j-k) <= (2.0/Binsize)) continue;
+
+
  					z = gen_Q2_pos[j] * TComplex::Conjugate(gen_Q2_pos[k]);
  					Npairs = gen_WQ2_pos[j] * gen_WQ2_pos[k];
  					z /= Npairs;
@@ -398,7 +413,10 @@ Implementation:
 
  				}
  			} 			
+
+
  		}
+
  	}
 
  }
