@@ -322,21 +322,21 @@ Implementation:
  		if( gencharge > 0){ N_pos_gen+=1.0; N_tot_gen+=1.0; }
  		if( gencharge < 0){ N_neg_gen+=1.0; N_tot_gen+=1.0; }
 
- 		TComplex e(1,2*phi,1);
+ 		TComplex e(1,2*genphi,1);
 
  		for (int i = 0; i < NBins; ++i)
  		{
  			double lb = Binsize*i-2.4;
  			double ub = Binsize*(i+1)-2.4;
- 			if(lb <= eta && eta < ub){
- 				if(charge > 0){
+ 			if(lb <= geneta && geneta < ub){
+ 				if(gencharge > 0){
  					gen_Q2_pos[i] += e; 
  					gen_WQ2_pos[i] += 1.0;
 
  				}
- 				if (charge < 0){
- 					Q2_neg[i] += e;
- 					WQ2_neg[i] += 1.0;
+ 				if (gencharge < 0){
+ 					gen_Q2_neg[i] += e;
+ 					gen_WQ2_neg[i] += 1.0;
 
  				}
 
