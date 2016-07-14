@@ -25,7 +25,7 @@ void CumulantErrGraph_v3_normalized(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_185300/PbPb_v3_0707_Merged.root");
+	f = new TFile("../../../rootfiles/slope_vs_centrality_v3/cent_Merged_new3.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -86,7 +86,7 @@ void CumulantErrGraph_v3_normalized(){
 
 	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
 
-	base->GetYaxis()->SetRangeUser(0.024, 0.034);
+	base->GetYaxis()->SetRangeUser(-5, 5);
 
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}");

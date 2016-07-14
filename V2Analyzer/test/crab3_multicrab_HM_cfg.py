@@ -18,7 +18,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_v2vsAch_pPb_differentmultiplicities_cumulant'
+outputName = 'multicrab_CMW_pPb_mergelast2bins_0714'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'v2analyzerCumulant_cfg.py'
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		 "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Reverse_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER"]
    beam = [False,False,True]
 
-   for paths in range(0,5):
+   for paths in range(3,5):
    	  for num in range(0,3):
 		
                 print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 		if paths == 3:
 			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
 		if paths == 4:
-			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3],hltPathNames[4]]
+			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
 
 		process.demo.reverseBeam = beam[num]       
                 RequestName = outputName + '_' + str(paths) + "_" + str(num)

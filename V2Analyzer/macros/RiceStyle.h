@@ -370,22 +370,6 @@ TH2D* make2DHist( const char*name,
 
 }
 
-void fixedFontHist(TH2D * h, Float_t xoffset=0.9, Float_t yoffset=2.7)
-{
-  h->SetLabelFont(43,"X");
-  h->SetLabelFont(43,"Y");
-  //h->SetLabelOffset(0.01);
-  h->SetLabelSize(16);
-  h->SetTitleFont(43);
-  h->SetTitleSize(20);
-  h->SetLabelSize(15,"Y");
-  h->SetTitleFont(43,"Y");
-  h->SetTitleSize(17,"Y");
-  h->SetTitleOffset(xoffset,"X");
-  h->SetTitleOffset(yoffset,"Y");
-  h->GetXaxis()->CenterTitle();
-  h->GetYaxis()->CenterTitle();
-}
 
 
 TLegend* makeLegend(){
@@ -412,7 +396,7 @@ TGraphAsymmErrors* makeEfficiency(TH1D* hist1, TH1D* hist2, const char*Draw = "c
 TLatex* makeLatex(const char* txt,  double x, double y){
 
 	TLatex* r = new TLatex(x, y, txt);
-	r->SetTextSize(0.04);
+	r->SetTextSize(0.035);
 	r->SetNDC();
 	return r;
 
