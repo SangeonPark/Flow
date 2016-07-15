@@ -69,7 +69,7 @@ if __name__ == '__main__':
 		if paths == 3:
 			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
 		if paths == 4:
-			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
+			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3],hltPathNames[4]]
 
 		process.demo.reverseBeam = beam[num]       
                 RequestName = outputName + '_' + str(paths) + "_" + str(num)
