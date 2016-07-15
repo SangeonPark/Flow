@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void CumulantErrGraph_v2(){
+void CumulantErrGraph_v3_normalized_pPb(){
 
 	TFile *f;
 	TH1D* c2_pos[5][2];
@@ -25,7 +25,7 @@ void CumulantErrGraph_v2(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/slope_vs_centrality/PbPb502_1.root");
+	f = new TFile("../../../rootfiles/v3Cumulant_PbPb/Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -57,11 +57,11 @@ void CumulantErrGraph_v2(){
 		variance_neg = (errmean*errmean)/(4*cmean);
 
 		//difference
-		v2_diff[i] = (v2_neg[i] - v2_pos[i]);
+		v2_diff[i] = (v2_neg[i] - v2_pos[i])/(v2_neg[i] + v2_pos[i]);
 
 		sum = v2_pos[i] + v2_neg[i];
 
-		variance_diff = variance_pos + variance_neg;
+		variance_diff = (4*v2_neg[i]*v2_neg[i]*variance_pos)/(sum*sum*sum*sum)+(4*v2_pos[i]*v2_pos[i]*variance_neg)/(sum*sum*sum*sum);
 
 
 	//error bars
@@ -84,11 +84,19 @@ void CumulantErrGraph_v2(){
 		cout << err_diff[i] << ", ";
 	}		
 
+
+
+ //   TCanvas* c1 = new TCanvas("c1","c1");
+ //   TCanvas* c2 = new TCanvas("c2","c2");
 	gStyle->SetLegendFont(42);
-	TH1D* base = new TH1D("base","base",1,-0.07,0.07);
-	base->GetYaxis()->SetRangeUser(0.095, 0.105);
+	TH1D* base = new TH1D("base","base",1,-0.09,0.09);
+	//pPb
+	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
+
+	//PbPb
+	base->GetYaxis()->SetRangeUser(0.02, 0.003);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
-	base->GetYaxis()->SetTitle("v_{2}{2}");
+	base->GetYaxis()->SetTitle("v_{3}{2}");
 	base->GetXaxis()->CenterTitle();
 	base->GetYaxis()->CenterTitle();
 	base->SetTitleSize  (0.040,"X");
@@ -106,10 +114,10 @@ void CumulantErrGraph_v2(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.07,0.07);
-	base2->GetYaxis()->SetRangeUser(-0.003, 0.003);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.09,0.09);
+	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle("v_{2}^{#minus}{2} #minus v_{2}^{#plus}{2}");
+	base2->GetYaxis()->SetTitle(" #frac{ v_{2}^{#minus} #minus v_{2}^{#plus} }{ v_{2}^{#minus} #plus v_{2}^{#plus} } ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");
@@ -144,8 +152,8 @@ void CumulantErrGraph_v2(){
 
 
 
-	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("30-40%",0.25,0.80) ;
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -178,7 +186,7 @@ void CumulantErrGraph_v2(){
 
 
     //Define a linear function
-	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.06, 0.06);
+	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.085, 0.085);
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
 	gr_diff->Fit(fit1,"N0");
@@ -188,7 +196,7 @@ void CumulantErrGraph_v2(){
 
 
 	TLatex* text2 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.45,0.30) ;
-	TLatex* text1 = makeLatex(Form("slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
+	TLatex* text1 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
 	text1->SetTextFont(42);
 	text2->SetTextFont(42);
 	base2->Draw("");
@@ -217,8 +225,6 @@ void CumulantErrGraph_v2(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-
-	SaveCanvas(c3,"pics","v2_comparisonwithAlice");
-
+	SaveCanvas(c3,"pics","v3_PbPb_185_260");
 
 }

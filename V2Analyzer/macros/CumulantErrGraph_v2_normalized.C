@@ -24,7 +24,7 @@ void CumulantErrGraph_v2_normalized(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/slope_vs_centrality/PbPb502_1.root");
+	f = new TFile("../../../rootfiles/v2Cumulant_PbPb/Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -83,8 +83,12 @@ void CumulantErrGraph_v2_normalized(){
 		cout << err_diff[i] << ", ";
 	}		
 	gStyle->SetLegendFont(42);
-	TH1D* base = new TH1D("base","base",1,-0.07,0.07);
-	base->GetYaxis()->SetRangeUser(0.095, 0.105);
+	TH1D* base = new TH1D("base","base",1,-0.09,0.09);
+	//pPb
+	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
+
+	//PbPb
+	base->GetYaxis()->SetRangeUser(0.093, 0.103);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{2}{2}");
 	base->GetXaxis()->CenterTitle();
@@ -104,10 +108,10 @@ void CumulantErrGraph_v2_normalized(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.07,0.07);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.09,0.09);
 	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle("v_{2}^{#minus}{2} #minus v_{2}^{#plus}{2}");
+	base2->GetYaxis()->SetTitle(" #frac{ v_{2}^{#minus} #minus v_{2}^{#plus} }{ v_{2}^{#minus} #plus v_{2}^{#plus} } ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");
@@ -136,13 +140,13 @@ void CumulantErrGraph_v2_normalized(){
 
 	gr_neg -> SetMarkerStyle(20);
 	gr_neg -> SetMarkerColor(kBlue);
-	gr_pos -> SetMarkerStyle(28);	
+	gr_pos -> SetMarkerStyle(34);	
 	gr_pos -> SetMarkerColor(kRed);
 
 
 
 
-	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
 	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
@@ -154,12 +158,12 @@ void CumulantErrGraph_v2_normalized(){
 
 
 
-	TLegend* leg = new TLegend(0.75,0.76,.95,.90);
+	TLegend* leg = new TLegend(0.76,0.80,0.94,.88);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(gr_pos, "pos","p");
-	leg->AddEntry(gr_neg , "neg","p");
+	leg->AddEntry(gr_pos, "v_{2}^{#plus}{2}","p");
+	leg->AddEntry(gr_neg , "v_{2}^{#minus}{2}","p");
 
 
 
@@ -176,7 +180,7 @@ void CumulantErrGraph_v2_normalized(){
 
 
     //Define a linear function
-	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.06, 0.06);
+	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.085, 0.085);
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
 	gr_diff->Fit(fit1,"N0");
@@ -215,6 +219,9 @@ void CumulantErrGraph_v2_normalized(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
+
+	SaveCanvas(c3,"pics","v2_PbPb_185_260");
+
 
 
 

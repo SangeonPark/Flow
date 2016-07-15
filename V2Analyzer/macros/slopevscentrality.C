@@ -109,6 +109,7 @@ void slopevscentrality(){
 		star_sysminus[i]/=100;
 		star_sysplus[i]/=100;
 	}
+	gStyle->SetLegendFont(42);
 
 	TGraphErrors* slopevscent = new TGraphErrors(6,x_centrality,y_slope,NULL,statErr);
 	TGraphErrors* ALICE = new TGraphErrors(8,x_alice,y_alice,NULL,alice_statErrors);
@@ -120,23 +121,45 @@ void slopevscentrality(){
 	slopevscent -> SetMarkerStyle(20);
 	slopevscent -> SetMarkerColor(kBlack);
 
-	ALICE -> SetMarkerStyle(28);
+	ALICE -> SetMarkerStyle(25);
 	ALICE -> SetMarkerColor(kRed);
+	ALICE -> SetLineColor(kRed);
 
-	STAR -> SetMarkerStyle(22);
+	STAR -> SetMarkerStyle(kOpenStar);
 	STAR -> SetMarkerColor(kBlue);
+	STAR -> SetLineColor(kBlue);
 
-	TH1D* base = new TH1D("base","base",100,0,100);
+	TH1D* base = new TH1D("base","base",1,0,100);
 	base->GetYaxis()->SetRangeUser(0.00,0.06);
 	base->GetXaxis()->SetTitle("Centrality(%)");
-	base->GetYaxis()->SetTitle("slope parameter");
-	base->SetStats(0);
-	base->GetYaxis()->SetTitleOffset(1.4);
-	base->GetXaxis()->SetTitleOffset(1.1);
+	base->GetYaxis()->SetTitle("Slope parameter(v_{2})");
+	base->GetXaxis()->CenterTitle();
+	base->GetYaxis()->CenterTitle();
+	base->SetTitleSize  (0.040,"X");
+	base->SetTitleOffset(1.4,"X");
+	base->SetTitleFont  (42,"X");
+	base->SetLabelOffset(0.006,"X");
+	base->SetLabelSize  (0.040,"X");
+	base->SetLabelFont  (42   ,"X");
 
+	base->SetTitleSize  (0.040,"Y");
+	base->SetTitleOffset(2.2,"Y");
+	base->SetTitleFont  (42,"Y");
+	base->SetLabelOffset(0.006,"Y");
+	base->SetLabelSize  (0.040,"Y");
+	base->SetLabelFont  (42   ,"Y");
+	base->SetLineWidth(0);
 
-	TCanvas* c3 = new TCanvas("c3","c3",1,1,600,600);
+	TCanvas* c3 = MakeCanvas("c3","c3");
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
+	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.85) ;
+	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.80) ;
 
+	text_a->SetTextFont(42);
+	text_b->SetTextFont(42);
+	text_c->SetTextFont(42);
+	text_d->SetTextFont(42);
 	slopevscent->SetFillStyle(0);
 	slopevscent->SetFillColor(0);
 	slopevscent->SetFillStyle(0);
@@ -145,20 +168,19 @@ void slopevscentrality(){
 	gStyle->SetOptTitle(0);
 
 
-	TLegend* leg = new TLegend(.45,.65,.85,.85);
+	TLegend* leg = new TLegend(.58,.70,.93,.90);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(slopevscent, "CMS, Pb-Pb at #sqrt{s_{NN}}=5.02TeV","p");
-	leg->AddEntry(ALICE, "ALICE, Pb-Pb at #sqrt{s_{NN}}=2.76TeV","p");
-	leg->AddEntry(STAR, "STAR, Au-Au at #sqrt{s_{NN}}=200GeV","p");
+	leg->AddEntry(slopevscent, "CMS, Pb-Pb 5.02TeV","p");
+	leg->AddEntry(ALICE, "ALICE, Pb-Pb 2.76TeV","p");
+	leg->AddEntry(STAR, "STAR, Au-Au 200GeV","p");
 
 	//leg->AddEntry(gr_neg, "neg","p");
 
 	
 	c3->cd();
 	base->Draw("");
-	slopevscent->Draw("PSame");
 	ALICE->Draw("PSame");
 	STAR->Draw("PSame");
 
@@ -169,12 +191,17 @@ void slopevscentrality(){
 //	ALICE_sys->Draw("2Same");
 	STAR_sys->SetFillColor(6);
 	STAR_sys->SetFillStyle(3001);
+	slopevscent->Draw("PSame");
+
 //	STAR_sys->Draw("2Same");
 
 	leg->DrawClone("PSame");
-
+//	text_c->DrawClone("Same");
+//	text_d->DrawClone("Same");
 
     //Define a linear function
+	SaveCanvas(c3,"pics","slopevscent_comparison");
+
 
 
 

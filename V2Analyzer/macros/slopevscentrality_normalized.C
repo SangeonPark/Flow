@@ -90,45 +90,67 @@ void slopevscentrality_normalized(){
 
 	}
 
+
 	TGraphErrors* PbPbslope_centrality = new TGraphErrors(6,x_centrality,PbPb_centrality_yval,NULL,PbPb_centrality_ystaterr);
-	PbPbslope_centrality -> SetMarkerStyle(25);
-	PbPbslope_centrality -> SetMarkerColor(kRed);
-
-
-	TH1D* base = new TH1D("base","base",100,0,100);
-	base->GetYaxis()->SetRangeUser(0.00,0.4);
-	base->GetXaxis()->SetTitle("Centrality(%)");
-	base->GetYaxis()->SetTitle("slope parameter(normalized v2)");
-	base->SetStats(0);
-	base->GetYaxis()->SetTitleOffset(1.4);
-	base->GetXaxis()->SetTitleOffset(1.1);
-
-
-	TCanvas* c3 = new TCanvas("c3","c3",1,1,600,600);
-
+	PbPbslope_centrality -> SetMarkerStyle(24);
+	PbPbslope_centrality -> SetMarkerColor(kBlue);
 	PbPbslope_centrality->SetFillStyle(0);
 	PbPbslope_centrality->SetFillColor(0);
+	PbPbslope_centrality -> SetLineColor(kBlue);
+
+	gStyle->SetLegendFont(42);	gStyle->SetOptTitle(0);
+	TH1D* base = new TH1D("base","base",1,0,100);
+	base->GetYaxis()->SetRangeUser(0.00,0.4);
+	base->GetXaxis()->SetTitle("Centrality(%)");
+	base->GetYaxis()->SetTitle("Slope parameter(normalized v_{2})");
+	base->GetXaxis()->CenterTitle();
+	base->GetYaxis()->CenterTitle();
+	base->SetTitleSize  (0.040,"X");
+	base->SetTitleOffset(1.4,"X");
+	base->SetTitleFont  (42,"X");
+	base->SetLabelOffset(0.006,"X");
+	base->SetLabelSize  (0.040,"X");
+	base->SetLabelFont  (42   ,"X");
+
+	base->SetTitleSize  (0.040,"Y");
+	base->SetTitleOffset(1.6,"Y");
+	base->SetTitleFont  (42,"Y");
+	base->SetLabelOffset(0.006,"Y");
+	base->SetLabelSize  (0.040,"Y");
+	base->SetLabelFont  (42   ,"Y");
+	base->SetLineWidth(0);
+
+	TCanvas* c3 = MakeCanvas("c3","c3");
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
+	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.84) ;
+	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.78) ;
+
+	text_a->SetTextFont(42);
+	text_b->SetTextFont(42);
+	text_c->SetTextFont(42);
+	text_d->SetTextFont(42);
 
 
-	gStyle->SetOptTitle(0);
-
-
-	TLegend* leg = new TLegend(.45,.65,.85,.85);
+	TLegend* leg = new TLegend(.58,.75,.93,.95);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(PbPbslope_centrality, "CMS, Pb-Pb at #sqrt{s_{NN}}=5.02TeV","p");
-
+	leg->AddEntry(PbPbslope_centrality, "CMS, Pb-Pb 5.02TeV","p");
 
 	//leg->AddEntry(gr_neg, "neg","p");
 
 	
 	c3->cd();
 	base->Draw("");
+	text_c->Draw("");
+	text_d->Draw("");
+
 	PbPbslope_centrality->Draw("PSame");
 
 
 	leg->DrawClone("PSame");
+	SaveCanvas(c3,"pics","normalizedslope_vs_cent_PbPb");
 
 
     //Define a linear function

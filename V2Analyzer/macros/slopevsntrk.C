@@ -13,14 +13,14 @@ void slopevsntrk(){
 	TF1* fit1;
 
 
-	double pPb_xval[6];
-	double pPb_yval[6];
-	double pPb_ystaterr[6];
+	double pPb_xval[4];
+	double pPb_yval[4];
+	double pPb_ystaterr[4];
 
 
-	double PbPb_xval[9];
-	double PbPb_yval[9];
-	double PbPb_ystaterr[9];
+	double PbPb_xval[8];
+	double PbPb_yval[8];
+	double PbPb_ystaterr[8];
 
 	double PbPb_centrality_xval[4];
 	double PbPb_centrality_yval[4];
@@ -37,10 +37,10 @@ void slopevsntrk(){
 	double sum;
 
 
-	for (int n = 0; n <6; ++n)
+	for (int n = 0; n <4; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/pPb/%d/Merged.root",n));
+		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/pPb/Rebin/%d/Merged.root",n));
 		NTrkHist = (TH1D*)f->Get("demo/NTrkHist");
 		pPb_xval[n] = NTrkHist->GetMean();
 
@@ -97,18 +97,19 @@ void slopevsntrk(){
 		r = fit1->GetParameter(1);
 		pPb_ystaterr[n] = fit1->GetParError(1);
 		pPb_yval[n] = r;
+		cout << r << endl;
 
 	}
 
-	TGraphErrors* pPbslope = new TGraphErrors(6,pPb_xval,pPb_yval,NULL,pPb_ystaterr);
-	pPbslope -> SetMarkerStyle(21);
+	TGraphErrors* pPbslope = new TGraphErrors(4,pPb_xval,pPb_yval,NULL,pPb_ystaterr);
+	pPbslope -> SetMarkerStyle(20);
 	pPbslope -> SetMarkerColor(kBlue);
 
 
-	for (int n = 0; n <9; ++n)
+	for (int n = 0; n <8; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/PbPb/%d/Merged.root",n));
+		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/PbPb/Rebin/%d/Merged.root",n));
 		NTrkHist = (TH1D*)f->Get("demo/NTrkHist");
 		PbPb_xval[n] = NTrkHist->GetMean();
 		for (Int_t i = 0; i < 5; i++){
@@ -169,8 +170,8 @@ void slopevsntrk(){
 		PbPb_yval[n] = r;
 
 	}
-	TGraphErrors* PbPbslope = new TGraphErrors(9,PbPb_xval,PbPb_yval,NULL,PbPb_ystaterr);
-	PbPbslope -> SetMarkerStyle(25);
+	TGraphErrors* PbPbslope = new TGraphErrors(8,PbPb_xval,PbPb_yval,NULL,PbPb_ystaterr);
+	PbPbslope -> SetMarkerStyle(24);
 	PbPbslope -> SetMarkerColor(kBlue);
 
 	for (int n = 0; n <4; ++n)
@@ -240,46 +241,62 @@ void slopevsntrk(){
 	}
 
 	TGraphErrors* PbPbslope_centrality = new TGraphErrors(4,PbPb_centrality_xval,PbPb_centrality_yval,NULL,PbPb_centrality_ystaterr);
-	PbPbslope_centrality -> SetMarkerStyle(25);
+	PbPbslope_centrality -> SetMarkerStyle(24);
 	PbPbslope_centrality -> SetMarkerColor(kRed);
 
+	gStyle->SetLegendFont(42);	gStyle->SetOptTitle(0);
 
-	TH1D* base = new TH1D("base","base",1000,0,500);
+	TH1D* base = new TH1D("base","base",1,0,500);
 	base->GetYaxis()->SetRangeUser(0.00,0.4);
-	base->GetXaxis()->SetTitle("N_{trk}^{Offline}");
-	base->GetYaxis()->SetTitle("slope parameter");
-	base->SetStats(0);	
-	base->GetYaxis()->SetTitleOffset(1.4);
-	base->GetXaxis()->SetTitleOffset(1.1);
+	base->GetXaxis()->SetTitle("N_{trk}^{offline}");
+	base->GetYaxis()->SetTitle("Slope parameter(normalized v_{2})");
+	base->GetXaxis()->CenterTitle();
+	base->GetYaxis()->CenterTitle();
+	base->SetTitleSize  (0.040,"X");
+	base->SetTitleOffset(1.4,"X");
+	base->SetTitleFont  (42,"X");
+	base->SetLabelOffset(0.006,"X");
+	base->SetLabelSize  (0.040,"X");
+	base->SetLabelFont  (42   ,"X");
+
+	base->SetTitleSize  (0.040,"Y");
+	base->SetTitleOffset(1.6,"Y");
+	base->SetTitleFont  (42,"Y");
+	base->SetLabelOffset(0.006,"Y");
+	base->SetLabelSize  (0.040,"Y");
+	base->SetLabelFont  (42   ,"Y");
+	base->SetLineWidth(0);
+
+	TCanvas* c3 = MakeCanvas("c3","c3");
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
+	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.84) ;
+	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.78) ;
+
+	text_a->SetTextFont(42);
+	text_b->SetTextFont(42);
+	text_c->SetTextFont(42);
+	text_d->SetTextFont(42);
 
 
-	TCanvas* c3 = new TCanvas("c3","c3",1,1,600,600);
-//	c3->SetLogx();
 
-	pPbslope->SetFillStyle(0);
-	pPbslope->SetFillColor(0);
-	PbPbslope->SetFillStyle(0);
-	PbPbslope->SetFillColor(0);
-	PbPbslope_centrality->SetFillStyle(0);
-	PbPbslope_centrality->SetFillColor(0);
-
-	gStyle->SetOptTitle(0);
-
-
-	TLegend* leg = new TLegend(.45,.65,.85,.85);
+	TLegend* leg = new TLegend(.70,.76,.93,.88);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
 	leg->AddEntry(pPbslope, "pPb","p");
 	leg->AddEntry(PbPbslope, "PbPb","p");
-	leg->AddEntry(PbPbslope_centrality, "PbPb(centrality)","p");
 
 	
 
 	c3->cd();
 	base->Draw("");
+	text_c->DrawClone("");
+	text_d->DrawClone("");
 	pPbslope->Draw("PSame");
 	PbPbslope->Draw("PSame");
-	PbPbslope_centrality->Draw("PSame");
+//	PbPbslope_centrality->Draw("PSame");
 	leg->DrawClone("PSame");
+	SaveCanvas(c3,"pics","slope_vs_ntrk_pPb_PbPb_superposed");
+
 }
