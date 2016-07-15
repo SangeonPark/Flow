@@ -106,19 +106,7 @@ void saveCanvas(TCanvas* c, TString dir, TString filename)
    c->Print(Form("../%s/%s_%d.png",dir.Data(),filename.Data(),date->GetDate()));
 }
 
-void initSubPad(TPad* pad, int i)
-{
-  //printf("Pad: %p, index: %d\n",pad,i);
-
-  pad->cd(i);
-  TPad *tmpPad = (TPad*) pad->GetPad(i);
-  tmpPad->SetLeftMargin  (0.20);
-  tmpPad->SetTopMargin   (0.06);
-  tmpPad->SetRightMargin (0.08);
-  tmpPad->SetBottomMargin(0.15);
-  return;
-}
-
+/*
 vector<TPad*> makeMultiPad(const int num){//we only have 4,6,8 options for now
 
 	cout << "num: "<< num << endl;
@@ -243,7 +231,7 @@ vector<TPad*> makeMultiPad(const int num){//we only have 4,6,8 options for now
 
 	return temp;
 }
-
+*/
 TH1D* makeHist(const char*name, const char*title, const char*xtit, const char*ytit, const int nBins, const double lower, const double higher, EColor color = kBlack ){
 
 	TH1D* temp = new TH1D(name, title, nBins, lower, higher);
