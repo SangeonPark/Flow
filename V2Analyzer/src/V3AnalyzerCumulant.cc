@@ -45,6 +45,7 @@ Implementation:
  	Nmin_ = iConfig.getParameter<int>("Nmin");
  	Nmax_ = iConfig.getParameter<int>("Nmax");
  	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
+
  	
 
  	trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
@@ -53,6 +54,8 @@ Implementation:
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
+ 	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
+
 
  	centBins_ = iConfig.getUntrackedParameter<std::vector<double>>("centBins");
 
