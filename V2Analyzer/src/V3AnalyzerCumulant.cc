@@ -110,8 +110,7 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 	double etHFtowerSumMinus = 0.0;
 	double etHFtowerSum = 0.0;
 
-	cout << "point0" << endl;
-	cout << useCentrality_ << endl;
+
 
 	if( useCentrality_ ){
 
@@ -141,7 +140,6 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 
 	}
 
-	cout << "point 1" << endl;
 
 //variables for charge asymmetry calculation
 	double N_pos = 0.0;
@@ -253,7 +251,6 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
 
 	}
-	cout << "point2" << endl;
 //asymmetry calculation
 	double N_diff = N_pos - N_neg;
 	double ach = N_diff/N_tot;
