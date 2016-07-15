@@ -107,6 +107,8 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
  	double etHFtowerSumMinus = 0.0;
  	double etHFtowerSum = 0.0;
 
+ 	cout << "point0" << endl;
+
 	if( useCentrality_ ){
 
 		for( unsigned i = 0; i<towers->size(); ++ i){
