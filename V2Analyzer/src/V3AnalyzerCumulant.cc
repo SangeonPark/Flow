@@ -103,11 +103,12 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 	Handle<CaloTowerCollection> towers;
 	iEvent.getByLabel(towerSrc_, towers);
 
- 	double etHFtowerSumPlus = 0.0;
- 	double etHFtowerSumMinus = 0.0;
- 	double etHFtowerSum = 0.0;
+	double etHFtowerSumPlus = 0.0;
+	double etHFtowerSumMinus = 0.0;
+	double etHFtowerSum = 0.0;
 
- 	cout << "point0" << endl;
+	cout << "point0" << endl;
+	cout << useCentrality_ << endl;
 
 	if( useCentrality_ ){
 
@@ -136,6 +137,7 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 		if( hiBin < Nmin_ || hiBin >= Nmax_ ) return;
 
 	}
+
 	cout << "point 1" << endl;
 
 //variables for charge asymmetry calculation
