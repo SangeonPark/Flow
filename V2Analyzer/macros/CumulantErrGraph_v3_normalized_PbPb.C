@@ -94,7 +94,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.02, 0.003);
+	base->GetYaxis()->SetRangeUser(0.02, 0.03);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}{2}");
 	base->GetXaxis()->CenterTitle();
@@ -117,7 +117,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	TH1D* base2 = new TH1D("base2","base2",1,-0.09,0.09);
 	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle(" #frac{ v_{2}^{#minus} #minus v_{2}^{#plus} }{ v_{2}^{#minus} #plus v_{2}^{#plus} } ");
+	base2->GetYaxis()->SetTitle(" #frac{ v_{3}^{#minus} #minus v_{3}^{#plus} }{ v_{3}^{#minus} #plus v_{3}^{#plus} } ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");
@@ -152,7 +152,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 
-	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
 	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
@@ -168,8 +168,8 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(gr_pos, "v_{2}^{#plus}{2}","p");
-	leg->AddEntry(gr_neg , "v_{2}^{#minus}{2}","p");
+	leg->AddEntry(gr_pos, "v_{3}^{#plus}{2}","p");
+	leg->AddEntry(gr_neg , "v_{3}^{#minus}{2}","p");
 
 
 
