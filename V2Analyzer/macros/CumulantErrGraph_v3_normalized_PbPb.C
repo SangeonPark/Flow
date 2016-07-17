@@ -25,7 +25,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v3Cumulant_PbPb/Merged.root");
+	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_185300/PbPb_v3_0707_Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -94,7 +94,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.02, 0.03);
+	base->GetYaxis()->SetRangeUser(0.024, 0.034);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}{2}");
 	base->GetXaxis()->CenterTitle();
@@ -115,7 +115,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base->SetLineWidth(0);
 
 	TH1D* base2 = new TH1D("base2","base2",1,-0.09,0.09);
-	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
+	base2->GetYaxis()->SetRangeUser(-0.05, 0.05);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" #frac{ v_{3}^{#minus} #minus v_{3}^{#plus} }{ v_{3}^{#minus} #plus v_{3}^{#plus} } ");
 	base2->GetXaxis()->CenterTitle();
@@ -153,7 +153,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 300",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -225,6 +225,6 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","v3_PbPb_185_260");
+	SaveCanvas(c3,"pics","v3_PbPb_185_300");
 
 }
