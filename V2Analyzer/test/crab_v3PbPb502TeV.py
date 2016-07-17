@@ -3,7 +3,7 @@
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
-outputName = 'PbPb_Cumulant_v3_185_260_0704_correct_wholefile'
+outputName = 'CMW_PbPb_Cumulant_v3_185_260_0716'
 config.General.requestName = outputName
 config.General.workArea = outputName
 config.General.transferOutputs = True
@@ -34,7 +34,7 @@ config.Data.inputDataset = '/HIMinimumBias5/HIRun2015-02May2016-v1/AOD'
 
 config.Data.splitting = 'FileBased'
 config.Data.ignoreLocality = False
-config.Data.unitsPerJob = 15
+config.Data.unitsPerJob = 10
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB()) 
 config.Data.publication = False
 config.Site.storageSite = 'T3_US_Rice'
