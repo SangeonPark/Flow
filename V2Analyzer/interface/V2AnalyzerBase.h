@@ -406,7 +406,7 @@ private:
       
       TH1D* c2_pos[100][2];
       TH1D* c2_neg[100][2];
-      TH1D* ach_hist[100][2];
+      TH1D* ach_hist[100];
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
