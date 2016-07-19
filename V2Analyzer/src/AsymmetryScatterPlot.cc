@@ -434,7 +434,7 @@ Implementation:
  	const int size = NAchBins;
 
  	TH1D* temp_c2_pos[size][2];
- 	TH1D* temp_c2_pos[size][2];
+ 	TH1D* temp_c2_neg[size][2];
  	TH1D* temp_ach_hist[size];
 
  	*(*c2_pos)[][] = &temp_c2_pos;
@@ -442,7 +442,7 @@ Implementation:
  	*(*ach_hist)[] = &temp_ach_hist;
 
  	TH1D* gen_temp_c2_pos[size][2];
- 	TH1D* gen_temp_c2_pos[size][2];
+ 	TH1D* gen_temp_c2_neg[size][2];
  	TH1D* gen_temp_ach_hist[size];
 
  	*(*gen_c2_pos)[][] = &gen_temp_c2_pos;
