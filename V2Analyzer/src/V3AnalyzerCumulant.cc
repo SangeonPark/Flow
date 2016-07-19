@@ -263,7 +263,7 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 	for(Int_t i=0;i < NAchBins;i++){
 
 		if(achBins_[i] < ach && ach <= achBins_[i+1]){
-			ach_hist[i]->Fill(ach);
+			ach_hist[i] -> Fill(ach);
 
 			TComplex z(0,0);
 			double Npairs=0.0;
