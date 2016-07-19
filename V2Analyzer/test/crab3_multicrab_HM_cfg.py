@@ -6,7 +6,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.v3analyzerCumulant_cfi")
 
-ntrkRange = [120,150,185,220,300]
+ntrkRange = [120,150,185,220,260,300]
 
 hltPathNames = ['HLT_PAPixelTracks_Multiplicity100_v*',
 		'HLT_PAPixelTracks_Multiplicity130_v*',
@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		 "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Reverse_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER"]
    beam = [False,False,True]
 
-   for paths in range(0,4):
+   for paths in range(0,5):
    	  for num in range(0,3):
 		
                 print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
@@ -69,7 +69,7 @@ if __name__ == '__main__':
 		if paths == 3:
 			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
 		if paths == 4:
-			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3],hltPathNames[4]]
+			process.hltHM.HLTPaths = [hltPathNames[0],hltPathNames[1],hltPathNames[2],hltPathNames[3]]
 
 		process.demo.reverseBeam = beam[num]       
                 RequestName = outputName + '_' + str(paths) + "_" + str(num)
