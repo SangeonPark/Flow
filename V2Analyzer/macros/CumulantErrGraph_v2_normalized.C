@@ -223,7 +223,7 @@ void CumulantErrGraph_v2_normalized(){
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
 
-	SaveCanvas(c3,"pics","v2_PbPb_185_260");
+	//SaveCanvas(c3,"pics","v2_PbPb_185_260");
 
 
 

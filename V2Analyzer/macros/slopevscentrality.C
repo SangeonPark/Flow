@@ -185,12 +185,6 @@ void slopevscentrality(){
 	STAR->Draw("PSame");
 
 
-	ALICE_sys->SetFillColor(2);
-	ALICE_sys->SetFillStyle(3001);
-
-//	ALICE_sys->Draw("2Same");
-	STAR_sys->SetFillColor(6);
-	STAR_sys->SetFillStyle(3001);
 	slopevscent->Draw("PSame");
 
 //	STAR_sys->Draw("2Same");
