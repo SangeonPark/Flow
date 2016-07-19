@@ -304,7 +304,6 @@ Implementation:
 
 //ach binning
  	NAchBins = achBins_.size()-1;
- 	const int size = NAchBins;
 
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
