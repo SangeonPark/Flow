@@ -392,8 +392,6 @@ Implementation:
  			}
 
  			gen_ach_hist[i]->Fill(ach_gen);
- 			TComplex z(0,0);
- 			double Npairs=0.0;
  			for (int j = 0; j < NBins; j++)
  			{
  				for(int k = 0; k < NBins; k++){
