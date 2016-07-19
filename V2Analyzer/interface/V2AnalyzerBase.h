@@ -292,8 +292,8 @@ private:
 
 //      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
 
-      TH1D*** c2_pos;
-      TH1D*** c2_neg;
+      TH1D** c2_pos;
+      TH1D** c2_neg;
       TH1D** ach_hist;
       
       edm::InputTag trackSrc_;
@@ -404,8 +404,8 @@ private:
       std::string efftablePath_;
       std::string efftableName_;
       
-      TH1D*** c2_pos;
-      TH1D*** c2_neg;
+      TH1D** c2_pos;
+      TH1D** c2_neg;
       TH1D** ach_hist;
       
       edm::InputTag trackSrc_;
@@ -466,10 +466,10 @@ private:
       std::string efftablePath_;
       std::string efftableName_;
 
-      TH1D*** c2_pos;
-      TH1D*** c2_neg;
-      TH1D*** gen_c2_neg;
-      TH1D*** gen_c2_pos;
+      TH1D** c2_pos;
+      TH1D** c2_neg;
+      TH1D** gen_c2_neg;
+      TH1D** gen_c2_pos;
 
       TH1D** ach_hist;
       TH1D** gen_ach_hist;
