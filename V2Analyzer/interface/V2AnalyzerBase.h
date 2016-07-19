@@ -456,7 +456,7 @@ private:
       bool doEffCorrection_;
       bool reverseBeam_;      
       bool useCentrality_;
-*
+
 
       std::vector<double> centBins_;
       std::vector<double> achBins_;
