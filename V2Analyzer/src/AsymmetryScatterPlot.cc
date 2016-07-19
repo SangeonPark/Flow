@@ -57,6 +57,9 @@ Implementation:
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
 
  	centBins_ = iConfig.getUntrackedParameter<std::vector<double>>("centBins");
+ 	achBins_ = iConfig.getUntrackedParameter<std::vector<double>>("achBins");
+ 	efftablePath_ = iConfig.getParameter<std::string>("efftablePath");
+ 	efftableName_ = iConfig.getParameter<std::string>("efftableName");
 
 //now do what ever initialization is needed
 
@@ -356,9 +359,9 @@ Implementation:
 
 //calculating c2 values from filled Q vectors
  	
- 	for(Int_t i=0;i<5;i++){
+ 	for(Int_t i=0;i<NAchBins;i++){
 
- 		if(Bins[i] < ach && ach <= Bins[i+1]){
+ 		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
 
  			TComplex z(0,0);
@@ -386,9 +389,8 @@ Implementation:
 
 
  				}
- 			} 			
- 		}
- 		if(Bins[i] < ach_gen && ach_gen <= Bins[i+1]){
+ 			}
+ 			
  			gen_ach_hist[i]->Fill(ach_gen);
  			TComplex z(0,0);
  			double Npairs=0.0;
@@ -413,9 +415,9 @@ Implementation:
 
  				}
  			} 			
-
-
+ 			
  		}
+ 		
 
  	}
 
@@ -430,6 +432,17 @@ Implementation:
  	TH1D::SetDefaultSumw2();
  	TH2D::SetDefaultSumw2();
 
+ 	NAchBins = achBins_.size()-1;
+ 	const int size = NAchBins;
+
+ 	c2_pos = new TH1D[size][2];
+ 	c2_neg = new TH1D[size][2];
+ 	ach_hist = new TH1D[size];
+ 	gen_c2_pos = new TH1D[size][2];
+ 	gen_c2_neg = new TH1D[size][2];
+ 	gen_ach_hist = new TH1D[size];
+
+
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	GenNTrkHist = fs->make<TH1D>("GenNtrkHist","GenNTrack",5000,0,5000);
@@ -437,16 +450,13 @@ Implementation:
  	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
  	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
 
- 	edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root");  
+ 	edm::FileInPath fip1(efftablePath_);  
  	TFile f1(fip1.fullPath().c_str(),"READ");
- 	effTable = (TH2D*)f1.Get("rTotalEff3D");
-
-
-
+ 	effTable = (TH2D*)f1.Get(efftableName_);
 
 //list of c2 histograms
  	
- 	for (Int_t i = 0; i < 5; i++){
+ 	for (Int_t i = 0; i < NAchBins; i++){
 
  		c2_pos[i][0] = fs->make<TH1D>(Form("c2pos_%d_cos",i),"c2 Distribution",1000,-1,1);
  		c2_pos[i][1] = fs->make<TH1D>(Form("c2pos_%d_sin",i),"c2 Distribution",1000,-1,1);
@@ -456,21 +466,10 @@ Implementation:
  		gen_c2_pos[i][1] = fs->make<TH1D>(Form("gen_c2pos_%d_sin",i),"gen c2 Distribution",1000,-1,1);
  		gen_c2_neg[i][0] = fs->make<TH1D>(Form("gen_c2neg_%d_cos",i),"gen c2 Distribution",1000,-1,1);
  		gen_c2_neg[i][1] = fs->make<TH1D>(Form("gen_c2neg_%d_sin",i),"gen c2 Distribution",1000,-1,1);
+ 		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+ 		gen_ach_hist[i] = fs->make<TH1D>(Form("gen_ach_%d",i+1),Form("gen_ach_%d",i+1),1000,-0.4,0.4);
 
  	}
-
- 	ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,-0.4,0.4);
- 	ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,-0.4,0.4);
- 	ach_hist[2] = fs->make<TH1D>("ach_3","ach_3",1000,-0.4,0.4);
- 	ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",1000,-0.4,0.4);
- 	ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",1000,-0.4,0.4);
-
- 	gen_ach_hist[0] = fs->make<TH1D>("gen_ach_1","gen_ach_1",1000,-0.4,0.4);
- 	gen_ach_hist[1] = fs->make<TH1D>("gen_ach_2","gen_ach_2",1000,-0.4,0.4);
- 	gen_ach_hist[2] = fs->make<TH1D>("gen_ach_3","gen_ach_3",1000,-0.4,0.4);
- 	gen_ach_hist[3] = fs->make<TH1D>("gen_ach_4","gen_ach_4",1000,-0.4,0.4);
- 	gen_ach_hist[4] = fs->make<TH1D>("gen_ach_5","gen_ach_5",1000,-0.4,0.4);
- 	
 
  }
 

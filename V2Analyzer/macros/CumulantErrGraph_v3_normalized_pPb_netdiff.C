@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void CumulantErrGraph_v3_normalized_PbPb(){
+void CumulantErrGraph_v3_normalized_pPb_netdiff(){
 
 	TFile *f;
 	TH1D* c2_pos[5][2];
@@ -11,7 +11,9 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	TH1D* ach_hist[5];
 	double x[5];
 
-
+	TH1D* NtrkHist;
+	TH1D* net_c2_pos;
+	TH1D* net_c2_neg;
 
 	double v2_pos[5];
 	double v2_neg[5];
@@ -27,7 +29,8 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_185_300/Merged.root");
+	f = new TFile("../../../rootfiles/v3Cumulant_pPb/Merged.root");
+	NtrkHist = (TH1D*)f -> Get("demo/ChargeAsym");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -74,6 +77,69 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 	}
+	net_c2_pos = new TH1D(*c2_pos[0][0]);
+	net_c2_neg = new TH1D(*c2_neg[0][0]);
+
+	for (int i = 1; i < 5; ++i){
+
+		net_c2_pos -> Add(c2_pos[i][0],1.);
+		net_c2_neg -> Add(c2_neg[i][0],1.);
+
+	}
+
+	double net_xval[1];
+	double net_yval[1];
+	double net_ystaterr[1];
+	double net_v2_pos;
+	double net_v2_neg;
+	double net_v2_diff;
+
+	net_xval[0] = NtrkHist->GetMean();
+	cout << "netxval" << net_xval[0] << endl;
+
+
+	cmean = net_c2_pos -> GetMean();
+	net_v2_pos = sqrt(cmean);
+
+
+
+	errmean = net_c2_pos -> GetMeanError();
+
+
+
+	variance_pos = (errmean*errmean)/(4*cmean);
+
+
+
+//negative
+	cmean = net_c2_neg -> GetMean();
+	net_v2_neg = sqrt(cmean);
+
+
+
+	errmean = net_c2_neg -> GetMeanError();
+	variance_neg = (errmean*errmean)/(4*cmean);
+
+
+
+		//difference
+	net_v2_diff = (net_v2_neg - net_v2_pos)/(net_v2_neg + net_v2_pos);
+
+	sum = net_v2_pos + net_v2_neg;
+
+	variance_diff = (4*net_v2_neg*net_v2_neg*variance_pos)/(sum*sum*sum*sum)+(4*net_v2_pos*net_v2_pos*variance_neg)/(sum*sum*sum*sum);
+
+
+	net_yval[0] = net_v2_diff;
+	net_ystaterr[0] = sqrt(variance_diff);
+	TGraphErrors *net_gr_diff = new TGraphErrors(1,net_xval,net_yval,NULL,net_ystaterr);
+
+	cout << net_yval[0] << endl;
+	cout << net_xval[0] << endl;
+
+	net_gr_diff -> SetMarkerStyle(20);	
+	net_gr_diff -> SetMarkerColor(kBlue);
+
 	for(i=0;i<5;i++){
 		cout << x[i] << ", ";
 	}	
@@ -96,7 +162,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.024, 0.034);
+	base->GetYaxis()->SetRangeUser(0.020, 0.030);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}{2}");
 	base->GetXaxis()->CenterTitle();
@@ -154,8 +220,8 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 
-	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 300",0.25,0.80) ;
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -205,6 +271,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	fit1->DrawClone("Same");
 	gr_diff->SetMarkerStyle(20);
 	gr_diff->Draw("PSame");
+	net_gr_diff->Draw("PSame");
 
 	text_a->DrawClone("Same");
 	text_b->DrawClone("Same");
@@ -220,13 +287,15 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	fa1->SetLineWidth(0);
 	fa1->DrawClone("Same");
 
-	TLegend* leg2 = new TLegend(0.25,0.68,0.5,0.78);
+	TLegend* leg2 = new TLegend(0.25,0.64,0.5,0.78);
 	leg2->SetLineColor(kWhite);
 	leg2->SetFillColor(0);
 	leg2->SetFillStyle(0);
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
+	leg2->AddEntry(net_gr_diff , "net difference","p");
+
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","v3_PbPb_185_300");
+	SaveCanvas(c3,"pics","v3_p_185_300_netdiff");
 
 }

@@ -4,19 +4,27 @@ demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       vertexSrc = cms.string('offlinePrimaryVertices'),
                       trackSrc = cms.InputTag('generalTracks'),
                       towerSrc = cms.InputTag('towerMaker'),
-                      
-                    # nHitCut = cms.int32(3),	
+
+                      #don't change this part
                       dxySigCut = cms.double(3.0),
                       dzSigCut = cms.double(3.0),
                       etaCutMin = cms.double(-2.4),
                       etaCutMax = cms.double(2.4),
                       etaHFLow = cms.double(3.0),
                       etaHFUpp = cms.double(5.0),
-                      
                       NEtaBins = cms.int32(48),                      
                       doEffCorrection = cms.bool(True),
-                      reverseBeam = cms.bool(False),
+                    
+                      #ALWAYS CHECK THIS PART
+                      #pPb
+                      #efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
+                      #efftableName = cms.string('rTotalEff3D'),
+                      #PbPb
+                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
+                      efftableName = cms.string('rTotalEff3D_1'),
+                      achBins = cms.untracked.vdouble(-999,-0.04,-0.015,0.015,0.04,999),                      
 
+                      reverseBeam = cms.bool(False),
                       useCentrality = cms.bool(False),
                       Nmin = cms.int32(185),
                       Nmax = cms.int32(300),

@@ -56,6 +56,11 @@ Implementation:
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
 
  	centBins_ = iConfig.getUntrackedParameter<std::vector<double>>("centBins");
+ 	achBins_ = iConfig.getUntrackedParameter<std::vector<double>>("achBins");
+ 	efftablePath_ = iConfig.getParameter<std::string>("efftablePath");
+ 	efftableName_ = iConfig.getParameter<std::string>("efftableName");
+
+
 
 
 
@@ -253,11 +258,11 @@ Implementation:
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
- 	for(Int_t i=0;i<5;i++){
+ 	for(Int_t i=0;i<NAchBins;i++){
 
- 		if(Bins[i] < ach && ach <= Bins[i+1]){
+ 		if(achBins_[i] <= ach && ach < achBins_[i+1]){
+ 			
  			ach_hist[i]->Fill(ach);
-
  			TComplex z(0,0);
  			double Npairs=0.0;
 
@@ -297,30 +302,34 @@ Implementation:
  	edm::Service<TFileService> fs;
  	TH1D::SetDefaultSumw2();
 
+//ach binning
+ 	NAchBins = achBins_.size()-1;
+ 	const int size = NAchBins;
+ 	
+
+ 	c2_pos = new TH1D[size][2];
+ 	c2_neg = new TH1D[size][2];
+ 	ach_hist = new TH1D[size];
+
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
 
 
- 	edm::FileInPath fip1("Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root");  
+ 	edm::FileInPath fip1(efftablePath_);  
  	TFile f1(fip1.fullPath().c_str(),"READ");
- 	effTable = (TH2D*)f1.Get("rTotalEff3D");
+ 	effTable = (TH2D*)f1.Get(efftableName_);
 
 //list of c2 histograms
- 	for (Int_t i = 0; i < 5; i++){
+ 	for (Int_t i = 0; i < NAchBins; i++){
 
  		c2_pos[i][0] = fs->make<TH1D>(Form("c2pos_%d_cos",i),"c2 Distribution",1000,-1,1);
  		c2_pos[i][1] = fs->make<TH1D>(Form("c2pos_%d_sin",i),"c2 Distribution",1000,-1,1);
  		c2_neg[i][0] = fs->make<TH1D>(Form("c2neg_%d_cos",i),"c2 Distribution",1000,-1,1);
  		c2_neg[i][1] = fs->make<TH1D>(Form("c2neg_%d_sin",i),"c2 Distribution",1000,-1,1);
-
+ 		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+ 		
  	}
-
- 	ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,-0.4,0.4);
- 	ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,-0.4,0.4);
- 	ach_hist[2] = fs->make<TH1D>("ach_3","ach_3",1000,-0.4,0.4);
- 	ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",1000,-0.4,0.4);
- 	ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",1000,-0.4,0.4);
 
  }
 

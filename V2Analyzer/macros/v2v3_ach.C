@@ -23,43 +23,6 @@ void v2v3_ach(){
 	TGraphErrors *gr_v2_diff = new TGraphErrors(5,x_pPb,y_pPb,NULL,err_pPb);
 	TGraphErrors *gr_v3_diff = new TGraphErrors(5,x_PbPb,y_PbPb,NULL,err_PbPb);
 
-
- //   TCanvas* c1 = new TCanvas("c1","c1");
- //   TCanvas* c2 = new TCanvas("c2","c2");
-	TCanvas* c3 = new TCanvas("c3","c3",1,1,720,600);
-	c3->SetLeftMargin(0.2);
-
-	gr_v2_diff -> SetMarkerStyle(20);
-	gr_v2_diff -> SetMarkerColor(kBlue);
-	gr_v3_diff -> SetMarkerStyle(34);
-	gr_v3_diff -> SetMarkerColor(kRed);
-	gr_v2_diff->SetFillStyle(0);
-	gr_v2_diff->SetFillColor(0);
-	gr_v3_diff->SetFillStyle(0);
-	gr_v3_diff->SetFillColor(0);
-
-	base->GetYaxis()->SetTitleOffset(1.8);
-	base->GetXaxis()->SetTitleOffset(1.4);
-	base->GetYaxis()->SetNdivisions(505); 
-	base->GetXaxis()->SetNdivisions(505); 
-	base->SetStats(0);
-	gStyle->SetOptTitle(0);
-
-	TLegend* leg = new TLegend(.70,.70,.85,.85);
-	leg->SetLineColor(kWhite);
-	leg->SetFillColor(0);
-	leg->SetFillStyle(0);
-	leg->AddEntry(gr_v2_diff, "PbPb v2 slope","p");
-	leg->AddEntry(gr_v3_diff, "PbPb v3 slope","p");
-
-	
-	c3->cd();
-	base->Draw("");
-	gr_v2_diff->Draw("PSame");
-	gr_v3_diff->Draw("PSame");
-	leg->DrawClone("Same");
-
-
     //Define a linear function
 	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 	fit1->SetLineColor(kBlue);
@@ -71,12 +34,68 @@ void v2v3_ach(){
 	fit2->SetLineStyle(2);
 	gr_v3_diff->Fit(fit2);
 
+ //   TCanvas* c1 = new TCanvas("c1","c1");
+ //   TCanvas* c2 = new TCanvas("c2","c2");
+	TCanvas* c3 = MakeCanvas("c3","c3");
+
+
+	gr_v2_diff -> SetMarkerStyle(20);
+	gr_v2_diff -> SetMarkerColor(kBlue);
+	gr_v3_diff -> SetMarkerStyle(34);
+	gr_v3_diff -> SetMarkerColor(kRed);
+	gr_v2_diff->SetFillStyle(0);
+	gr_v2_diff->SetFillColor(0);
+	gr_v3_diff->SetFillStyle(0);
+	gr_v3_diff->SetFillColor(0);
+
+	gStyle->SetLegendFont(42);	gStyle->SetOptTitle(0);
+
+	TH1D* base = new TH1D("base","base",1,-0.1,0.1);
+	base->GetYaxis()->SetRangeUser(-0.05,0.05);
+	base->GetXaxis()->SetTitle("Observed A_{ch}");
+	base->GetYaxis()->SetTitle("normalized #Deltav_{n}");
+	base->GetXaxis()->CenterTitle();
+	base->GetYaxis()->CenterTitle();
+	base->SetTitleSize  (0.040,"X");
+	base->SetTitleOffset(1.4,"X");
+	base->SetTitleFont  (42,"X");
+	base->SetLabelOffset(0.006,"X");
+	base->SetLabelSize  (0.040,"X");
+	base->SetLabelFont  (42   ,"X");
+
+	base->SetTitleSize  (0.040,"Y");
+	base->SetTitleOffset(2.0,"Y");
+	base->SetTitleFont  (42,"Y");
+	base->SetLabelOffset(0.006,"Y");
+	base->SetLabelSize  (0.040,"Y");
+	base->SetLabelFont  (42   ,"Y");
+	base->SetLineWidth(0);
+	TLatex* text1 = makeLatex(Form("slope normalized v_{2} = %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.30) ;
+	TLatex* text2 = makeLatex(Form("slope normalized v_{3} = %.3f #pm %.3f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.25) ;
+	TLatex* text3 = makeLatex("N_{trk}^{offline} v2: [185, 260) v3: [185, 300) " ,0.45,0.20) ;
+	text1->SetTextFont(42);
+	text2->SetTextFont(42);
+	text3->SetTextFont(42);
 
 
 
-	TLatex* text1 = makeLatex(Form("slope pPb = %f #pm %f",fit1->GetParameter(1),fit1->GetParError(1)),0.25,0.8) ;
-	TLatex* text2 = makeLatex(Form("slope PbPb = %f #pm %f",fit2->GetParameter(1),fit2->GetParError(1)),0.25,0.7) ;
-	TLatex* text3 = makeLatex("N_{trk}^{offline} v2: [185, 260) v3: [185, 300) " ,0.25,0.6) ;
+	TLegend* leg = new TLegend(.25,.76,.48,.88);
+
+
+	leg->SetFillColor(0);
+	leg->SetFillStyle(0);
+	leg->AddEntry(gr_v2_diff, "PbPb v2","p");
+	leg->AddEntry(gr_v3_diff, "PbPb v3","p");
+	
+
+	c3->cd();
+	
+	base->Draw("");
+	gr_v2_diff->Draw("PSame");
+	gr_v3_diff->Draw("PSame");
+	leg->DrawClone("Same");
+
+
 
 
 	text1->DrawClone("Same");
@@ -89,6 +108,8 @@ void v2v3_ach(){
 	fa1->SetLineColor(kBlack);
 	fa1->SetLineWidth(1);
 	fa1->DrawClone("Same");
+		SaveCanvas(c3,"pics","v2v3_comparison");
+
 
 
 }

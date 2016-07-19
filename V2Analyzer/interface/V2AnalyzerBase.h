@@ -284,15 +284,17 @@ private:
       bool reverseBeam_;
       bool useCentrality_;
 
-      std::vector<double> centBins_;      
+      std::vector<double> centBins_;
+      std::vector<double> achBins_;
+      std::string efftablePath_;
+      std::string efftableName_;
+      int NAchBins;
 
-      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
+//      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
 
-      TH1D* c2_pos[5][2];
-      TH1D* c2_neg[5][2];
-
-
-      TH1D* ach_hist[5];
+      TH1D* c2_pos;
+      TH1D* c2_neg;
+      TH1D* ach_hist;
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
@@ -389,6 +391,7 @@ private:
       int NEtaBins_;
       int Nmin_;
       int Nmax_;
+      int NAchBins;
 
       bool doEffCorrection_;
       bool reverseBeam_;      
@@ -396,15 +399,14 @@ private:
 
 
       std::vector<double> centBins_;      
-
-
-      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
-
-      TH1D* c2_pos[5][2];
-      TH1D* c2_neg[5][2];
-
-
-      TH1D* ach_hist[5];
+      std::vector<double> achBins_;
+      //double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
+      std::string efftablePath_;
+      std::string efftableName_;
+      
+      TH1D* c2_pos;
+      TH1D* c2_neg;
+      TH1D* ach_hist;
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
@@ -449,24 +451,28 @@ private:
       int NEtaBins_;
       int Nmin_;
       int Nmax_;
+      int NAchBins;
 
       bool doEffCorrection_;
       bool reverseBeam_;      
       bool useCentrality_;
 
 
-      std::vector<double> centBins_;      
+      std::vector<double> centBins_;
+      std::vector<double> achBins_;
+      
 
-      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
+      //double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
+      std::string efftablePath_;
+      std::string efftableName_;
 
-      TH1D* c2_pos[5][2];
-      TH1D* c2_neg[5][2];
-      TH1D* gen_c2_neg[5][2];
-      TH1D* gen_c2_pos[5][2];
+      TH1D* c2_pos;
+      TH1D* c2_neg;
+      TH1D* gen_c2_neg;
+      TH1D* gen_c2_pos;
 
-
-      TH1D* ach_hist[5];
-      TH1D* gen_ach_hist[5];
+      TH1D* ach_hist;
+      TH1D* gen_ach_hist;
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
