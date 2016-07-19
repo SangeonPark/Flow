@@ -390,7 +390,7 @@ Implementation:
 
  				}
  			}
- 			
+
  			gen_ach_hist[i]->Fill(ach_gen);
  			TComplex z(0,0);
  			double Npairs=0.0;
@@ -435,12 +435,12 @@ Implementation:
  	NAchBins = achBins_.size()-1;
  	const int size = NAchBins;
 
- 	c2_pos = new TH1D[size][2];
- 	c2_neg = new TH1D[size][2];
- 	ach_hist = new TH1D[size];
- 	gen_c2_pos = new TH1D[size][2];
- 	gen_c2_neg = new TH1D[size][2];
- 	gen_ach_hist = new TH1D[size];
+ 	c2_pos = new TH1D*[size][2];
+ 	c2_neg = new TH1D*[size][2];
+ 	ach_hist = new TH1D*[size];
+ 	gen_c2_pos = new TH1D*[size][2];
+ 	gen_c2_neg = new TH1D*[size][2];
+ 	gen_ach_hist = new TH1D*[size];
 
 
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
