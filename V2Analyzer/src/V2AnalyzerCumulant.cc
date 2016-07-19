@@ -262,7 +262,7 @@ Implementation:
 
  		if(achBins_[i] <= ach && ach < achBins_[i+1]){
  			
- 			ach_hist[i].Fill(ach);
+ 			ach_hist[i]->Fill(ach);
  			TComplex z(0,0);
  			double Npairs=0.0;
 
@@ -279,14 +279,14 @@ Implementation:
 
 
 
- 					c2_pos[i][0].Fill(z.Re(), Npairs);
- 					c2_pos[i][1].Fill(z.Im(), Npairs);
+ 					c2_pos[i][0]->Fill(z.Re(), Npairs);
+ 					c2_pos[i][1]->Fill(z.Im(), Npairs);
 
  					z = Q2_neg[j] * TComplex::Conjugate(Q2_neg[k]);
  					Npairs = WQ2_neg[j] * WQ2_neg[k];
  					z /= Npairs;
- 					c2_neg[i][0].Fill(z.Re(), Npairs);
- 					c2_neg[i][1].Fill(z.Im(), Npairs);
+ 					c2_neg[i][0]->Fill(z.Re(), Npairs);
+ 					c2_neg[i][1]->Fill(z.Im(), Npairs);
 
  				}
  			} 			
@@ -305,10 +305,6 @@ Implementation:
 //ach binning
  	NAchBins = achBins_.size()-1;
  	const int size = NAchBins;
-
- 	c2_pos = new TH1D[size][2];
- 	c2_neg = new TH1D[size][2];
- 	ach_hist = new TH1D[size];
 
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
