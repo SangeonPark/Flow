@@ -437,17 +437,17 @@ Implementation:
  	TH1D* temp_c2_neg[size][2];
  	TH1D* temp_ach_hist[size];
 
- 	*(*c2_pos)[][] = &temp_c2_pos;
- 	*(*c2_neg)[][] = &temp_c2_neg;
- 	*(*ach_hist)[] = &temp_ach_hist;
+ 	*(*c2_pos)[size][2] = &temp_c2_pos;
+ 	*(*c2_neg)[size][2] = &temp_c2_neg;
+ 	*(*ach_hist)[size] = &temp_ach_hist;
 
  	TH1D* gen_temp_c2_pos[size][2];
  	TH1D* gen_temp_c2_neg[size][2];
  	TH1D* gen_temp_ach_hist[size];
 
- 	*(*gen_c2_pos)[][] = &gen_temp_c2_pos;
- 	*(*gen_c2_neg)[][] = &gen_temp_c2_neg;
- 	*(*gen_ach_hist)[] = &gen_temp_ach_hist;
+ 	*(*gen_c2_pos)[size][2] = &gen_temp_c2_pos;
+ 	*(*gen_c2_neg)[size][2] = &gen_temp_c2_neg;
+ 	*(*gen_ach_hist)[size] = &gen_temp_ach_hist;
 
 
 
