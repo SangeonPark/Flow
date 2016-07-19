@@ -440,9 +440,9 @@ Implementation:
  	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
  	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
 
-	edm::FileInPath fip1(Form("%s",efftablePath_));  
+	edm::FileInPath fip1(efftablePath_.c_str());  
 	TFile f1(fip1.fullPath().c_str(),"READ");
-	effTable = (TH2D*)f1.Get(Form("%s",efftableName_));
+	effTable = (TH2D*)f1.Get(efftableName_.c_str());
 
 //list of c2 histograms
  	
