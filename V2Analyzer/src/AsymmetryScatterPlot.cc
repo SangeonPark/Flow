@@ -362,7 +362,7 @@ Implementation:
  	for(Int_t i=0;i<NAchBins;i++){
 
  		if(achBins_[i] < ach && ach <= achBins_[i+1]){
- 			ach_hist[i]->Fill(ach);
+ 			ach_hist[i].Fill(ach);
 
  			TComplex z(0,0);
  			double Npairs=0.0;
@@ -377,21 +377,21 @@ Implementation:
  					z = Q2_pos[j] * TComplex::Conjugate(Q2_pos[k]);
  					Npairs = WQ2_pos[j] * WQ2_pos[k];
  					z /= Npairs;
- 					c2_pos[i][0] -> Fill(z.Re(), Npairs);
- 					c2_pos[i][1] -> Fill(z.Im(), Npairs);
+ 					c2_pos[i][0].Fill(z.Re(), Npairs);
+ 					c2_pos[i][1].Fill(z.Im(), Npairs);
 
  					z = Q2_neg[j] * TComplex::Conjugate(Q2_neg[k]);
  					Npairs = WQ2_neg[j] * WQ2_neg[k];
  					z /= Npairs;
- 					c2_neg[i][0] -> Fill(z.Re(), Npairs);
- 					c2_neg[i][1] -> Fill(z.Im(), Npairs);
+ 					c2_neg[i][0].Fill(z.Re(), Npairs);
+ 					c2_neg[i][1].Fill(z.Im(), Npairs);
 
 
 
  				}
  			}
 
- 			gen_ach_hist[i]->Fill(ach_gen);
+ 			gen_ach_hist[i].Fill(ach_gen);
  			for (int j = 0; j < NBins; j++)
  			{
  				for(int k = 0; k < NBins; k++){
@@ -402,14 +402,14 @@ Implementation:
  					z = gen_Q2_pos[j] * TComplex::Conjugate(gen_Q2_pos[k]);
  					Npairs = gen_WQ2_pos[j] * gen_WQ2_pos[k];
  					z /= Npairs;
- 					gen_c2_pos[i][0] -> Fill(z.Re(), Npairs);
- 					gen_c2_pos[i][1] -> Fill(z.Im(), Npairs);
+ 					gen_c2_pos[i][0].Fill(z.Re(), Npairs);
+ 					gen_c2_pos[i][1].Fill(z.Im(), Npairs);
 
  					z = gen_Q2_neg[j] * TComplex::Conjugate(gen_Q2_neg[k]);
  					Npairs = gen_WQ2_neg[j] * gen_WQ2_neg[k];
  					z /= Npairs;
- 					gen_c2_neg[i][0] -> Fill(z.Re(), Npairs);
- 					gen_c2_neg[i][1] -> Fill(z.Im(), Npairs);
+ 					gen_c2_neg[i][0].Fill(z.Re(), Npairs);
+ 					gen_c2_neg[i][1].Fill(z.Im(), Npairs);
 
  				}
  			} 			
@@ -433,21 +433,13 @@ Implementation:
  	NAchBins = achBins_.size()-1;
  	const int size = NAchBins;
 
- 	TH1D* temp_c2_pos[size][2];
- 	TH1D* temp_c2_neg[size][2];
- 	TH1D* temp_ach_hist[size];
+ 	c2_pos = new TH1D[size][2];
+ 	c2_neg = new TH1D[size][2];
+ 	ach_hist = new TH1D[size];
 
- 	*(*c2_pos)[size][2] = &temp_c2_pos;
- 	*(*c2_neg)[size][2] = &temp_c2_neg;
- 	*(*ach_hist)[size] = &temp_ach_hist;
-
- 	TH1D* gen_temp_c2_pos[size][2];
- 	TH1D* gen_temp_c2_neg[size][2];
- 	TH1D* gen_temp_ach_hist[size];
-
- 	*(*gen_c2_pos)[size][2] = &gen_temp_c2_pos;
- 	*(*gen_c2_neg)[size][2] = &gen_temp_c2_neg;
- 	*(*gen_ach_hist)[size] = &gen_temp_ach_hist;
+ 	gen_c2_pos = new TH1D[size][2];
+ 	gen_c2_neg = new TH1D[size][2];
+ 	gen_ach_hist = new TH1D[size];
 
 
 

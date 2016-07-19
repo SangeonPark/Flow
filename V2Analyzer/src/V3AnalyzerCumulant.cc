@@ -308,13 +308,9 @@ void V3AnalyzerCumulant::beginJob()
 	NAchBins = achBins_.size()-1;
 	const int size = NAchBins;
 
- 	TH1D* temp_c2_pos[size][2];
- 	TH1D* temp_c2_neg[size][2];
- 	TH1D* temp_ach_hist[size];
-
- 	*(*c2_pos)[][] = &temp_c2_pos;
- 	*(*c2_neg)[][] = &temp_c2_neg;
- 	*(*ach_hist)[] = &temp_ach_hist;
+ 	c2_pos = new TH1D[size][2];
+ 	c2_neg = new TH1D[size][2];
+ 	ach_hist = new TH1D[size];
 
 	
 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
