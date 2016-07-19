@@ -5,7 +5,7 @@ hltHM = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
 hltHM.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
                   'HLT_PAPixelTracks_Multiplicity130_v*',
                   'HLT_PAPixelTracks_Multiplicity160_v*'
-                  'HLT_PAPixelTracks_Multiplicity190_v*',
+                  #'HLT_PAPixelTracks_Multiplicity190_v*',
                   #'HLT_PAPixelTracks_Multiplicity220_v*'
 ]
 
