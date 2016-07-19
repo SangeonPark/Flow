@@ -4,6 +4,11 @@ using namespace std;
 
 void slopevscentrality_v3(){
 	TFile *f;
+
+	const int NAchBins = 5;
+
+
+
 	TH1D* c2_pos[5][2];
 	TH1D* c2_neg[5][2];
 	TH1D* ach_hist[5];

@@ -4,18 +4,21 @@ using namespace std;
 void CumulantErrGraph_v2_normalized(){
 
 	TFile *f;
-	TH1D* c2_pos[5][2];
-	TH1D* c2_neg[5][2];
 
-	TH1D* ach_hist[5];
-	double x[5];
+	const int NAchBins = 5;
 
-	double v2_pos[5];
-	double v2_neg[5];
-	double v2_diff[5];
-	double err_neg[5];
-	double err_pos[5];
-	double err_diff[5];
+	TH1D* c2_pos[NAchBins][2];
+	TH1D* c2_neg[NAchBins][2];
+
+	TH1D* ach_hist[NAchBins];
+	double x[NAchBins];
+
+	double v2_pos[NAchBins];
+	double v2_neg[NAchBins];
+	double v2_diff[NAchBins];
+	double err_neg[NAchBins];
+	double err_pos[NAchBins];
+	double err_diff[NAchBins];
 	double cmean;
 	double errmean;
 	double sum;
@@ -27,7 +30,7 @@ void CumulantErrGraph_v2_normalized(){
 	f = new TFile("../../../rootfiles/v2Cumulant_PbPb/Merged.root");
 
 
-	for (Int_t i = 0; i < 5; i++){
+	for (Int_t i = 0; i < NAchBins; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -37,7 +40,7 @@ void CumulantErrGraph_v2_normalized(){
 		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
 		
 	}
-	for(Int_t i=0; i<5; i++){
+	for(Int_t i=0; i<NAchBins; i++){
 
 		x[i]=ach_hist[i]->GetMean();
 
@@ -71,15 +74,15 @@ void CumulantErrGraph_v2_normalized(){
 
 
 	}
-	for(i=0;i<5;i++){
+	for(i=0;i<NAchBins;i++){
 		cout << x[i] << ", ";
 	}	
 	cout << endl << "v2" << endl;
-	for(i=0;i<5;i++){
+	for(i=0;i<NAchBins;i++){
 		cout << v2_diff[i] << ", ";
 	}
 	cout << endl << "v2 error" <<endl;
-	for(i=0;i<5;i++){
+	for(i=0;i<NAchBins;i++){
 		cout << err_diff[i] << ", ";
 	}		
 	gStyle->SetLegendFont(42);
@@ -129,9 +132,9 @@ void CumulantErrGraph_v2_normalized(){
 	base2->SetLineWidth(0);
 
 
-	TGraphErrors *gr_pos = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
-	TGraphErrors *gr_neg = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
-	TGraphErrors *gr_diff = new TGraphErrors(5,x,v2_diff,NULL,err_diff);
+	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
+	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
+	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
