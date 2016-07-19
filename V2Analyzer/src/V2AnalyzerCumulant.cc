@@ -311,9 +311,9 @@ Implementation:
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
 
 
- 	edm::FileInPath fip1(efftablePath_);  
+ 	edm::FileInPath fip1(Form("%s",efftablePath_));  
  	TFile f1(fip1.fullPath().c_str(),"READ");
- 	effTable = (TH2D*)f1.Get(efftableName_);
+ 	effTable = (TH2D*)f1.Get(Form("%s",efftableName_));
 
 //list of c2 histograms
  	for (Int_t i = 0; i < NAchBins; i++){
