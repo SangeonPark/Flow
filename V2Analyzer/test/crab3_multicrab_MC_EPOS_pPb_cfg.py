@@ -20,7 +20,6 @@ config.Data.unitsPerJob = 10
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 config.Data.publication = False
 config.Data.outputDatasetTag = outputName
-
 config.Site.storageSite = 'T3_US_Rice'
 
 if __name__ == '__main__':

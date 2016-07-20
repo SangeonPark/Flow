@@ -34,7 +34,7 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       #PbPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
                       #efftableName = cms.string('rTotalEff3D_1'),
-                      achBins = cms.untracked.vdouble(-999,-0.1,-0.07,-0.055,-0.04,-0.027,-0.02,-0.015,-0.011,-0.007,-0.004,-0.0015,0.0015,0.004,0.007,0.011,0.015,0.02,0.027,0.04,0.055,0.07,0.1,999),
+                      achBins = cms.untracked.vdouble(-999,-0.1,-0.08,-0.07,-0.055,-0.04,-0.027,-0.02,-0.015,-0.011,-0.007,-0.004,-0.0015,0.0015,0.004,0.007,0.011,0.015,0.02,0.027,0.04,0.055,0.07,0.08,0.1,999),
                       reverseBeam = cms.bool(False),
                       useCentrality = cms.bool(False),
                       Nmin = cms.int32(185),
