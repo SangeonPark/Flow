@@ -17,14 +17,32 @@ process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
 
-        'root://cms-xrd-global.cern.ch//store/user/davidlw/ReggeGribovPartonMCfix_EposLHC_5TeV_pPb/RecoSkim_ReTracking_v4_5M/5cde49c8740ff28f897f533d05a99dbc/pPb_MB_100_2_s6H.root'
+        #EPOS PbPb
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_1.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_10.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_100.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_101.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_102.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_103.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_104.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_105.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_106.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_107.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_108.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_109.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_11.root'
+        'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_110.root'
+
+
+        #EPOS pPb
+        #'root://cms-xrd-global.cern.ch//store/user/davidlw/ReggeGribovPartonMCfix_EposLHC_5TeV_pPb/RecoSkim_ReTracking_v4_5M/5cde49c8740ff28f897f533d05a99dbc/pPb_MB_100_2_s6H.root'
 
     )
 )
 
 #loads analyzer
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("scatterplotandclosure.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("EPOS_PbPb_scatterplotandclosure.root"))
 
 
 process.p = cms.Path(process.demo)
