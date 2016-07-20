@@ -8,7 +8,7 @@ process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
 ntrkRange = [60,80,100,120]
 
-outputName = "multicrab_CMW_EPOS_PbPb_Scatterplot_and_Closure"
+outputName = "multicrab_CMW_Hydjet_PbPb_Scatterplot_and_Closure"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -44,7 +44,7 @@ if __name__ == '__main__':
 		process.demo.Nmin = ntrkRange[num]
 		process.demo.Nmax = ntrkRange[num+1]
 		RequestName = outputName + "_" + str(num)
-		DataSetName = '/EPOS_PbPb5TeV/davidlw-Cent30100_DIGI-RECO_v1-d1b7f9a11ac0f50a520ee8a635252e33/USER'
+		DataSetName = '/Hydjet_Quenched_MinBias_5020GeV_750/davidlw-ppRECO_std_v3-b19fc96d6ecc5870a54312d2edbb74e0/USER'
 		config.General.requestName = RequestName
 		config.Data.inputDataset = DataSetName
 		submit(config)
