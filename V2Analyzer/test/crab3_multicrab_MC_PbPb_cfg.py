@@ -6,7 +6,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
-ntrkRange = [60,80,100]
+ntrkRange = [60,80,100,120]
 
 outputName = "multicrab_CMW_EPOS_PbPb_Scatterplot_and_Closure"
 
@@ -39,7 +39,7 @@ if __name__ == '__main__':
       except ClientException as cle:
           print "Failed submitting task: %s" % (cle)
    
-   for num in range(0,2):		
+   for num in range(0,3):		
 		print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])      		
 		process.demo.Nmin = ntrkRange[num]
 		process.demo.Nmax = ntrkRange[num+1]
