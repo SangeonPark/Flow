@@ -6,7 +6,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
-outputName = "multicrab_CMW_v2_pPb_EPOS_0713"
+outputName = "multicrab_CMW_pPb_EPOS_ScatterPlot_and_ClosureTest_0721"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
