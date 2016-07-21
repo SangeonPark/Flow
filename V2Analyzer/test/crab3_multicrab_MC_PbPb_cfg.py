@@ -6,9 +6,9 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
-ntrkRange = [60,80,100,120]
+ntrkRange = [120,150]
 
-outputName = "multicrab_CMW_Hydjet_PbPb_Scatterplot_and_Closure"
+outputName = "multicrab_CMW_EPOS_HighMultiplicity_pPb_Scatterplot_and_Closure"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -38,13 +38,18 @@ if __name__ == '__main__':
            print "Failed submitting task: %s" % (hte.headers)
       except ClientException as cle:
           print "Failed submitting task: %s" % (cle)
+   sampleName = ["/EPOSpPb_5TeV_HM150/gsfs-EPOS_HM150_pPb_5TeV_RECODEBUG_20160530-b74f046c211430dc50f1c4dabeee6133/USER",
+                 "/EPOSpPb_5TeV_HM150_pt2/gsfs-EPOS_HM150_pPb_5TeV_RECODEBUG_pt2_20160604-b74f046c211430dc50f1c4dabeee6133/USER"]       
    
-   for num in range(0,3):		
-		print 'double check that centrality range is fram %r to %r' % (ntrkRange[num],ntrkRange[num+1])      		
-		process.demo.Nmin = ntrkRange[num]
-		process.demo.Nmax = ntrkRange[num+1]
-		RequestName = outputName + "_" + str(num)
-		DataSetName = '/Hydjet_Quenched_MinBias_5020GeV_750/davidlw-ppRECO_std_v3-b19fc96d6ecc5870a54312d2edbb74e0/USER'
-		config.General.requestName = RequestName
-		config.Data.inputDataset = DataSetName
-		submit(config)
+   for num in range(0,2):
+      for paths in range(0,1):
+         print 'double check that we are using sample %r ' % (num)		
+         print 'double check that NtrkOffline range is fram %r to %r' % (ntrkRange[paths],ntrkRange[paths+1])
+
+         process.demo.Nmin = ntrkRange[paths]
+         process.demo.Nmax = ntrkRange[paths+1]
+         RequestName = outputName + '_' + str(num) + "_" + str(paths)
+         DataSetName = sampleName[num]
+         config.General.requestName = RequestName
+         config.Data.inputDataset = DataSetName
+         submit(config)
