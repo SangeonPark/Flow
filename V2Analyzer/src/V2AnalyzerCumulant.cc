@@ -39,6 +39,8 @@ Implementation:
  	dzSigCut_ = iConfig.getParameter<double>("dzSigCut");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
+ 	ptCutMin_ = iConfig.getParameter<double>("ptCutMin");
+ 	ptCutMax_ = iConfig.getParameter<double>("ptCutMax");
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
 
@@ -157,7 +159,8 @@ Implementation:
 //define the flow vectors and weight
 
  	const int NBins = NEtaBins_;
- 	double Binsize = 4.8/(double)NBins;
+ 	double etarange = etaCutMax_ - etaCutMin_;
+ 	double Binsize = etarange/(double)NBins;
 
  	TComplex Q2_pos[NBins];
  	TComplex Q2_neg[NBins];
@@ -211,8 +214,9 @@ Implementation:
  			}
  		}
 
- 		if(pt < 0.3 || pt > 3.0 ) continue;
- 		if(eta<-2.4 || 2.4 <= eta) continue;
+//kinematic cuts
+ 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+ 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
 
@@ -225,8 +229,8 @@ Implementation:
 
  		for (int i = 0; i < NBins; ++i)
  		{
- 			double lb = Binsize*i-2.4;
- 			double ub = Binsize*(i+1)-2.4;
+ 			double lb = Binsize*i+etaCutMin_;
+ 			double ub = Binsize*(i+1)+etaCutMin_;
  			if(lb <= eta && eta < ub){
  				if(charge > 0){
  					Q2_pos[i] += e; 
@@ -310,9 +314,9 @@ Implementation:
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
 
 
-	edm::FileInPath fip1(efftablePath_.c_str());  
-	TFile f1(fip1.fullPath().c_str(),"READ");
-	effTable = (TH2D*)f1.Get(efftableName_.c_str());
+ 	edm::FileInPath fip1(efftablePath_.c_str());  
+ 	TFile f1(fip1.fullPath().c_str(),"READ");
+ 	effTable = (TH2D*)f1.Get(efftableName_.c_str());
 
 //list of c2 histograms
  	for (Int_t i = 0; i < NAchBins; i++){

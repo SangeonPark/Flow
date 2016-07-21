@@ -39,6 +39,8 @@ Implementation:
  	dzSigCut_ = iConfig.getParameter<double>("dzSigCut");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
+ 	ptCutMin_ = iConfig.getParameter<double>("ptCutMin");
+ 	ptCutMax_ = iConfig.getParameter<double>("ptCutMax");
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
 
@@ -158,8 +160,9 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 //define the flow vectors and weight
 
 	const int NBins = NEtaBins_;
-	double Binsize = 4.8/(double)NBins;
-
+ 	double etarange = etaCutMax_ - etaCutMin_;
+ 	double Binsize = etarange/(double)NBins;
+ 	
 	TComplex Q2_pos[NBins];
 	TComplex Q2_neg[NBins];
 	double WQ2_pos[NBins];
@@ -215,8 +218,8 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 			}
 		}
 
-		if(pt < 0.3 || pt > 3.0 ) continue;
-		if(eta<-2.4 || 2.4 <= eta) continue;
+		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+ 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
 		if(reverseBeam_) { eta *= -1.0;}
 
 
@@ -229,8 +232,8 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 
 		for (int i = 0; i < NBins; ++i)
 		{
-			double lb = Binsize*i-2.4;
-			double ub = Binsize*(i+1)-2.4;
+ 			double lb = Binsize*i+etaCutMin_;
+ 			double ub = Binsize*(i+1)+etaCutMin_;
 			if(lb <= eta && eta < ub){
 				if(charge > 0){
 					Q2_pos[i] += e; 
@@ -321,11 +324,11 @@ void V3AnalyzerCumulant::beginJob()
 //list of c2 histograms
 	for (Int_t i = 0; i < NAchBins; i++){
 
- 		c2_pos[i][0] = fs->make<TH1D>(Form("c2pos_%d_cos",i),"c2 Distribution",2000,-1,1);
- 		c2_pos[i][1] = fs->make<TH1D>(Form("c2pos_%d_sin",i),"c2 Distribution",2000,-1,1);
- 		c2_neg[i][0] = fs->make<TH1D>(Form("c2neg_%d_cos",i),"c2 Distribution",2000,-1,1);
- 		c2_neg[i][1] = fs->make<TH1D>(Form("c2neg_%d_sin",i),"c2 Distribution",2000,-1,1);
- 		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+		c2_pos[i][0] = fs->make<TH1D>(Form("c2pos_%d_cos",i),"c2 Distribution",2000,-1,1);
+		c2_pos[i][1] = fs->make<TH1D>(Form("c2pos_%d_sin",i),"c2 Distribution",2000,-1,1);
+		c2_neg[i][0] = fs->make<TH1D>(Form("c2neg_%d_cos",i),"c2 Distribution",2000,-1,1);
+		c2_neg[i][1] = fs->make<TH1D>(Form("c2neg_%d_sin",i),"c2 Distribution",2000,-1,1);
+		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
 
 	}
 

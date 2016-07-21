@@ -21,19 +21,32 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       etaHFLow = cms.double(3.0),
                       etaHFUpp = cms.double(5.0),
                       dxySigCut = cms.double(3.0),
-                      dzSigCut = cms.double(3.0),
-                      etaCutMin = cms.double(-2.4),
-                      etaCutMax = cms.double(2.4),
-                      NEtaBins = cms.int32(48),
+                      dzSigCut = cms.double(3.0),                      
                       doEffCorrection = cms.bool(True),
                       
                       #ALWAYS CHECK THIS PART
+
+                      #kinematic cuts!!!!!!
+                      etaCutMin = cms.double(-2.4),
+                      etaCutMax = cms.double(2.4),
+                      ptCutMin = cms.double(0.3),
+                      ptCutMax = cms.double(3.0),
+                      NEtaBins = cms.int32(48),                      
+                     
                       #pPb
                       efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
                       efftableName = cms.string('rTotalEff3D'),
                       #PbPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
                       #efftableName = cms.string('rTotalEff3D_1'),
+
+                      #5Bins
+                      #achBins = cms.untracked.vdouble(-999,-0.04,-0.015,0.015,0.04,999)
+                      
+                      #7Bins
+                      #achBins = cms.untracked.vdouble(-999,-0.075,-0.045,-0.015,0.015,0.045,0.075,999)
+
+                      #23Bins
                       achBins = cms.untracked.vdouble(-999,-0.1,-0.08,-0.07,-0.055,-0.04,-0.027,-0.02,-0.015,-0.011,-0.007,-0.004,-0.0015,0.0015,0.004,0.007,0.011,0.015,0.02,0.027,0.04,0.055,0.07,0.08,0.1,999),
                       reverseBeam = cms.bool(False),
                       useCentrality = cms.bool(False),

@@ -39,6 +39,8 @@ Implementation:
  	dzSigCut_ = iConfig.getParameter<double>("dzSigCut");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
+ 	ptCutMin_ = iConfig.getParameter<double>("ptCutMin");
+ 	ptCutMax_ = iConfig.getParameter<double>("ptCutMax"); 	
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
 
@@ -156,8 +158,8 @@ Implementation:
 //define the flow vectors and weight
 
  	const int NBins = NEtaBins_;
- 	double Binsize = 4.8/(double)NBins;
-
+ 	double etarange = etaCutMax_ - etaCutMin_;
+ 	double Binsize = etarange/(double)NBins;
 
  	TComplex Q2_pos[NBins];
  	TComplex Q2_neg[NBins];
@@ -245,8 +247,8 @@ Implementation:
  		}
 
 //kinematic cuts
- 		if(pt < 0.3 || pt > 3.0 ) continue;
- 		if(eta<-2.4 || 2.4 <= eta) continue;
+ 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+ 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
 
 //reversebeam for merging reverse data
  		if(reverseBeam_) { eta *= -1.0;}
@@ -267,8 +269,8 @@ Implementation:
  		e *= weight; 
  		for (int i = 0; i < NBins; ++i)
  		{
- 			double lb = Binsize*i-2.4;
- 			double ub = Binsize*(i+1)-2.4;
+ 			double lb = Binsize*i+etaCutMin_;
+ 			double ub = Binsize*(i+1)+etaCutMin_;
  			if(lb <= eta && eta < ub){
  				if(charge > 0){
  					Q2_pos[i] += e; 
@@ -319,8 +321,9 @@ Implementation:
  		int gencharge = genCand.charge();
 
  		if( status != 1  || gencharge == 0 ) continue;
- 		if( fabs(geneta) > 2.4 ) continue;
- 		if( genpt < 0.3 || genpt > 3.0 ) continue;
+ 		if(genpt <= ptCutMin_ ||  ptCutMax_ <= genpt ) continue;
+ 		if(geneta <= etaCutMin_ || etaCutMax_ <= geneta) continue;
+
 
  		if( gencharge > 0){ N_pos_gen+=1.0; N_tot_gen+=1.0; }
  		if( gencharge < 0){ N_neg_gen+=1.0; N_tot_gen+=1.0; }
@@ -329,8 +332,8 @@ Implementation:
 
  		for (int i = 0; i < NBins; ++i)
  		{
- 			double lb = Binsize*i-2.4;
- 			double ub = Binsize*(i+1)-2.4;
+ 			double lb = Binsize*i+etaCutMin_;
+ 			double ub = Binsize*(i+1)+etaCutMin_;
  			if(lb <= geneta && geneta < ub){
  				if(gencharge > 0){
  					gen_Q2_pos[i] += e; 
@@ -439,9 +442,9 @@ Implementation:
  	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
  	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
 
-	edm::FileInPath fip1(efftablePath_.c_str());  
-	TFile f1(fip1.fullPath().c_str(),"READ");
-	effTable = (TH2D*)f1.Get(efftableName_.c_str());
+ 	edm::FileInPath fip1(efftablePath_.c_str());  
+ 	TFile f1(fip1.fullPath().c_str(),"READ");
+ 	effTable = (TH2D*)f1.Get(efftableName_.c_str());
 
 //list of c2 histograms
  	

@@ -8,14 +8,17 @@ demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       #don't change this part
                       dxySigCut = cms.double(3.0),
                       dzSigCut = cms.double(3.0),
-                      etaCutMin = cms.double(-2.4),
-                      etaCutMax = cms.double(2.4),
                       etaHFLow = cms.double(3.0),
                       etaHFUpp = cms.double(5.0),
-                      NEtaBins = cms.int32(48),                      
                       doEffCorrection = cms.bool(True),
                     
                       #ALWAYS CHECK THIS PART
+                      etaCutMin = cms.double(-2.4),
+                      etaCutMax = cms.double(2.4),
+                      ptCutMin = cms.double(0.3),
+                      ptCutMax = cms.double(3.0),
+                      NEtaBins = cms.int32(48),
+                      
                       #pPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
                       #efftableName = cms.string('rTotalEff3D'),

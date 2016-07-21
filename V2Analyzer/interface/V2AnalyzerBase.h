@@ -275,6 +275,8 @@ private:
       double dzSigCut_;
       double etaCutMin_;
       double etaCutMax_;
+      double ptCutMin_;
+      double ptCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
       int Nmin_;
@@ -386,6 +388,8 @@ private:
       double dzSigCut_;
       double etaCutMin_;
       double etaCutMax_;
+      double ptCutMin_;
+      double ptCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
       int NEtaBins_;
@@ -446,6 +450,8 @@ private:
       double dzSigCut_;
       double etaCutMin_;
       double etaCutMax_;
+      double ptCutMin_;
+      double ptCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
       int NEtaBins_;
