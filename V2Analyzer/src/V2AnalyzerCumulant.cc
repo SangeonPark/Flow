@@ -150,6 +150,10 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
+//variables for charge asymmetry calculation of different eta range
+	double eta2_N_pos = 0.0;
+	double eta2_N_neg = 0.0;
+	double eta2_N_tot = 0.0;	
 
 //NTrackOffline values
  	int nTracks = 0;
@@ -216,6 +220,13 @@ Implementation:
 
 //kinematic cuts
  		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+
+ 		if(fabs(eta)<1.0){
+			eta2_N_tot += weight;
+			if( charge > 0){ eta2_N_pos+= weight;}
+			if( charge < 0){ eta2_N_neg+= weight;}
+		}
+		
  		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
@@ -261,6 +272,11 @@ Implementation:
  	double ach = N_diff/N_tot;
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
+
+//asymmetry calculation for a differente eta range
+	double eta2_N_diff = eta2_N_pos - eta2_N_neg;
+	double eta2_ach = eta2_N_diff/eta2_N_tot;
+	scatterHist_twoetarange->Fill(eta2_ach,ach);	
 
  	for(Int_t i=0;i<NAchBins;i++){
 
@@ -312,6 +328,8 @@ Implementation:
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
+ 	scatterHist_twoetarange = fs->make<TH2D>("scatterHist_twoetarange","A_{ch} of two different eta range;A_{ch} |#eta| < 1;A_{ch} |#eta| < 2.4",1000,-0.3,0.3,1000,-0.3,0.3);
+ 	
 
 
  	edm::FileInPath fip1(efftablePath_.c_str());  

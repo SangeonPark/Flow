@@ -270,6 +270,7 @@ private:
       TH1D* NTrkHist;
       TH2D* effTable;
       TH1D* cbinHist;
+      TH2D* scatterHist_twoetarange;
       
       double dxySigCut_;
       double dzSigCut_;
@@ -382,7 +383,7 @@ private:
       TH1D* NTrkHist;
       TH2D* effTable;
       TH1D* cbinHist;
-
+      TH2D* scatterHist_twoetarange;
       
       double dxySigCut_;
       double dzSigCut_;
