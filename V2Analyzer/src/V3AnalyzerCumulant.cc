@@ -43,6 +43,7 @@ Implementation:
  	ptCutMax_ = iConfig.getParameter<double>("ptCutMax");
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
+ 	etaGap_ = iConfig.getParameter<double>("etaGap");
 
  	Nmin_ = iConfig.getParameter<int>("Nmin");
  	Nmax_ = iConfig.getParameter<int>("Nmax");
@@ -293,7 +294,7 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 			{
 				for(int k = 0; k < NBins; k++){
 
-					if(abs(j-k) <= (2.0/Binsize)) continue;
+					if(abs(j-k) <= (etaGap_/Binsize)) continue;
 
 
 					z = Q2_pos[j] * TComplex::Conjugate(Q2_pos[k]);

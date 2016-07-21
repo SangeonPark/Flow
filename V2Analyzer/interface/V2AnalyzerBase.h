@@ -280,6 +280,7 @@ private:
       double ptCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
+      double etaGap_;
       int Nmin_;
       int Nmax_;
       int NEtaBins_;
@@ -393,6 +394,7 @@ private:
       double ptCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
+      double etaGap_;
       int NEtaBins_;
       int Nmin_;
       int Nmax_;
@@ -455,6 +457,7 @@ private:
       double ptCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
+      double etaGap_;
       int NEtaBins_;
       int Nmin_;
       int Nmax_;

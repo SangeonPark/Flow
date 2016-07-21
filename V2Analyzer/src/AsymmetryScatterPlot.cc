@@ -43,7 +43,7 @@ Implementation:
  	ptCutMax_ = iConfig.getParameter<double>("ptCutMax"); 	
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
-
+ 	etaGap_ = iConfig.getParameter<double>("etaGap");
  	Nmin_ = iConfig.getParameter<int>("Nmin");
  	Nmax_ = iConfig.getParameter<int>("Nmax");
  	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
@@ -374,7 +374,7 @@ Implementation:
  			{
  				for(int k = 0; k < NBins; k++){
 
- 					if(abs(j-k) <= (2.0/Binsize)) continue;
+ 					if(abs(j-k) <= (etaGap_/Binsize)) continue;
 
 
  					z = Q2_pos[j] * TComplex::Conjugate(Q2_pos[k]);
