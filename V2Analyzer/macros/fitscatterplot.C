@@ -7,7 +7,7 @@ void fitscatterplot()
 
    // generate a 2-d histogram using a TCutG
    TFile *f;
-   f = new TFile("../../../rootfiles/EPOS/EPOS_Merged.root");
+   f = new TFile("../../../rootfiles/MC/EPOS_PbPb_1.root");
    TH2D *h2 = new TH2D("h2","h2",1000,-0.3,0.3,1000,-0.3,0.3);
    TCanvas *c1 = new TCanvas("c1","show profile",1,1,1200,600);
    c1->Divide(2,1,0.01,0.01);
@@ -23,16 +23,28 @@ void fitscatterplot()
    TProfile *prof = h2->ProfileX();
    //prof->Fit("pol1");
    prof->GetYaxis()->SetRangeUser(-0.08,0.08);
-   prof->GetXaxis()->SetRangeUser(-0.18,0.18);
+   prof->GetXaxis()->SetRangeUser(-0.08,0.08);
    prof->SetYTitle("A_{ch}");
    prof -> GetXaxis() -> CenterTitle();
    prof -> GetYaxis() -> CenterTitle();
    prof->SetLabelOffset(0.006,"Y");
    prof->SetTitleOffset(1.800,"Y");
    prof->SetMarkerStyle(20);
-   prof->SetMarkerColor(kBlue);
-   prof->SetMarkerSize (0.1);
+   prof->SetMarkerColor(kBlack);
+   prof->SetMarkerSize (0.3);
+   prof->SetMarkerStyle(1);
+   prof->SetLineStyle(1);
+   prof->SetLineWidth(1);   
    prof->Fit("pol1");
+   TF1 *fit1 = prof->GetListOfFunctions()->FindObject("pol1");
+
+   if(fit1)
+   {
+      fit1->SetLineColor(4); 
+      fit1->SetLineWidth(3);
+      fit1->SetLineStyle(2);
+   }
+
    text_a->Draw("Same");
    TF1 *fa1 = new TF1("fa1","0",-10,10); 
    fa1->SetLineColor(kBlack);

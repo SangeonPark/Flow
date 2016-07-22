@@ -385,7 +385,7 @@ TLatex* makeLatex(const char* txt,  double x, double y){
 
 	TLatex* r = new TLatex(x, y, txt);
 	r->SetTextSize(0.035);
-	r->SetNDC();
+	r->SetNDC(kTRUE);
 	return r;
 
 }

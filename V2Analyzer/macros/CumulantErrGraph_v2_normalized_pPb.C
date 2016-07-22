@@ -5,7 +5,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 	TFile *f;
 
-	const int NAchBins = 7;
+	const int NAchBins = 25;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -27,17 +27,17 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v2Cumulant_pPb_7bins/Merged.root");
+	f = new TFile(Form("../../../rootfiles/v2Cumulant_pPb_185_220_25bins/Rebinned_%d.root",NAchBins));
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i<NAchBins; i++){
@@ -150,7 +150,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 
 	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -193,7 +193,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 
 	TLatex* text2 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.45,0.30) ;
-	TLatex* text1 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
+	TLatex* text1 = makeLatex(Form("slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
 	text1->SetTextFont(42);
 	text2->SetTextFont(42);
 	base2->Draw("");
@@ -223,7 +223,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
 
-	//SaveCanvas(c3,"pics","v2_PbPb_185_260");
+	SaveCanvas(c3,"pics",Form("v2_PbPb_185_220_%d_bins",NAchBins));
 
 
 
