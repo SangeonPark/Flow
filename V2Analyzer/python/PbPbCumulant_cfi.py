@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 #always check which analyzer I'm using (V2AnalyzerCumulant, V3AnalyzerCumulant)
-demo = cms.EDAnalyzer('V2AnalyzerCumulant',
+demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       vertexSrc = cms.string('offlinePrimaryVertices'),
                       trackSrc = cms.InputTag('generalTracks'),
                       towerSrc = cms.InputTag('towerMaker'),
