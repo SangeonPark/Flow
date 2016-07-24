@@ -175,6 +175,7 @@ private:
       int NTrkMin_;
       int NTrkMax_;
       bool doEffCorrection_;
+      bool doAchEffCorrection_;
       bool reverseBeam_;      
       double Bins[6] = {-999,-0.04,-0.01,0.02,0.045,999 };
 
@@ -285,6 +286,7 @@ private:
       int Nmax_;
       int NEtaBins_;
       bool doEffCorrection_;
+      bool doAchEffCorrection_;
       bool reverseBeam_;
       bool useCentrality_;
 
@@ -403,6 +405,7 @@ private:
       bool doEffCorrection_;
       bool reverseBeam_;      
       bool useCentrality_;
+      bool doAchEffCorrection_;
 
 
       std::vector<double> centBins_;      
@@ -466,6 +469,7 @@ private:
       bool doEffCorrection_;
       bool reverseBeam_;      
       bool useCentrality_;
+      bool doAchEffCorrection_;
 
 
       std::vector<double> centBins_;

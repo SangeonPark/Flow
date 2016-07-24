@@ -11,7 +11,10 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       dzSigCut = cms.double(3.0),
                       etaHFLow = cms.double(3.0),
                       etaHFUpp = cms.double(5.0),
+                      
+                      #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
+                      doAchEffCorrection = cms.bool(False),
                     
                       #ALWAYS CHECK THIS PART
                       etaCutMin = cms.double(-0.8),

@@ -55,6 +55,7 @@ Implementation:
  	genParticleSrc_ = iConfig.getParameter<edm::InputTag>("genParticleSrc");
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
+ 	doAchEffCorrection_ = iConfig.getParameter<bool>("doAchEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
 

@@ -54,6 +54,7 @@ Implementation:
  	towerSrc_ = iConfig.getParameter<edm::InputTag>("towerSrc");
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
+ 	doAchEffCorrection_ = iConfig.getParameter<bool>("doAchEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
 
@@ -151,9 +152,9 @@ Implementation:
  	double N_tot = 0.0;
 
 //variables for charge asymmetry calculation of different eta range
-	double eta2_N_pos = 0.0;
-	double eta2_N_neg = 0.0;
-	double eta2_N_tot = 0.0;	
+ 	double eta2_N_pos = 0.0;
+ 	double eta2_N_neg = 0.0;
+ 	double eta2_N_tot = 0.0;	
 
 //NTrackOffline values
  	int nTracks = 0;
@@ -222,21 +223,39 @@ Implementation:
  		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
 
  		if(fabs(eta)<1.0){
-			eta2_N_tot += weight;
-			if( charge > 0){ eta2_N_pos+= weight;}
-			if( charge < 0){ eta2_N_neg+= weight;}
-		}
-		
+ 			if(doAchEffCorrection_){
+ 				eta2_N_tot += weight;
+ 				if( charge > 0){ eta2_N_pos+= weight;}
+ 				if( charge < 0){ eta2_N_neg+= weight;}
+ 			}
+ 			if(!doAchEffCorrection_){
+ 				eta2_N_tot += 1.0;
+ 				if( charge > 0){ eta2_N_pos+= 1.0;}
+ 				if( charge < 0){ eta2_N_neg+= 1.0;}
+
+ 			}
+ 		}
+
+ 		
  		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
 
  		TComplex e(1,2*phi,1);
-
  		e *= weight; 
- 		N_tot += weight;
- 		if( charge > 0){ N_pos+= weight;}
- 		if( charge < 0){ N_neg+= weight;}
+
+
+ 		if(doAchEffCorrection_){
+ 			N_tot += weight;
+ 			if( charge > 0){ N_pos+= weight;}
+ 			if( charge < 0){ N_neg+= weight;}
+ 		}
+ 		if(!doAchEffCorrection_){
+ 			N_tot += 1.0;
+ 			if( charge > 0){ N_pos+= 1.0;}
+ 			if( charge < 0){ N_neg+= 1.0;}
+
+ 		}
 
  		for (int i = 0; i < NBins; ++i)
  		{
@@ -274,9 +293,9 @@ Implementation:
  	NTrkHist->Fill(nTracks);
 
 //asymmetry calculation for a differente eta range
-	double eta2_N_diff = eta2_N_pos - eta2_N_neg;
-	double eta2_ach = eta2_N_diff/eta2_N_tot;
-	scatterHist_twoetarange->Fill(eta2_ach,ach);	
+ 	double eta2_N_diff = eta2_N_pos - eta2_N_neg;
+ 	double eta2_ach = eta2_N_diff/eta2_N_tot;
+ 	scatterHist_twoetarange->Fill(eta2_ach,ach);	
 
  	for(Int_t i=0;i<NAchBins;i++){
 

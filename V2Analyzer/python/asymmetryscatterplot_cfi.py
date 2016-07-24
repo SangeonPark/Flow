@@ -14,7 +14,9 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       
                       
                       #ALWAYS CHECK THIS PART!!!!!!!!!!!!
+                      #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
+                      doAchEffCorrection = cms.bool(False),
                       #Kinematic Cuts !!!!!
                       etaCutMin = cms.double(-2.4),
                       etaCutMax = cms.double(2.4),

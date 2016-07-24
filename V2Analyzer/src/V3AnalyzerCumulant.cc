@@ -56,6 +56,7 @@ Implementation:
  	towerSrc_ = iConfig.getParameter<edm::InputTag>("towerSrc");
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
+ 	doAchEffCorrection_ = iConfig.getParameter<bool>("doAchEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
 
@@ -227,9 +228,17 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
 
 		if(fabs(eta)<1.0){
-			eta2_N_tot += weight;
-			if( charge > 0){ eta2_N_pos+= weight;}
-			if( charge < 0){ eta2_N_neg+= weight;}
+			if(doAchEffCorrection_){
+				eta2_N_tot += weight;
+				if( charge > 0){ eta2_N_pos+= weight;}
+				if( charge < 0){ eta2_N_neg+= weight;}
+			}
+			if(!doAchEffCorrection_){
+				eta2_N_tot += 1.0;
+				if( charge > 0){ eta2_N_pos+= 1.0;}
+				if( charge < 0){ eta2_N_neg+= 1.0;}
+
+			}
 		}
 
 
@@ -238,11 +247,21 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 
 
 		TComplex e(1,3*phi,1);
-
 		e *= weight; 
-		N_tot += weight;
-		if( charge > 0){ N_pos+= weight;}
-		if( charge < 0){ N_neg+= weight;}
+
+
+		if(doAchEffCorrection_){
+			N_tot += weight;
+			if( charge > 0){ N_pos+= weight;}
+			if( charge < 0){ N_neg+= weight;}
+		}
+		if(!doAchEffCorrection_){
+			N_tot += 1.0;
+			if( charge > 0){ N_pos+= 1.0;}
+			if( charge < 0){ N_neg+= 1.0;}
+
+		}
+
 
 		for (int i = 0; i < NBins; ++i)
 		{

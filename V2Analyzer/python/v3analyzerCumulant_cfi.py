@@ -22,7 +22,9 @@ demo = cms.EDAnalyzer('V3AnalyzerCumulant',
                       etaHFUpp = cms.double(5.0),
                       dxySigCut = cms.double(3.0),
                       dzSigCut = cms.double(3.0),
+                      #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
+                      doAchEffCorrection = cms.bool(False),
                       
                       #ALWAYS CHECK THIS PART
 
