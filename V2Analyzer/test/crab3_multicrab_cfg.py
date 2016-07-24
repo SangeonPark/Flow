@@ -10,7 +10,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_pPb_v2_manybins_185_220_0720'
+outputName = 'multicrab_CMW_pPb_v2_no_eff_corr_on_Ach_185_260'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'v2analyzerCumulant_cfg.py'
