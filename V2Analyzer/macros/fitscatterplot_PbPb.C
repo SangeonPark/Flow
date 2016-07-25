@@ -144,7 +144,7 @@ void fitscatterplot_PbPb(){
       	}
       }
       C->cd();
-      //SaveCanvas(C,"pics","MC_Hydjet_EPOS_PbPb");
+      SaveCanvas(C,"pics","MC_Hydjet_EPOS_PbPb");
 
 
 
