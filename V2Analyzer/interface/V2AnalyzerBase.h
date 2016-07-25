@@ -451,6 +451,10 @@ private:
       TH1D* GenNTrkHist;
       TH2D* scatterHist_effcorr;
       TH2D* scatterHist_noeffcorr;
+      TH2D* Npos_scatterHist_effcorr;
+      TH2D* Npos_scatterHist_noeffcorr;
+      TH2D* Nneg_scatterHist_effcorr;
+      TH2D* Nneg_scatterHist_noeffcorr;
 
       double dxySigCut_;
       double dzSigCut_;
