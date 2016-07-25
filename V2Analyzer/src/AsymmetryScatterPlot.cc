@@ -296,6 +296,12 @@ Implementation:
  		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
 
  	}
+ 	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
+ 		double eta = cand->eta();
+ 		double pt = cand->pt();
+ 		ptEtaScatterHist->Fill(pt,eta);
+ 	}
+
 
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;
@@ -453,6 +459,7 @@ Implementation:
  	Npos_scatterHist_noeffcorr = fs->make<TH2D>("Npos_scatterHist_noeffcorr","Npos without eff correction;Reco N_{+};Gen N_{+}",1600,0,1600,1600,0,1600);
  	Nneg_scatterHist_effcorr = fs->make<TH2D>("Nneg_scatterHist_effcorr","Nneg with eff correction;Reco N_{-};Gen N_{-}",1600,0,1600,1600,0,1600);
  	Nneg_scatterHist_noeffcorr = fs->make<TH2D>("Nneg_scatterHist_noeffcorr","Nneg without eff correction;Reco N_{-};Gen N_{-}",1600,0,1600,1600,0,1600);
+ 	ptEtaScatterHist = fs->make<TH2D>("pt_eta_distribution","pt and eta distribution;pt;eta",1000,0.3,3.0,1000,-2.4,2.4);
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
