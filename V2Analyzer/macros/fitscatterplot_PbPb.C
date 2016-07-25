@@ -24,26 +24,30 @@ void fitscatterplot_PbPb(){
 
 	for (int i = 0; i < 3; ++i)
 	{
-		f = new TFile(Form("../../../rootfiles/MC/EPOS_PbPb_%d.root",i));
+		f = new TFile(Form("../../../rootfiles/MC/EPOS_PbPb_Ntrk_%d.root",i));
+    
 		histlist[0][i] = (TH2D*)f->Get("demo/scatterHist_noeffcorr");
+    histlist[0][i]->Rebin2D(20,1);
 		profilelist[0][i] = histlist[0][i]->ProfileX();
 
 	}
 	for (int i = 0; i < 3; ++i)
 	{
-		f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_%d.root",i));
-		histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_effcorr");
+		f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Ntrk_%d.root",i));
+    
+		histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_noeffcorr");
+    histlist[1][i]->Rebin2D(20,1);
 		profilelist[1][i] = histlist[1][i]->ProfileX();
 
 
 	}  
 	TLatex* textlist[2][3]; 
-	textlist[0][0] = makeLatex("EPOS 30-40%",0.25,0.85);
-	textlist[0][1] = makeLatex("EPOS 40-50%",0.25,0.85);
-	textlist[0][2] = makeLatex("EPOS 50-60%",0.25,0.85);
-	textlist[1][0] = makeLatex("Hydjet 30-40%",0.25,0.85);
-	textlist[1][1] = makeLatex("Hydjet 40-50%",0.25,0.85);
-	textlist[1][2] = makeLatex("Hydjet 50-60%",0.25,0.85);
+	textlist[0][0] = makeLatex("EPOS 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
+	textlist[0][1] = makeLatex("EPOS 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
+	textlist[0][2] = makeLatex("EPOS 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
+	textlist[1][0] = makeLatex("Hydjet 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
+	textlist[1][1] = makeLatex("Hydjet 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
+	textlist[1][2] = makeLatex("Hydjet 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
 	int n = 1;
 
 
@@ -59,14 +63,19 @@ void fitscatterplot_PbPb(){
 			TLatex *text1 = (TLatex*) textlist[i][j]->Clone();
 
 		 //axis range	
-			profilelist[i][j]->GetYaxis()->SetRangeUser(-0.08,0.08);
-			profilelist[i][j]->GetXaxis()->SetRangeUser(-0.055,0.055);
+			profilelist[i][j]->GetYaxis()->SetRangeUser(-0.25,0.25);
+			profilelist[i][j]->GetXaxis()->SetRangeUser(-0.25,0.25);
 
-			TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.2, 0.2);
+			TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.07, 0.07);
 			fit1->SetLineColor(kBlue);
 			fit1->SetLineStyle(1);
 			fit1->SetLineWidth(3);
-			profilelist[i][j]->Fit(fit1,"N0");	
+			profilelist[i][j]->Fit(fit1,"RN0");
+
+      TF1* fit2 = new TF1("just comparing","0.0+0.761*x",-0.2,0.2);	
+      fit2->SetLineColor(kRed);
+      fit2->SetLineStyle(1);
+      fit2->SetLineWidth(2);
 
 			/*
 			TF1 *fit1 = profilelist[i][j]->GetListOfFunctions()->FindObject("pol1");
@@ -108,7 +117,8 @@ void fitscatterplot_PbPb(){
       		profilelist[i][j]->GetXaxis()->SetNdivisions(505);
 
 		 //Marker
-      		profilelist[i][j]->SetMarkerStyle(1);
+      		profilelist[i][j]->SetMarkerStyle(20);
+          profilelist[i][j]->SetMarkerSize(1);
       		profilelist[i][j]->SetLineStyle(1);
       		profilelist[i][j]->SetLineWidth(1);	
 
@@ -128,6 +138,7 @@ void fitscatterplot_PbPb(){
       		TLatex* text2 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.55,0.25) ;
       		text2->DrawClone("same");
       		fit1->Draw("Same");
+          //fit2->Draw("Same");
 
       		
       	}
@@ -137,85 +148,85 @@ void fitscatterplot_PbPb(){
 
 
 
-  }
+    }
 
-  void CanvasPartition(TCanvas *C,const Int_t Nx = 2,const Int_t Ny = 2,
-  	Float_t lMargin = 0.15, Float_t rMargin = 0.05,
-  	Float_t bMargin = 0.15, Float_t tMargin = 0.05)
-  {
-  	if (!C) return;
+    void CanvasPartition(TCanvas *C,const Int_t Nx = 2,const Int_t Ny = 2,
+     Float_t lMargin = 0.15, Float_t rMargin = 0.05,
+     Float_t bMargin = 0.15, Float_t tMargin = 0.05)
+    {
+     if (!C) return;
 
    // Setup Pad layout:
-  	Float_t vSpacing = 0.0;
-  	Float_t vStep  = (1.- bMargin - tMargin - (Ny-1) * vSpacing) / Ny;
+     Float_t vSpacing = 0.0;
+     Float_t vStep  = (1.- bMargin - tMargin - (Ny-1) * vSpacing) / Ny;
 
-  	Float_t hSpacing = 0.0;
-  	Float_t hStep  = (1.- lMargin - rMargin - (Nx-1) * hSpacing) / Nx;
+     Float_t hSpacing = 0.0;
+     Float_t hStep  = (1.- lMargin - rMargin - (Nx-1) * hSpacing) / Nx;
 
-  	Float_t vposd,vposu,vmard,vmaru,vfactor;
-  	Float_t hposl,hposr,hmarl,hmarr,hfactor;
+     Float_t vposd,vposu,vmard,vmaru,vfactor;
+     Float_t hposl,hposr,hmarl,hmarr,hfactor;
 
-  	for (Int_t i=0;i<Nx;i++) {
+     for (Int_t i=0;i<Nx;i++) {
 
-  		if (i==0) {
-  			hposl = 0.0;
-  			hposr = lMargin + hStep;
-  			hfactor = hposr-hposl;
-  			hmarl = lMargin / hfactor;
-  			hmarr = 0.0;
-  		} else if (i == Nx-1) {
-  			hposl = hposr + hSpacing;
-  			hposr = hposl + hStep + rMargin;
-  			hfactor = hposr-hposl;
-  			hmarl = 0.0;
-  			hmarr = rMargin / (hposr-hposl);
-  		} else {
-  			hposl = hposr + hSpacing;
-  			hposr = hposl + hStep;
-  			hfactor = hposr-hposl;
-  			hmarl = 0.0;
-  			hmarr = 0.0;
-  		}
+      if (i==0) {
+       hposl = 0.0;
+       hposr = lMargin + hStep;
+       hfactor = hposr-hposl;
+       hmarl = lMargin / hfactor;
+       hmarr = 0.0;
+     } else if (i == Nx-1) {
+       hposl = hposr + hSpacing;
+       hposr = hposl + hStep + rMargin;
+       hfactor = hposr-hposl;
+       hmarl = 0.0;
+       hmarr = rMargin / (hposr-hposl);
+     } else {
+       hposl = hposr + hSpacing;
+       hposr = hposl + hStep;
+       hfactor = hposr-hposl;
+       hmarl = 0.0;
+       hmarr = 0.0;
+     }
 
-  		for (Int_t j=0;j<Ny;j++) {
+     for (Int_t j=0;j<Ny;j++) {
 
-  			if (j==0) {
-  				vposd = 0.0;
-  				vposu = bMargin + vStep;
-  				vfactor = vposu-vposd;
-  				vmard = bMargin / vfactor;
-  				vmaru = 0.0;
-  			} else if (j == Ny-1) {
-  				vposd = vposu + vSpacing;
-  				vposu = vposd + vStep + tMargin;
-  				vfactor = vposu-vposd;
-  				vmard = 0.0;
-  				vmaru = tMargin / (vposu-vposd);
-  			} else {
-  				vposd = vposu + vSpacing;
-  				vposu = vposd + vStep;
-  				vfactor = vposu-vposd;
-  				vmard = 0.0;
-  				vmaru = 0.0;
-  			}
+       if (j==0) {
+        vposd = 0.0;
+        vposu = bMargin + vStep;
+        vfactor = vposu-vposd;
+        vmard = bMargin / vfactor;
+        vmaru = 0.0;
+      } else if (j == Ny-1) {
+        vposd = vposu + vSpacing;
+        vposu = vposd + vStep + tMargin;
+        vfactor = vposu-vposd;
+        vmard = 0.0;
+        vmaru = tMargin / (vposu-vposd);
+      } else {
+        vposd = vposu + vSpacing;
+        vposu = vposd + vStep;
+        vfactor = vposu-vposd;
+        vmard = 0.0;
+        vmaru = 0.0;
+      }
 
-  			C->cd(0);
+      C->cd(0);
 
-  			char name[16];
-  			sprintf(name,"pad_%i_%i",i,j);
-  			TPad *pad = (TPad*) gROOT->FindObject(name);
-  			if (pad) delete pad;
-  			pad = new TPad(name,"",hposl,vposd,hposr,vposu);
-  			pad->SetLeftMargin(hmarl);
-  			pad->SetRightMargin(hmarr);
-  			pad->SetBottomMargin(vmard);
-  			pad->SetTopMargin(vmaru);
+      char name[16];
+      sprintf(name,"pad_%i_%i",i,j);
+      TPad *pad = (TPad*) gROOT->FindObject(name);
+      if (pad) delete pad;
+      pad = new TPad(name,"",hposl,vposd,hposr,vposu);
+      pad->SetLeftMargin(hmarl);
+      pad->SetRightMargin(hmarr);
+      pad->SetBottomMargin(vmard);
+      pad->SetTopMargin(vmaru);
 
-  			pad->SetFrameBorderMode(0);
-  			pad->SetBorderMode(0);
-  			pad->SetBorderSize(0);
+      pad->SetFrameBorderMode(0);
+      pad->SetBorderMode(0);
+      pad->SetBorderSize(0);
 
-  			pad->Draw();
-  		}
-  	}
+      pad->Draw();
+    }
   }
+}
