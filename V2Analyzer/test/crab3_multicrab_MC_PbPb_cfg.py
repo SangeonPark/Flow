@@ -8,7 +8,7 @@ process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
 ntrkRange = [200,400,800,1500]
 
-outputName = "multicrab_CMW_MonteCarlo_PbPb_Ntrk_Scatterplot_and_Closure"
+outputName = "multicrab_CMW_MC_PbPb_pt_eta_scatterplot"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
