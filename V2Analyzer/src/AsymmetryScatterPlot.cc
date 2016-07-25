@@ -449,10 +449,10 @@ Implementation:
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
  	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
  	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
- 	Npos_scatterHist_effcorr = fs->make<TH2D>("Npos_scatterHist_effcorr","Npos with eff correction;Reco N_{+};Gen N_{+}",1000,-0.3,0.3,1000,-0.3,0.3);
- 	Npos_scatterHist_noeffcorr = fs->make<TH2D>("Npos_scatterHist_noeffcorr","Npos without eff correction;Reco N_{+};Gen N_{+}",1000,-0.3,0.3,1000,-0.3,0.3);
- 	Nneg_scatterHist_effcorr = fs->make<TH2D>("Nneg_scatterHist_effcorr","Nneg with eff correction;Reco N_{-};Gen N_{-}",1000,-0.3,0.3,1000,-0.3,0.3);
- 	Nneg_scatterHist_noeffcorr = fs->make<TH2D>("Nneg_scatterHist_noeffcorr","Nneg without eff correction;Reco N_{-};Gen N_{-}",1000,-0.3,0.3,1000,-0.3,0.3);
+ 	Npos_scatterHist_effcorr = fs->make<TH2D>("Npos_scatterHist_effcorr","Npos with eff correction;Reco N_{+};Gen N_{+}",1600,0,1600,1600,0,1600);
+ 	Npos_scatterHist_noeffcorr = fs->make<TH2D>("Npos_scatterHist_noeffcorr","Npos without eff correction;Reco N_{+};Gen N_{+}",1600,0,1600,1600,0,1600);
+ 	Nneg_scatterHist_effcorr = fs->make<TH2D>("Nneg_scatterHist_effcorr","Nneg with eff correction;Reco N_{-};Gen N_{-}",1600,0,1600,1600,0,1600);
+ 	Nneg_scatterHist_noeffcorr = fs->make<TH2D>("Nneg_scatterHist_noeffcorr","Nneg without eff correction;Reco N_{-};Gen N_{-}",1600,0,1600,1600,0,1600);
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
