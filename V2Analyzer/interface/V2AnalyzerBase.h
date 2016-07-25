@@ -455,6 +455,7 @@ private:
       TH2D* Npos_scatterHist_noeffcorr;
       TH2D* Nneg_scatterHist_effcorr;
       TH2D* Nneg_scatterHist_noeffcorr;
+      TH2D* ptEtaScatterHist; 
 
       double dxySigCut_;
       double dzSigCut_;
