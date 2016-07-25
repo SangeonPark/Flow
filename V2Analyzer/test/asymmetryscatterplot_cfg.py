@@ -77,7 +77,7 @@ process.source = cms.Source("PoolSource",
 
 #loads analyzer
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("Hydjet_PbPb_scatterplotandclosure.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("EPOS_0725.root"))
 
 
 process.p = cms.Path(process.demo)
