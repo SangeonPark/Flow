@@ -217,7 +217,7 @@ Implementation:
  		double weight = 1.0;
 
  		if( doEffCorrection_ ){
- 			weight = effTable->GetBinContent( effTable->FindBin(eta, pt) );
+ 			weight = effTable->GetBinContent( effTable->FindBin(pt, eta) );
  		}
 
 //highPurity
