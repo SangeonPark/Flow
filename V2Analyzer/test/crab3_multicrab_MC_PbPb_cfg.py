@@ -7,6 +7,7 @@ process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
 ntrkRange = [200,400,800,1500]
+effTable = ["table_0","table_1","table_2"]
 
 outputName = "multicrab_CMW_MC_PbPb_pt_eta_scatterplot"
 
@@ -48,6 +49,7 @@ if __name__ == '__main__':
 
          process.demo.Nmin = ntrkRange[paths]
          process.demo.Nmax = ntrkRange[paths+1]
+         process.demo.efftableName = effTable[paths]
          RequestName = outputName + '_' + str(num) + "_" + str(paths)
          DataSetName = sampleName[num]
          config.General.requestName = RequestName

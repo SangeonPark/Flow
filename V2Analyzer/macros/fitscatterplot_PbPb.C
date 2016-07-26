@@ -4,6 +4,7 @@ using namespace std;
 void fitscatterplot_PbPb(){
 
 	TCanvas* C = new TCanvas("fitscatterplot","EPOS Hydjet Scatterplot",1500,1000);
+  //TCanvas* C2 = new TCanvas("EPOSoverHydjet","EPOS divided by Hydjet",1500,1000);
 	//C->SetCanvasSize(120,1000);
 	// Number of PADS
 	const Int_t Nx = 3;
@@ -25,57 +26,57 @@ void fitscatterplot_PbPb(){
 	for (int i = 0; i < 3; ++i)
 	{
 		f = new TFile(Form("../../../rootfiles/MC/EPOS_PbPb_Ntrk_%d.root",i));
-    
+
 		histlist[0][i] = (TH2D*)f->Get("demo/scatterHist_noeffcorr");
     histlist[0][i]->Rebin2D(20,1);
-		profilelist[0][i] = histlist[0][i]->ProfileX();
+    profilelist[0][i] = histlist[0][i]->ProfileX();
 
-	}
-	for (int i = 0; i < 3; ++i)
-	{
-		f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Ntrk_%d.root",i));
+  }
+  for (int i = 0; i < 3; ++i)
+  {
+    f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Ntrk_%d.root",i));
     
-		histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_noeffcorr");
+    histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_noeffcorr");
     histlist[1][i]->Rebin2D(20,1);
-		profilelist[1][i] = histlist[1][i]->ProfileX();
+    profilelist[1][i] = histlist[1][i]->ProfileX();
 
 
-	}  
-	TLatex* textlist[2][3]; 
-	textlist[0][0] = makeLatex("EPOS 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
-	textlist[0][1] = makeLatex("EPOS 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
-	textlist[0][2] = makeLatex("EPOS 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
-	textlist[1][0] = makeLatex("Hydjet 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
-	textlist[1][1] = makeLatex("Hydjet 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
-	textlist[1][2] = makeLatex("Hydjet 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
-	int n = 1;
+  }  
+  TLatex* textlist[2][3]; 
+  textlist[0][0] = makeLatex("EPOS 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
+  textlist[0][1] = makeLatex("EPOS 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
+  textlist[0][2] = makeLatex("EPOS 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
+  textlist[1][0] = makeLatex("Hydjet 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
+  textlist[1][1] = makeLatex("Hydjet 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
+  textlist[1][2] = makeLatex("Hydjet 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
+  int n = 1;
 
 
-	for (Int_t i=0;i<2;i++) {
-		for (Int_t j=0;j<3;j++) {
-			C->cd(n);
-			n++;
+  for (Int_t i=0;i<2;i++) {
+    for (Int_t j=0;j<3;j++) {
+     C->cd(n);
+     n++;
 
 
 
 
-			
-			TLatex *text1 = (TLatex*) textlist[i][j]->Clone();
+
+     TLatex *text1 = (TLatex*) textlist[i][j]->Clone();
 
 		 //axis range	
-			profilelist[i][j]->GetYaxis()->SetRangeUser(-0.25,0.25);
-			profilelist[i][j]->GetXaxis()->SetRangeUser(-0.25,0.25);
+     profilelist[i][j]->GetYaxis()->SetRangeUser(-0.25,0.25);
+     profilelist[i][j]->GetXaxis()->SetRangeUser(-0.25,0.25);
 
-			TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.07, 0.07);
-			fit1->SetLineColor(kBlue);
-			fit1->SetLineStyle(1);
-			fit1->SetLineWidth(3);
-			profilelist[i][j]->Fit(fit1,"RN0");
+     TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.07, 0.07);
+     fit1->SetLineColor(kBlue);
+     fit1->SetLineStyle(1);
+     fit1->SetLineWidth(3);
+     profilelist[i][j]->Fit(fit1,"RN0");
 
-      TF1* fit2 = new TF1("just comparing","0.0+0.761*x",-0.2,0.2);	
-      fit2->SetLineColor(kRed);
-      fit2->SetLineStyle(1);
-      fit2->SetLineWidth(2);
+     TF1* fit2 = new TF1("just comparing","0.0+0.761*x",-0.2,0.2);	
+     fit2->SetLineColor(kRed);
+     fit2->SetLineStyle(1);
+     fit2->SetLineWidth(2);
 
 			/*
 			TF1 *fit1 = profilelist[i][j]->GetListOfFunctions()->FindObject("pol1");
@@ -119,29 +120,32 @@ void fitscatterplot_PbPb(){
 		 //Marker
       		profilelist[i][j]->SetMarkerStyle(20);
           profilelist[i][j]->SetMarkerSize(1);
-      		profilelist[i][j]->SetLineStyle(1);
-      		profilelist[i][j]->SetLineWidth(1);	
+          profilelist[i][j]->SetLineStyle(1);
+          profilelist[i][j]->SetLineWidth(1);	
 
          // TICKS X Axis
       		//profilelist[i][j]->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
-      		profilelist[i][j]->Draw();
+          profilelist[i][j]->Draw();
 
 
-      		
-      		text1->DrawClone("same");
 
-      		TF1 *fa1 = new TF1("fa1","0",-10,10); 
-      		fa1->SetLineColor(kBlack);
-      		fa1->SetLineWidth(1);
-      		fa1->DrawClone("Same");
+          text1->DrawClone("same");
 
-      		TLatex* text2 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.55,0.25) ;
-      		text2->DrawClone("same");
-      		fit1->Draw("Same");
+          TF1 *fa1 = new TF1("fa1","0",-10,10); 
+          fa1->SetLineColor(kBlack);
+          fa1->SetLineWidth(1);
+          fa1->DrawClone("Same");
+
+          TLatex* text2 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.55,0.25) ;
+          TLatex* text3 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.55,0.20) ;
+
+          text2->DrawClone("same");
+          text3->DrawClone("same");
+          fit1->Draw("Same");
           //fit2->Draw("Same");
 
-      		
-      	}
+
+        }
       }
       C->cd();
       SaveCanvas(C,"pics","MC_Hydjet_EPOS_PbPb");

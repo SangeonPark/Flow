@@ -28,8 +28,8 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       #EFFICIENCY TABLE
 
                       #pPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
-                      efftableName = cms.string('rTotalEff3D'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/MCweight.root'),
+                      efftableName = cms.string('table_2'),
                       #PbPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
                       #efftableName = cms.string('rTotalEff3D_1'),
