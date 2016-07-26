@@ -9,7 +9,7 @@ process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 ntrkRange = [200,400,800,1500]
 effTable = ["table_0","table_1","table_2"]
 
-outputName = "multicrab_CMW_MC_PbPb_pt_eta_scatterplot"
+outputName = "multicrab_CMW_MC_PbPb_pt_eta_ReWeighted"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
