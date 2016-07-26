@@ -320,6 +320,7 @@ Implementation:
  	double N_tot_gen=0.0;
 
 
+
  	for(unsigned it=0; it<genParticleCollection->size(); ++it) {
 
  		const reco::GenParticle & genCand = (*genParticleCollection)[it];
@@ -329,13 +330,17 @@ Implementation:
  		double genphi = genCand.phi();
  		int gencharge = genCand.charge();
 
+ 		double weight = 1.0;
+
+
  		if( status != 1  || gencharge == 0 ) continue;
  		if(genpt <= ptCutMin_ ||  ptCutMax_ <= genpt ) continue;
  		if(geneta <= etaCutMin_ || etaCutMax_ <= geneta) continue;
 
+ 		weight = effTable->GetBinContent( effTable->FindBin(genpt, geneta) );
 
- 		if( gencharge > 0){ N_pos_gen+=1.0; N_tot_gen+=1.0; }
- 		if( gencharge < 0){ N_neg_gen+=1.0; N_tot_gen+=1.0; }
+ 		if( gencharge > 0){ N_pos_gen+=weight; N_tot_gen+=weight; }
+ 		if( gencharge < 0){ N_neg_gen+=weight; N_tot_gen+=weight; }
 
  		TComplex e(1,2*genphi,1);
 
