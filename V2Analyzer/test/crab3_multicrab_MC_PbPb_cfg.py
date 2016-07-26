@@ -45,6 +45,7 @@ if __name__ == '__main__':
       for paths in range(0,3):
          print 'double check that we are using sample %r ' % (num)		
          print 'double check that NtrkOffline range is fram %r to %r' % (ntrkRange[paths],ntrkRange[paths+1])
+         print 'double check that we are using %r' % (effTable[paths])
 
          process.demo.Nmin = ntrkRange[paths]
          process.demo.Nmax = ntrkRange[paths+1]
