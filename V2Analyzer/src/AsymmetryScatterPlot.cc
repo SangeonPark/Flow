@@ -300,12 +300,9 @@ Implementation:
 
 
  	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
- 		double eta = cand->eta();
- 		double charge = (double)cand->charge();
- 		double pt = cand->pt();
- 		double phi = cand->phi();
- 		double weight = 1.0;
 
+ 		double eta = cand->eta();
+ 		double pt = cand->pt();
 
 //highPurity
  		if(!cand->quality(reco::TrackBase::highPurity)) continue;
