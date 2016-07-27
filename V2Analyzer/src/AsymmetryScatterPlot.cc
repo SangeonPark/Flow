@@ -296,9 +296,41 @@ Implementation:
  		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
 
  	}
+ 	vtzHist->Fill(bestvz);
+
+
  	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
  		double eta = cand->eta();
+ 		double charge = (double)cand->charge();
  		double pt = cand->pt();
+ 		double phi = cand->phi();
+ 		double weight = 1.0;
+
+
+//highPurity
+ 		if(!cand->quality(reco::TrackBase::highPurity)) continue;
+
+//DCA
+ 		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
+ 		double dzbest = cand->dz(bestvtx);
+ 		double dxybest = cand->dxy(bestvtx);
+ 		double dzerror = sqrt(cand->dzError()*cand->dzError()+bestvzError*bestvzError);
+ 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
+ 		double dzos = dzbest/dzerror;
+ 		double dxyos = dxybest/dxyerror;
+ 		if( dzSigCut_ <= fabs(dzos) || dxySigCut_ <= fabs(dxyos) ) continue;
+
+//ptError
+ 		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
+
+
+//kinematic cuts
+ 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+ 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
+
+//reversebeam for merging reverse data
+ 		if(reverseBeam_) { eta *= -1.0;}
+
  		ptEtaScatterHist->Fill(pt,eta);
  	}
 
@@ -330,6 +362,7 @@ Implementation:
  		double genphi = genCand.phi();
  		int gencharge = genCand.charge();
 
+
  		double weight = 1.0;
 
 
@@ -337,7 +370,13 @@ Implementation:
  		if(genpt <= ptCutMin_ ||  ptCutMax_ <= genpt ) continue;
  		if(geneta <= etaCutMin_ || etaCutMax_ <= geneta) continue;
 
- 		weight = effTable->GetBinContent( effTable->FindBin(genpt, geneta) );
+ 		genptEtaScatterHist->Fill(genpt,geneta);
+
+ 		if( doEffCorrection_ ){
+
+ 			weight = effTable->GetBinContent( effTable->FindBin(genpt, geneta) );
+
+ 		}
 
  		if( gencharge > 0){ N_pos_gen+=weight; N_tot_gen+=weight; }
  		if( gencharge < 0){ N_neg_gen+=weight; N_tot_gen+=weight; }
@@ -458,6 +497,7 @@ Implementation:
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	GenNTrkHist = fs->make<TH1D>("GenNtrkHist","GenNTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
+ 	vtzHist = fs->make<TH1D>("vtzHist","vtzHist",300,-15,15);
  	scatterHist_effcorr = fs->make<TH2D>("scatterHist_effcorr","Scatter Plot efficiency corrected;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
  	scatterHist_noeffcorr = fs->make<TH2D>("scatterHist_noeffcorr","Scatter Plot without eff correction;Observed A_{ch};A_{ch}",1000,-0.3,0.3,1000,-0.3,0.3);
  	Npos_scatterHist_effcorr = fs->make<TH2D>("Npos_scatterHist_effcorr","Npos with eff correction;Reco N_{+};Gen N_{+}",1600,0,1600,1600,0,1600);
@@ -465,6 +505,8 @@ Implementation:
  	Nneg_scatterHist_effcorr = fs->make<TH2D>("Nneg_scatterHist_effcorr","Nneg with eff correction;Reco N_{-};Gen N_{-}",1600,0,1600,1600,0,1600);
  	Nneg_scatterHist_noeffcorr = fs->make<TH2D>("Nneg_scatterHist_noeffcorr","Nneg without eff correction;Reco N_{-};Gen N_{-}",1600,0,1600,1600,0,1600);
  	ptEtaScatterHist = fs->make<TH2D>("pt_eta_distribution","pt and eta distribution;pt;eta",1000,0.3,3.0,1000,-2.4,2.4);
+ 	genptEtaScatterHist = fs->make<TH2D>("gen_pt_eta_distribution","gen pt and eta distribution;pt;eta",1000,0.3,3.0,1000,-2.4,2.4);
+
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");

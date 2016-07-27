@@ -36,7 +36,7 @@ void fitscatterplot_PbPb(){
   {
     f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Ntrk_%d.root",i));
     
-    histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_noeffcorr");
+    histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_effcorr");
     histlist[1][i]->Rebin2D(20,1);
     profilelist[1][i] = histlist[1][i]->ProfileX();
 
@@ -140,7 +140,7 @@ void fitscatterplot_PbPb(){
           TLatex* text3 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.55,0.20) ;
 
           text2->DrawClone("same");
-          text3->DrawClone("same");
+          //text3->DrawClone("same");
           fit1->Draw("Same");
           //fit2->Draw("Same");
 

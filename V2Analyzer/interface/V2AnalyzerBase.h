@@ -445,6 +445,7 @@ private:
       // ----------member data ---------------------------
 
       TH1D* asym_Dist;
+      TH1D* vtzHist;
       TH1D* NTrkHist;
       TH2D* effTable;
       TH1D* cbinHist;
@@ -456,6 +457,7 @@ private:
       TH2D* Nneg_scatterHist_effcorr;
       TH2D* Nneg_scatterHist_noeffcorr;
       TH2D* ptEtaScatterHist; 
+      TH2D* genptEtaScatterHist;
 
       double dxySigCut_;
       double dzSigCut_;
