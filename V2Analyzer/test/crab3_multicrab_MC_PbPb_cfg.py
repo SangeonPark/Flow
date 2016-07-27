@@ -9,7 +9,7 @@ process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 ntrkRange = [200,400,800,1500]
 effTable = ["table_0","table_1","table_2"]
 
-outputName = "multicrab_CMW_MC_PbPb_pt_eta_ReWeighted"
+outputName = "multicrab_CMW_MC_genpteta_and_vtzdist"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -39,11 +39,14 @@ if __name__ == '__main__':
            print "Failed submitting task: %s" % (hte.headers)
       except ClientException as cle:
           print "Failed submitting task: %s" % (cle)
-   sampleName = ["/Hydjet_Quenched_MinBias_5020GeV_750/davidlw-ppRECO_std_v3-b19fc96d6ecc5870a54312d2edbb74e0/USER"]       
+
+
+   sampleName = ["/EPOS_PbPb5TeV/davidlw-Cent30100_DIGI-RECO_v1-d1b7f9a11ac0f50a520ee8a635252e33/USER",
+                 "/Hydjet_Quenched_MinBias_5020GeV_750/davidlw-ppRECO_std_v3-b19fc96d6ecc5870a54312d2edbb74e0/USER"]       
    
-   for num in range(0,1):
+   for num in range(0,2):
       for paths in range(0,3):
-         print 'double check that we are using sample %r ' % (num)		
+         print 'double check that we are using sample %r ' % (sampleName[num])		
          print 'double check that NtrkOffline range is fram %r to %r' % (ntrkRange[paths],ntrkRange[paths+1])
          print 'double check that we are using %r' % (effTable[paths])
 
