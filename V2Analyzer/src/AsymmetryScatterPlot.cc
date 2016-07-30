@@ -374,7 +374,7 @@ Implementation:
 
  		if( doEffCorrection_ ){
 
- 			weight = effTable->GetBinContent( effTable->FindBin(genpt, geneta) );
+ 			weight = effTable->GetBinContent( effTable->FindBin(nTracks) );
 
  		}
 
