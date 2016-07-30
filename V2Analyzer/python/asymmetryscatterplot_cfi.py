@@ -28,7 +28,7 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       #EFFICIENCY TABLE
 
                       #pPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/NTRKreweight'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/NTRKreweight.root'),
                       efftableName = cms.string('table_2'),
                       #PbPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
