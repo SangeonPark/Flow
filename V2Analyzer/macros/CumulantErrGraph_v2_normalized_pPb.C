@@ -5,7 +5,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 	TFile *f;
 
-	const int NAchBins = 25;
+	const int NAchBins = 17;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -27,7 +27,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	double variance_diff;
 
 
-	f = new TFile(Form("../../../rootfiles/v2Cumulant_pPb_185_220_25bins/Rebinned_%d.root",NAchBins));
+	f = new TFile("../../../rootfiles/v2Cumulant_pPb_25bins/Rebinned_17.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -114,7 +114,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
 	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle(" #frac{ v_{2}^{#minus} #minus v_{2}^{#plus} }{ v_{2}^{#minus} #plus v_{2}^{#plus} } ");
+	base2->GetYaxis()->SetTitle(" (v^{#minus}_{2} #minus v^{#plus}_{2})/(v^{#minus}_{2} #plus v^{#plus}_{2}) ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");
@@ -131,10 +131,18 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_0.root","RECREATE");
+
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
+
+	gr_pos->Write();
+	gr_neg->Write();
+	gr_diff->Write();
+
+
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
@@ -183,10 +191,15 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 
     //Define a linear function
-	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.13, 0.13);
+	TF1* fit1 = new TF1("f1", "[0]+x*[1]", -0.13, 0.13);
+
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
 	gr_diff->Fit(fit1,"N0");
+	fit1->Write();
+
+
+	rebinned->Close();
 
 	c3->cd(2);
 

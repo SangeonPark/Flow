@@ -141,16 +141,26 @@ void v2_and_v3_superposition(){
 	TGraphErrors *gr_v2_diff = new TGraphErrors(5,x_v2,y_v2,NULL,err_v2);
 	TGraphErrors *gr_v3_diff = new TGraphErrors(5,x_v3,y_v3,NULL,err_v3);
 
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure4_1.root","RECREATE");
+	gr_v2_diff->Write();
+	gr_v3_diff->Write();
+
+
     //Define a linear function
-	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
+	TF1* fit1 = new TF1("f1", "[0]+x*[1]", -0.09, 0.09);
 	fit1->SetLineColor(kBlue);
 	fit1->SetLineStyle(2);
 	gr_v2_diff->Fit(fit1);
+	fit1->Write();
 
-	TF1* fit2 = new TF1("Linear fitting case 2", "[0]+x*[1]", -0.09, 0.09);
+	TF1* fit2 = new TF1("f2", "[0]+x*[1]", -0.09, 0.09);
 	fit2->SetLineColor(kRed);
 	fit2->SetLineStyle(2);
 	gr_v3_diff->Fit(fit2);
+	fit2->Write();
+
+		rebinned->Close();
+
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");

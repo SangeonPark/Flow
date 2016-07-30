@@ -131,10 +131,17 @@ void CumulantErrGraph_v2_normalized(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_1.root","RECREATE");
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
+
+	gr_pos->Write();
+	gr_neg->Write();
+	gr_diff->Write();
+
+
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
@@ -183,10 +190,14 @@ void CumulantErrGraph_v2_normalized(){
 
 
     //Define a linear function
-	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.085, 0.085);
+	TF1* fit1 = new TF1("f1", "[0]+x*[1]", -0.085, 0.085);
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
 	gr_diff->Fit(fit1,"N0");
+	fit1->Write();
+	rebinned->Close();
+
+
 
 	c3->cd(2);
 

@@ -13,6 +13,7 @@ void slopevscentrality_v2_v3_superposition(){
 	TF1* fit1;
 
 	double x_centrality[6] = {35, 45, 55, 65, 75, 85};
+	double x_v3_cent[3] = {35, 45, 60};
 	double v2_PbPb_centrality_yval[6];
 	double v2_PbPb_centrality_ystaterr[6];
 	double v2_statErr[6];
@@ -91,21 +92,20 @@ void slopevscentrality_v2_v3_superposition(){
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
 		v2_PbPb_centrality_ystaterr[n] = fit1->GetParError(1);
+		cout << "v2err: " << v2_PbPb_centrality_ystaterr[n] << endl;
 		v2_PbPb_centrality_yval[n] = r;
 
 	}
 
 
 	TGraphErrors* v2_PbPbslope_centrality = new TGraphErrors(6,x_centrality,v2_PbPb_centrality_yval,NULL,v2_PbPb_centrality_ystaterr);
-	v2_PbPbslope_centrality -> SetMarkerStyle(24);
-	v2_PbPbslope_centrality -> SetMarkerColor(kBlue);
-	v2_PbPbslope_centrality -> SetLineColor(kBlue);
 
 
-	for (int n = 0; n <6; ++n)
+
+	for (int n = 0; n <3; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_centrality_v3/%d/cent_Merged_%d.root",n,n));
+		f = new TFile(Form("../../../rootfiles/slope_vs_centrality_v3/Merged_%d.root",n));
 
 		for (Int_t i = 0; i < 5; i++){
 			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
@@ -161,12 +161,24 @@ void slopevscentrality_v2_v3_superposition(){
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
 		v3_PbPb_centrality_ystaterr[n] = fit1->GetParError(1);
+		cout << "v3err: " << v3_PbPb_centrality_ystaterr[n] << endl;
+
 		v3_PbPb_centrality_yval[n] = r;
 		cout << r << endl;
 
 	}
 
-	TGraphErrors* v3_PbPbslope_centrality = new TGraphErrors(6,x_centrality,v3_PbPb_centrality_yval,NULL,v3_PbPb_centrality_ystaterr);
+	TGraphErrors* v3_PbPbslope_centrality = new TGraphErrors(3,x_v3_cent,v3_PbPb_centrality_yval,NULL,v3_PbPb_centrality_ystaterr);
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure5.root","RECREATE");
+	v2_PbPbslope_centrality->Write();
+	v3_PbPbslope_centrality->Write();
+	rebinned->Close();
+
+
+
+	v2_PbPbslope_centrality -> SetMarkerStyle(24);
+	v2_PbPbslope_centrality -> SetMarkerColor(kBlue);
+	v2_PbPbslope_centrality -> SetLineColor(kBlue);
 	v3_PbPbslope_centrality -> SetMarkerStyle(25);
 	v3_PbPbslope_centrality -> SetMarkerColor(kRed);
 	v3_PbPbslope_centrality -> SetLineColor(kRed);

@@ -27,7 +27,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_185_300/Merged.root");
+	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_cent_30_40/Merged.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -136,10 +136,15 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure4_0.root","RECREATE");
 
 	TGraphErrors *gr_pos = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff = new TGraphErrors(5,x,v2_diff,NULL,err_diff);
+
+	gr_pos->Write();
+	gr_neg->Write();
+	rebinned->Close();
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");

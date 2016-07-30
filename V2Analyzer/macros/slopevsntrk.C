@@ -102,14 +102,15 @@ void slopevsntrk(){
 	}
 
 	TGraphErrors* pPbslope = new TGraphErrors(4,pPb_xval,pPb_yval,NULL,pPb_ystaterr);
-	pPbslope -> SetMarkerStyle(20);
-	pPbslope -> SetMarkerColor(kBlue);
 
 
-	for (int n = 0; n <8; ++n)
+
+
+
+	for (int n = 0; n <4; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/PbPb/Rebin/%d/Merged.root",n));
+		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/PbPb/Rebin/Merged_%d.root",n));
 		NTrkHist = (TH1D*)f->Get("demo/NTrkHist");
 		PbPb_xval[n] = NTrkHist->GetMean();
 		for (Int_t i = 0; i < 5; i++){
@@ -170,14 +171,17 @@ void slopevsntrk(){
 		PbPb_yval[n] = r;
 
 	}
-	TGraphErrors* PbPbslope = new TGraphErrors(8,PbPb_xval,PbPb_yval,NULL,PbPb_ystaterr);
-	PbPbslope -> SetMarkerStyle(24);
-	PbPbslope -> SetMarkerColor(kBlue);
 
-	for (int n = 0; n <4; ++n)
+
+	TGraphErrors* PbPbslope = new TGraphErrors(4,PbPb_xval,PbPb_yval,NULL,PbPb_ystaterr);
+
+
+
+
+	for (int n = 0; n <2; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_centrality/PbPb502_%d.root",n+3));
+		f = new TFile(Form("../../../rootfiles/slope_vs_centrality/PbPb502_%d.root",n+1));
 		NTrkHist = (TH1D*)f->Get("demo/NTrkHist");
 		PbPb_centrality_xval[n] = NTrkHist->GetMean();
 		for (Int_t i = 0; i < 5; i++){
@@ -239,8 +243,20 @@ void slopevsntrk(){
 		PbPb_centrality_yval[n] = r;
 
 	}
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure3.root","RECREATE");
 
-	TGraphErrors* PbPbslope_centrality = new TGraphErrors(4,PbPb_centrality_xval,PbPb_centrality_yval,NULL,PbPb_centrality_ystaterr);
+	TGraphErrors* PbPbslope_centrality = new TGraphErrors(2,PbPb_centrality_xval,PbPb_centrality_yval,NULL,PbPb_centrality_ystaterr);
+	pPbslope->Write();
+	PbPbslope->Write();
+	PbPbslope_centrality->Write();
+	rebinned->Close();
+
+
+	PbPbslope -> SetMarkerStyle(24);
+	PbPbslope -> SetMarkerColor(kBlue);
+	pPbslope -> SetMarkerStyle(20);
+	pPbslope -> SetMarkerColor(kBlue);
+
 	PbPbslope_centrality -> SetMarkerStyle(24);
 	PbPbslope_centrality -> SetMarkerColor(kRed);
 

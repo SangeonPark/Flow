@@ -3,7 +3,7 @@ using namespace std;
 
 void fitscatterplot_PbPb(){
 
-	TCanvas* C = new TCanvas("fitscatterplot","EPOS Hydjet Scatterplot",1500,1000);
+	TCanvas* C = new TCanvas("fitscatterplot","EPOS Hydjet Scatterplot",1800,1200);
   //TCanvas* C2 = new TCanvas("EPOSoverHydjet","EPOS divided by Hydjet",1500,1000);
 	//C->SetCanvasSize(120,1000);
 	// Number of PADS
@@ -34,7 +34,7 @@ void fitscatterplot_PbPb(){
   }
   for (int i = 0; i < 3; ++i)
   {
-    f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Ntrk_%d.root",i));
+    f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Reweighted_%d.root",i));
     
     histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_effcorr");
     histlist[1][i]->Rebin2D(20,1);
@@ -55,6 +55,7 @@ void fitscatterplot_PbPb(){
   for (Int_t i=0;i<2;i++) {
     for (Int_t j=0;j<3;j++) {
      C->cd(n);
+     gPad->SetLogz(1);
      n++;
 
 
@@ -94,12 +95,14 @@ void fitscatterplot_PbPb(){
 
 
          // Format for y axis
+            profilelist[i][j]->GetYaxis()->SetTitle("A_{ch}");
+
       		profilelist[i][j]->GetYaxis()->SetLabelFont(43);
       		profilelist[i][j]->GetYaxis()->SetLabelSize(16);
       		profilelist[i][j]->GetYaxis()->SetLabelOffset(0.02);
       		profilelist[i][j]->GetYaxis()->SetTitleFont(43);
       		profilelist[i][j]->GetYaxis()->SetTitleSize(16);
-      		profilelist[i][j]->GetYaxis()->SetTitleOffset(5);
+      		profilelist[i][j]->GetYaxis()->SetTitleOffset(3.5);
 
       		profilelist[i][j]->GetYaxis()->CenterTitle();
       		profilelist[i][j]->GetYaxis()->SetNdivisions(505);
@@ -113,7 +116,7 @@ void fitscatterplot_PbPb(){
       		profilelist[i][j]->GetXaxis()->SetLabelOffset(0.02);
       		profilelist[i][j]->GetXaxis()->SetTitleFont(43);
       		profilelist[i][j]->GetXaxis()->SetTitleSize(16);
-      		profilelist[i][j]->GetXaxis()->SetTitleOffset(5);
+      		profilelist[i][j]->GetXaxis()->SetTitleOffset(3);
       		profilelist[i][j]->GetXaxis()->CenterTitle();
       		profilelist[i][j]->GetXaxis()->SetNdivisions(505);
 
@@ -125,7 +128,9 @@ void fitscatterplot_PbPb(){
 
          // TICKS X Axis
       		//profilelist[i][j]->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
-          profilelist[i][j]->Draw();
+         // profilelist[i][j]->Draw();
+          histlist[i][j]->Draw("colz");
+
 
 
 
@@ -141,7 +146,7 @@ void fitscatterplot_PbPb(){
 
           text2->DrawClone("same");
           //text3->DrawClone("same");
-          fit1->Draw("Same");
+          //fit1->Draw("Same");
           //fit2->Draw("Same");
 
 
