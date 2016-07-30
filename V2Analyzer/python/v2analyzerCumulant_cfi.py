@@ -24,7 +24,7 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       dzSigCut = cms.double(3.0),                      
                       #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
-                      doAchEffCorrection = cms.bool(True),
+                      doAchEffCorrection = cms.bool(False),
                       
                       #ALWAYS CHECK THIS PART
 
