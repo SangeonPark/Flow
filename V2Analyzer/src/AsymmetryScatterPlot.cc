@@ -339,7 +339,7 @@ Implementation:
  	double N_diff_noeffcorr = N_pos_noeffcorr - N_neg_noeffcorr;
  	double ach_noeffcorr = N_diff_noeffcorr/N_tot_noeffcorr;
 
- 	cout << ach << " " << ach_noeffcorr << endl; 
+ 	cout << N_pos << " " << N_pos_noeffcorr << endl; 
 
  	
 
