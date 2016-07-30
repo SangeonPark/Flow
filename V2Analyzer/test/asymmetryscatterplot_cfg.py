@@ -52,13 +52,13 @@ process.source = cms.Source("PoolSource",
         #'root://cms-xrd-global.cern.ch//store/user/davidlw/EPOS_PbPb5TeV/Cent30100_DIGI-RECO_v1/160629_095734/0000/step2_FILTER_DIGI_L1_DIGI2RAW_RAW2DIGI_L1Reco_RECO_110.root'
 
         #HYDJET PbPb
-        'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_112.root',
-        'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_113.root',
-        'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_100.root',
-        'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_101.root',
-        'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_102.root',
-        'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_103.root',
-        'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_104.root',
+        #'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_112.root',
+        #'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_113.root',
+        #'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_100.root',
+        #'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_101.root',
+        #'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_102.root',
+        #'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_103.root',
+        #'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_104.root',
         'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_105.root',
         'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_106.root',
         'root://cmsxrootd.fnal.gov//store/user/davidlw/Hydjet_Quenched_MinBias_5020GeV_750/ppRECO_std_v3/160216_232421/0000/step2pp_RAW2DIGI_L1Reco_RECO_107.root',
@@ -77,7 +77,7 @@ process.source = cms.Source("PoolSource",
 
 #loads analyzer
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("MC_genpt_eta_plot_0727.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("MC_hydjet_ntrkreweighted_0730.root"))
 
 
 process.p = cms.Path(process.demo)

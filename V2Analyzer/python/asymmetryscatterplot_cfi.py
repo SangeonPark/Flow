@@ -15,7 +15,7 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       
                       #ALWAYS CHECK THIS PART!!!!!!!!!!!!
                       #Check whether to apply eff. correction 
-                      doEffCorrection = cms.bool(False),
+                      doEffCorrection = cms.bool(True),
                       doAchEffCorrection = cms.bool(False),
                       #Kinematic Cuts !!!!!
                       etaCutMin = cms.double(-2.4),
@@ -28,7 +28,7 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       #EFFICIENCY TABLE
 
                       #pPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/MCweight.root'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/NTRKreweight'),
                       efftableName = cms.string('table_2'),
                       #PbPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),

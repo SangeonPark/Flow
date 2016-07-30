@@ -213,12 +213,7 @@ Implementation:
  		double eta = cand->eta();
  		double charge = (double)cand->charge();
  		double pt = cand->pt();
- 		double phi = cand->phi();
- 		double weight = 1.0;
 
- 		if( doEffCorrection_ ){
- 			weight = effTable->GetBinContent( effTable->FindBin(pt, eta) );
- 		}
 
 //highPurity
  		if(!cand->quality(reco::TrackBase::highPurity)) continue;
@@ -246,6 +241,47 @@ Implementation:
  				nTracks_neg++;
  			}
  		}
+
+ 	}
+
+//Cut on NTrackOffline (Should be disabled if useCentrality = True)	
+ 	if(!useCentrality_){
+
+ 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
+
+ 	}
+
+ 	vtzHist->Fill(bestvz);
+
+
+ 	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
+
+ 		double eta = cand->eta();
+ 		double charge = (double)cand->charge();
+ 		double pt = cand->pt();
+ 		double phi = cand->phi();
+ 		double weight = 1.0;
+
+ 		if( doEffCorrection_ ){
+ 			
+ 			weight = effTable->GetBinContent( effTable->FindBin(nTracks) );
+ 		}
+
+//highPurity
+ 		if(!cand->quality(reco::TrackBase::highPurity)) continue;
+
+//DCA
+ 		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
+ 		double dzbest = cand->dz(bestvtx);
+ 		double dxybest = cand->dxy(bestvtx);
+ 		double dzerror = sqrt(cand->dzError()*cand->dzError()+bestvzError*bestvzError);
+ 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
+ 		double dzos = dzbest/dzerror;
+ 		double dxyos = dxybest/dxyerror;
+ 		if( dzSigCut_ <= fabs(dzos) || dxySigCut_ <= fabs(dxyos) ) continue;
+
+//ptError
+ 		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
 
 //kinematic cuts
  		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
@@ -287,49 +323,13 @@ Implementation:
  				
  			}
  		}
-
- 	}
-
-//Cut on NTrackOffline (Should be disabled if useCentrality = True)	
- 	if(!useCentrality_){
-
- 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
-
- 	}
- 	vtzHist->Fill(bestvz);
-
-
- 	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
-
- 		double eta = cand->eta();
- 		double pt = cand->pt();
-
-//highPurity
- 		if(!cand->quality(reco::TrackBase::highPurity)) continue;
-
-//DCA
- 		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
- 		double dzbest = cand->dz(bestvtx);
- 		double dxybest = cand->dxy(bestvtx);
- 		double dzerror = sqrt(cand->dzError()*cand->dzError()+bestvzError*bestvzError);
- 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
- 		double dzos = dzbest/dzerror;
- 		double dxyos = dxybest/dxyerror;
- 		if( dzSigCut_ <= fabs(dzos) || dxySigCut_ <= fabs(dxyos) ) continue;
-
-//ptError
- 		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
-
-
-//kinematic cuts
- 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
- 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
-
-//reversebeam for merging reverse data
- 		if(reverseBeam_) { eta *= -1.0;}
-
  		ptEtaScatterHist->Fill(pt,eta);
+
+
  	}
+
+
+
 
 
 //asymmetry calculation
@@ -348,6 +348,9 @@ Implementation:
  	double N_neg_gen=0.0;
  	double N_tot_gen=0.0;
 
+ 	double N_pos_gen_noeffcorr=0.0;
+ 	double N_neg_gen_noeffcorr=0.0;
+ 	double N_tot_gen_noeffcorr=0.0;
 
 
  	for(unsigned it=0; it<genParticleCollection->size(); ++it) {
@@ -375,8 +378,18 @@ Implementation:
 
  		}
 
- 		if( gencharge > 0){ N_pos_gen+=weight; N_tot_gen+=weight; }
- 		if( gencharge < 0){ N_neg_gen+=weight; N_tot_gen+=weight; }
+ 		if( gencharge > 0){
+ 			N_pos_gen+=weight;
+ 			N_tot_gen+=weight;
+ 			N_pos_gen_noeffcorr+=1.0;
+ 			N_tot_gen_noeffcorr+=1.0;
+ 		}
+ 		if( gencharge < 0){ 
+ 			N_neg_gen+=weight; 
+ 			N_tot_gen+=weight;
+ 			N_neg_gen_noeffcorr+=1.0; 
+ 			N_tot_gen_noeffcorr+=1.0;
+ 		}
 
  		TComplex e(1,2*genphi,1);
 
@@ -405,13 +418,16 @@ Implementation:
  	double N_diff_gen = N_pos_gen - N_neg_gen;
  	double ach_gen = N_diff_gen/N_tot_gen;
 
+ 	double N_diff_gen_noeffcorr = N_pos_gen_noeffcorr - N_neg_gen_noeffcorr;
+ 	double ach_gen_noeffcorr = N_diff_gen_noeffcorr/N_tot_gen_noeffcorr;
+
  	scatterHist_effcorr->Fill(ach,ach_gen);
- 	scatterHist_noeffcorr->Fill(ach_noeffcorr,ach_gen);
+ 	scatterHist_noeffcorr->Fill(ach_noeffcorr,ach_gen_noeffcorr);
 
  	Npos_scatterHist_effcorr->Fill(N_pos,N_pos_gen);
- 	Npos_scatterHist_noeffcorr->Fill(N_pos_noeffcorr,N_pos_gen);
+ 	Npos_scatterHist_noeffcorr->Fill(N_pos_noeffcorr,N_pos_gen_noeffcorr);
  	Nneg_scatterHist_effcorr->Fill(N_neg,N_neg_gen);
- 	Nneg_scatterHist_noeffcorr->Fill(N_neg_noeffcorr,N_neg_gen);
+ 	Nneg_scatterHist_noeffcorr->Fill(N_neg_noeffcorr,N_neg_gen_noeffcorr);
 
 
 
