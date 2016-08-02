@@ -5,7 +5,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 	TFile *f;
 
-	const int NAchBins = 17;
+	const int NAchBins = 7;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -27,17 +27,17 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v2Cumulant_pPb_25bins/Rebinned_17.root");
+	f = new TFile("../../../rootfiles/crosscheck/v2_pPb_185_220_Ach_NotCorrected/Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i<NAchBins; i++){
@@ -88,7 +88,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.065, 0.075);
+	base->GetYaxis()->SetRangeUser(0.065, 0.072);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
@@ -112,7 +112,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	base->SetLineWidth(0);
 
 	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
-	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
+	base2->GetYaxis()->SetRangeUser(-0.03, 0.03);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" (v^{#minus}_{2} #minus v^{#plus}_{2})/(v^{#minus}_{2} #plus v^{#plus}_{2}) ");
 	base2->GetXaxis()->CenterTitle();
@@ -236,7 +236,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
 
-	SaveCanvas(c3,"pics",Form("v2_PbPb_185_220_%d_bins",NAchBins));
+	SaveCanvas(c3,"pics",Form("v2_pPb_185_220_crosscheck_Ach_Notcorrected"));
 
 
 

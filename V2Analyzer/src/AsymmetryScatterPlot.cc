@@ -262,9 +262,13 @@ Implementation:
  		double phi = cand->phi();
  		double weight = 1.0;
 
- 		if( doEffCorrection_ ){
+ 		if( doReweightPtEta_ ){
  			
- 			weight = effTable->GetBinContent( effTable->FindBin(nTracks) );
+ 			weight = effTable->GetBinContent( effTable->FindBin(pt,eta) );
+ 		}
+
+ 		if( doEffCorrection_ ){
+ 			weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
  		}
 
 //highPurity
@@ -339,13 +343,15 @@ Implementation:
  	double N_diff_noeffcorr = N_pos_noeffcorr - N_neg_noeffcorr;
  	double ach_noeffcorr = N_diff_noeffcorr/N_tot_noeffcorr;
 
- 	cout << N_diff << " diff " << N_diff_noeffcorr << endl; 
- 	cout << N_tot << " tot " << N_tot_noeffcorr << endl;
- 	cout << ach << " ach " << ach_noeffcorr << endl;
+ 	double ntrkweight = 1.0;
 
- 	
+ 	if(doReweightNtrk_){
 
- 	asym_Dist->Fill(ach);
+ 		ntrkweight = effTable->GetBinContent( effTable->FindBin(nTracks) );
+
+ 	}
+
+ 	asym_Dist->Fill(ach,ntrkweight);
  	NTrkHist->Fill(nTracks);
 
  	double N_pos_gen=0.0;
@@ -376,11 +382,13 @@ Implementation:
 
  		genptEtaScatterHist->Fill(genpt,geneta);
 
- 		if( doEffCorrection_ ){
+ 		if( doReweightPtEta_ ){
 
- 			weight = effTable->GetBinContent( effTable->FindBin(nTracks) );
+ 			weight = effTable->GetBinContent( effTable->FindBin(genpt, geneta) );
 
  		}
+
+ 		
 
  		if( gencharge > 0){
  			N_pos_gen+=weight;
@@ -425,8 +433,8 @@ Implementation:
  	double N_diff_gen_noeffcorr = N_pos_gen_noeffcorr - N_neg_gen_noeffcorr;
  	double ach_gen_noeffcorr = N_diff_gen_noeffcorr/N_tot_gen_noeffcorr;
 
- 	scatterHist_effcorr->Fill(ach,ach_gen);
- 	scatterHist_noeffcorr->Fill(ach_noeffcorr,ach_gen_noeffcorr);
+ 	scatterHist_effcorr->Fill(ach,ach_gen,ntrkweight);
+ 	scatterHist_noeffcorr->Fill(ach_noeffcorr,ach_gen_noeffcorr,1.0);
 
  	Npos_scatterHist_effcorr->Fill(N_pos,N_pos_gen);
  	Npos_scatterHist_noeffcorr->Fill(N_pos_noeffcorr,N_pos_gen_noeffcorr);
