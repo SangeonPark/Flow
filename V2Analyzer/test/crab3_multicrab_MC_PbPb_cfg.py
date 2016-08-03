@@ -6,10 +6,10 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
-ntrkRange = [400,410]
+ntrkRange = [800,810]
 reweightTable = ["table_0","table_1","table_2"]
 
-outputName = "multicrab_CMW_MC_smallntrackrange_400_410"
+outputName = "multicrab_CMW_MC_smallntrackrange_800_810"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
