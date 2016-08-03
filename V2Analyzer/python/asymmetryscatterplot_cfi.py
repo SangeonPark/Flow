@@ -17,6 +17,8 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
                       doAchEffCorrection = cms.bool(False),
+                      doReweightPtEta = cms.bool(False),
+                      doReweightNtrk = cms.bool(True),
                       #Kinematic Cuts !!!!!
                       etaCutMin = cms.double(-2.4),
                       etaCutMax = cms.double(2.4),
@@ -28,12 +30,13 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       #EFFICIENCY TABLE
 
                       #pPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/NTRKreweight.root'),
-                      efftableName = cms.string('table_2'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
+                      efftableName = cms.string('rTotalEff3D'),
                       #PbPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
                       #efftableName = cms.string('rTotalEff3D_1'),
-                      
+                      reweighttablePath = cms.string('Flow/V2Analyzer/data/NTRKreweight.root'),
+                      reweighttableName = cms.string('table_2'),
                       achBins = cms.untracked.vdouble(-999,-0.04,-0.015,0.015,0.04,999),
                       
                       reverseBeam = cms.bool(False),

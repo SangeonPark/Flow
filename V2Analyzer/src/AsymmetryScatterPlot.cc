@@ -56,6 +56,9 @@ Implementation:
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	doAchEffCorrection_ = iConfig.getParameter<bool>("doAchEffCorrection");
+ 	doReweightPtEta_ = iConfig.getParameter<bool>("doReweightPtEta");
+ 	doReweightNtrk_ iConfig.getParameter<bool>("doReweightNtrk");
+
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
 
@@ -63,6 +66,8 @@ Implementation:
  	achBins_ = iConfig.getUntrackedParameter<std::vector<double>>("achBins");
  	efftablePath_ = iConfig.getParameter<std::string>("efftablePath");
  	efftableName_ = iConfig.getParameter<std::string>("efftableName");
+ 	reweighttablePath_ = iConfig.getParameter<std::string>("reweighttablePath");
+ 	reweighttableName_ = iConfig.getParameter<std::string>("reweighttableName");
 
 //now do what ever initialization is needed
 
@@ -264,7 +269,7 @@ Implementation:
 
  		if( doReweightPtEta_ ){
  			
- 			weight = effTable->GetBinContent( effTable->FindBin(pt,eta) );
+ 			weight = reweightTable->GetBinContent( reweightTable->FindBin(pt,eta) );
  		}
 
  		if( doEffCorrection_ ){
@@ -347,7 +352,7 @@ Implementation:
 
  	if(doReweightNtrk_){
 
- 		ntrkweight = effTable->GetBinContent( effTable->FindBin(nTracks) );
+ 		ntrkweight = reweightTable->GetBinContent( reweightTable->FindBin(nTracks) );
 
  	}
 
@@ -384,7 +389,7 @@ Implementation:
 
  		if( doReweightPtEta_ ){
 
- 			weight = effTable->GetBinContent( effTable->FindBin(genpt, geneta) );
+ 			weight = reweightTable->GetBinContent( reweightTable->FindBin(genpt, geneta) );
 
  		}
 
@@ -536,6 +541,10 @@ Implementation:
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
  	effTable = (TH2D*)f1.Get(efftableName_.c_str());
+
+ 	edm::FileInPath fip2(reweighttablePath_.c_str());  
+ 	TFile f2(fip2.fullPath().c_str(),"READ");
+ 	reweightTable = (TH2D*)f2.Get(reweighttableName_.c_str());
 
 //list of c2 histograms
  	
