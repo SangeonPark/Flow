@@ -448,6 +448,8 @@ private:
       TH1D* vtzHist;
       TH1D* NTrkHist;
       TH2D* effTable;
+      TH2D* reweightTable;
+
       TH1D* cbinHist;
       TH1D* GenNTrkHist;
       TH2D* scatterHist_effcorr;
@@ -477,8 +479,8 @@ private:
       bool reverseBeam_;      
       bool useCentrality_;
       bool doAchEffCorrection_;
-bool doReweightPtEta_;
-bool doReweightNtrk_;
+      bool doReweightPtEta_;
+      bool doReweightNtrk_;
 
       std::vector<double> centBins_;
       std::vector<double> achBins_;

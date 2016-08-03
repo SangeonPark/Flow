@@ -57,7 +57,7 @@ Implementation:
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	doAchEffCorrection_ = iConfig.getParameter<bool>("doAchEffCorrection");
  	doReweightPtEta_ = iConfig.getParameter<bool>("doReweightPtEta");
- 	doReweightNtrk_ iConfig.getParameter<bool>("doReweightNtrk");
+ 	doReweightNtrk_ = iConfig.getParameter<bool>("doReweightNtrk");
 
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
