@@ -18,7 +18,7 @@ demo = cms.EDAnalyzer('AsymmetryScatterPlot',
                       doEffCorrection = cms.bool(True),
                       doAchEffCorrection = cms.bool(False),
                       doReweightPtEta = cms.bool(False),
-                      doReweightNtrk = cms.bool(True),
+                      doReweightNtrk = cms.bool(False),
                       #Kinematic Cuts !!!!!
                       etaCutMin = cms.double(-2.4),
                       etaCutMax = cms.double(2.4),
