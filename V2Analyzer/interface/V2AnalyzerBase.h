@@ -477,7 +477,8 @@ private:
       bool reverseBeam_;      
       bool useCentrality_;
       bool doAchEffCorrection_;
-
+bool doReweightPtEta_;
+bool doReweightNtrk_;
 
       std::vector<double> centBins_;
       std::vector<double> achBins_;
@@ -486,6 +487,8 @@ private:
       //double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
       std::string efftablePath_;
       std::string efftableName_;
+      std::string reweighttablePath_;
+      std::string reweighttableName_;
 
       TH1D *c2_pos[100][2];
       TH1D *c2_neg[100][2];
