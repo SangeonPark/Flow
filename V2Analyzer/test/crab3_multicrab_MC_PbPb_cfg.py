@@ -6,10 +6,12 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.asymmetryscatterplot_cfi")
 
-ntrkRange = [800,810]
-reweightTable = ["table_0","table_1","table_2"]
+ntrkRange = [200,400,800,1500]
+efftableNameList = ["eff_3","eff_4","table_5"]
+efftablePathList = ["Flow/V2Analyzer/data/EPOS_PbPb_eff_v1.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root"]
 
-outputName = "multicrab_CMW_MC_smallntrackrange_800_810"
+
+outputName = "multicrab_CMW_MC_newefftable"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -45,14 +47,17 @@ if __name__ == '__main__':
                   "/Hydjet_Quenched_MinBias_5020GeV_750/davidlw-ppRECO_std_v3-b19fc96d6ecc5870a54312d2edbb74e0/USER"]       
    
    for num in range(0,2):
-      for paths in range(0,1):
+      for paths in range(0,3):
          print 'double check that we are using sample %r ' % (sampleName[num])		
          print 'double check that NtrkOffline range is fram %r to %r' % (ntrkRange[paths],ntrkRange[paths+1])
-         print 'double check that we are using %r' % (reweightTable[paths])
+         print 'double check that we are using %r' % (efftableNameList[paths])
+         print 'double check that we are using %r' % (efftablePathList[num])
+         
 
          process.demo.Nmin = ntrkRange[paths]
          process.demo.Nmax = ntrkRange[paths+1]
-         process.demo.reweighttableName = reweightTable[paths]
+         process.demo.efftablePath = efftablePathList[num]
+         process.demo.efftableName = efftableNameList[paths]
          RequestName = outputName + '_' + str(num) + "_" + str(paths)
          DataSetName = sampleName[num]
          config.General.requestName = RequestName
