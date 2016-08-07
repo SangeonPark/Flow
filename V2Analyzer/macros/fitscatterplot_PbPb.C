@@ -27,14 +27,14 @@ void fitscatterplot_PbPb(){
 	{
 		f = new TFile(Form("../../../rootfiles/MC/EPOS_PbPb_Ntrk_%d.root",i));
 
-		histlist[0][i] = (TH2D*)f->Get("demo/scatterHist_noeffcorr");
+		histlist[0][i] = (TH2D*)f->Get("demo/scatterHist_effcorr");
     histlist[0][i]->Rebin2D(20,1);
     profilelist[0][i] = histlist[0][i]->ProfileX();
 
   }
   for (int i = 0; i < 3; ++i)
   {
-    f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Reweighted_%d.root",i));
+    f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Ntrk_%d.root",i));
     
     histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_effcorr");
     histlist[1][i]->Rebin2D(20,1);
@@ -128,8 +128,8 @@ void fitscatterplot_PbPb(){
 
          // TICKS X Axis
       		//profilelist[i][j]->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
-         // profilelist[i][j]->Draw();
-          histlist[i][j]->Draw("colz");
+         profilelist[i][j]->Draw();
+          //histlist[i][j]->Draw("colz");
 
 
 
@@ -146,14 +146,14 @@ void fitscatterplot_PbPb(){
 
           text2->DrawClone("same");
           //text3->DrawClone("same");
-          //fit1->Draw("Same");
+          fit1->Draw("Same");
           //fit2->Draw("Same");
 
 
         }
       }
       C->cd();
-      SaveCanvas(C,"pics","MC_Hydjet_EPOS_PbPb");
+      SaveCanvas(C,"pics","MC_Hydjet_EPOS_PbPb_Ntrk");
 
 
 
