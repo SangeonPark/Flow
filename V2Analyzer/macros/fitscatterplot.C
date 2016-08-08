@@ -7,14 +7,14 @@ void fitscatterplot()
 
    // generate a 2-d histogram using a TCutG
    TFile *f;
-   f = new TFile("../../../rootfiles/MC/EPOS_Merged.root");
+   f = new TFile("../../../rootfiles/MC/smallntrkrangeHydjet_temp.root");
    TH2D *h2 = new TH2D("h2","h2",1000,-0.3,0.3,1000,-0.3,0.3);
 
    TCanvas *c1 = new TCanvas("c1","show profile",1,1,1200,600);
    c1->Divide(2,1,0.01,0.01);
 
    h2 = (TH2D*)f->Get("demo/scatterHist_effcorr");
-   h2->Rebin2D(5,1);
+   h2->Rebin2D(10,1);
 
    TLatex* text_a = makeLatex("EPOS",0.25,0.85) ;
    TLatex* text_b = makeLatex("EPOS",0.7,0.85) ;
