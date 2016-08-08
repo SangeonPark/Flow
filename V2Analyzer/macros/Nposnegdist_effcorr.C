@@ -11,7 +11,7 @@ void Nposnegdist_effcorr()
    c1->Divide(2,1,0.01,0.01);
    TFile *f;
 
-   f = new TFile("../../../rootfiles/MC/EPOS_PbPb_pteta_0.root");
+   f = new TFile("../../../rootfiles/MC/EPOS_newefftable_0.root");
    
    TH2D* h_epos_pos_temp = (TH2D*)f->Get("demo/Npos_scatterHist_effcorr");
    TH2D* h_epos_pos = h_epos_pos_temp->Clone();
@@ -27,7 +27,7 @@ void Nposnegdist_effcorr()
 
 //  TLatex* text_a = makeLatex("EPOS",0.25,0.85) ;
 //   TLatex* text_b = makeLatex("EPOS",0.7,0.85) ;
-   f = new TFile("../../../rootfiles/MC/Hydjet_PbPb_pteta_0.root");
+   f = new TFile("../../../rootfiles/MC/Hydjet_newefftable_0.root");
    
    TH2D* h_hydjet_pos_temp = (TH2D*)f->Get("demo/Npos_scatterHist_effcorr");
 
@@ -111,10 +111,10 @@ void Nposnegdist_effcorr()
 
 
 //base->Draw();
-   //prof_epos_pos->Draw();
-   //prof_hydjet_pos->Draw("same");
+   prof_epos_pos->Draw();
+   prof_hydjet_pos->Draw("same");
 
-   h_epos_pos->Draw("samecolz");
+   //h_epos_pos->Draw("samecolz");
  //  h_hydjet_pos->Draw("samecolz");
 
 
@@ -209,10 +209,10 @@ void Nposnegdist_effcorr()
    prof_hydjet_neg->Fit(fit4,"RN0");
 
 //base->Draw();
-   //prof_epos_neg->DrawClone("");
-   //prof_hydjet_neg->DrawClone("same");
+   prof_epos_neg->DrawClone("");
+   prof_hydjet_neg->DrawClone("same");
 
-   h_epos_neg->Draw("samecolz");
+   //h_epos_neg->Draw("samecolz");
    //h_hydjet_neg->Draw("samecolz");
 
    fit3->Draw("same");

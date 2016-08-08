@@ -25,7 +25,7 @@ void fitscatterplot_PbPb(){
 
 	for (int i = 0; i < 3; ++i)
 	{
-		f = new TFile(Form("../../../rootfiles/MC/EPOS_PbPb_Ntrk_%d.root",i));
+		f = new TFile(Form("../../../rootfiles/MC/EPOS_newefftable_and_smallrange_%d.root",i));
 
 		histlist[0][i] = (TH2D*)f->Get("demo/scatterHist_effcorr");
     histlist[0][i]->Rebin2D(20,1);
@@ -34,7 +34,7 @@ void fitscatterplot_PbPb(){
   }
   for (int i = 0; i < 3; ++i)
   {
-    f = new TFile(Form("../../../rootfiles/MC/Hydjet_PbPb_Ntrk_%d.root",i));
+    f = new TFile(Form("../../../rootfiles/MC/Hydjet_newefftable_and_smallrange_%d.root",i));
     
     histlist[1][i] = (TH2D*)f->Get("demo/scatterHist_effcorr");
     histlist[1][i]->Rebin2D(20,1);
@@ -43,12 +43,12 @@ void fitscatterplot_PbPb(){
 
   }  
   TLatex* textlist[2][3]; 
-  textlist[0][0] = makeLatex("EPOS 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
-  textlist[0][1] = makeLatex("EPOS 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
-  textlist[0][2] = makeLatex("EPOS 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
-  textlist[1][0] = makeLatex("Hydjet 200 #leq N_{trk}^{offline} < 400",0.25,0.85);
-  textlist[1][1] = makeLatex("Hydjet 400 #leq N_{trk}^{offline} < 800",0.25,0.85);
-  textlist[1][2] = makeLatex("Hydjet 800 #leq N_{trk}^{offline} < 1500",0.25,0.85);
+  textlist[0][0] = makeLatex("EPOS 200 #leq N_{trk}^{offline} < 220",0.25,0.85);
+  textlist[0][1] = makeLatex("EPOS 400 #leq N_{trk}^{offline} < 420",0.25,0.85);
+  textlist[0][2] = makeLatex("EPOS 800 #leq N_{trk}^{offline} < 820",0.25,0.85);
+  textlist[1][0] = makeLatex("Hydjet 200 #leq N_{trk}^{offline} < 220",0.25,0.85);
+  textlist[1][1] = makeLatex("Hydjet 400 #leq N_{trk}^{offline} < 420",0.25,0.85);
+  textlist[1][2] = makeLatex("Hydjet 800 #leq N_{trk}^{offline} < 820",0.25,0.85);
   int n = 1;
 
 
@@ -95,40 +95,40 @@ void fitscatterplot_PbPb(){
 
 
          // Format for y axis
-            profilelist[i][j]->GetYaxis()->SetTitle("A_{ch}");
+          profilelist[i][j]->GetYaxis()->SetTitle("A_{ch}");
 
-      		profilelist[i][j]->GetYaxis()->SetLabelFont(43);
-      		profilelist[i][j]->GetYaxis()->SetLabelSize(16);
-      		profilelist[i][j]->GetYaxis()->SetLabelOffset(0.02);
-      		profilelist[i][j]->GetYaxis()->SetTitleFont(43);
-      		profilelist[i][j]->GetYaxis()->SetTitleSize(16);
-      		profilelist[i][j]->GetYaxis()->SetTitleOffset(3.5);
+          profilelist[i][j]->GetYaxis()->SetLabelFont(43);
+          profilelist[i][j]->GetYaxis()->SetLabelSize(16);
+          profilelist[i][j]->GetYaxis()->SetLabelOffset(0.02);
+          profilelist[i][j]->GetYaxis()->SetTitleFont(43);
+          profilelist[i][j]->GetYaxis()->SetTitleSize(16);
+          profilelist[i][j]->GetYaxis()->SetTitleOffset(3.5);
 
-      		profilelist[i][j]->GetYaxis()->CenterTitle();
-      		profilelist[i][j]->GetYaxis()->SetNdivisions(505);
+          profilelist[i][j]->GetYaxis()->CenterTitle();
+          profilelist[i][j]->GetYaxis()->SetNdivisions(505);
 
          // TICKS Y Axis
       		//profilelist[i][j]->GetYaxis()->SetTickLength(xFactor*0.04/yFactor);
 
          // Format for x axis
-      		profilelist[i][j]->GetXaxis()->SetLabelFont(43);
-      		profilelist[i][j]->GetXaxis()->SetLabelSize(16);
-      		profilelist[i][j]->GetXaxis()->SetLabelOffset(0.02);
-      		profilelist[i][j]->GetXaxis()->SetTitleFont(43);
-      		profilelist[i][j]->GetXaxis()->SetTitleSize(16);
-      		profilelist[i][j]->GetXaxis()->SetTitleOffset(3);
-      		profilelist[i][j]->GetXaxis()->CenterTitle();
-      		profilelist[i][j]->GetXaxis()->SetNdivisions(505);
+          profilelist[i][j]->GetXaxis()->SetLabelFont(43);
+          profilelist[i][j]->GetXaxis()->SetLabelSize(16);
+          profilelist[i][j]->GetXaxis()->SetLabelOffset(0.02);
+          profilelist[i][j]->GetXaxis()->SetTitleFont(43);
+          profilelist[i][j]->GetXaxis()->SetTitleSize(16);
+          profilelist[i][j]->GetXaxis()->SetTitleOffset(3);
+          profilelist[i][j]->GetXaxis()->CenterTitle();
+          profilelist[i][j]->GetXaxis()->SetNdivisions(505);
 
 		 //Marker
-      		profilelist[i][j]->SetMarkerStyle(20);
+          profilelist[i][j]->SetMarkerStyle(20);
           profilelist[i][j]->SetMarkerSize(1);
           profilelist[i][j]->SetLineStyle(1);
           profilelist[i][j]->SetLineWidth(1);	
 
          // TICKS X Axis
       		//profilelist[i][j]->GetXaxis()->SetTickLength(yFactor*0.06/xFactor);
-         profilelist[i][j]->Draw();
+          profilelist[i][j]->Draw();
           //histlist[i][j]->Draw("colz");
 
 
@@ -153,7 +153,7 @@ void fitscatterplot_PbPb(){
         }
       }
       C->cd();
-      SaveCanvas(C,"pics","MC_Hydjet_EPOS_PbPb_Ntrk");
+      SaveCanvas(C,"pics","newefftable_and_smallrange_effcorrected");
 
 
 
