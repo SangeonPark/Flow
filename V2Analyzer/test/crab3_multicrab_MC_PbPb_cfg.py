@@ -14,7 +14,7 @@ efftableNameList = ["eff_3","eff_4","eff_5"]
 efftablePathList = ["Flow/V2Analyzer/data/EPOS_PbPb_eff_v1.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root"]
 
 
-outputName = "multicrab_CMW_MC_newefftable_800_1500"
+outputName = "multicrab_CMW_MC_newefftable_and_smallrange"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
