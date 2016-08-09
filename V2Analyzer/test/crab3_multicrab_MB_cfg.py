@@ -13,7 +13,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_pPb_v2_crosscheck_MB_0808'
+outputName = 'multicrab_CMW_pPb_v2_crosscheck_MB_AchCorrected_0809'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'v2analyzerCumulant_cfg.py'
