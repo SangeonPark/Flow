@@ -3,7 +3,7 @@
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
-outputName = 'CMW_v2_crosscheck_185_220_PbPb_trackeronly'
+outputName = 'CMW_v3_crosscheck_185_220_PbPb_trackeronly'
 config.General.requestName = outputName
 config.General.workArea = outputName
 config.General.transferOutputs = True
