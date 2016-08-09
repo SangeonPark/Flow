@@ -37,11 +37,11 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       NEtaBins = cms.int32(96),                        
                      
                       #pPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
-                      efftableName = cms.string('rTotalEff3D'),
+                      #efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
+                      #efftableName = cms.string('rTotalEff3D'),
                       #PbPb
-                      #efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
-                      #efftableName = cms.string('rTotalEff3D_1'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root'),
+                      efftableName = cms.string('rTotalEff3D_1'),
 
                       #5Bins
                       #achBins = cms.untracked.vdouble(-999,-0.04,-0.015,0.015,0.04,999)
