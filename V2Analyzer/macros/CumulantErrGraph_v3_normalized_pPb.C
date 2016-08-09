@@ -25,7 +25,7 @@ void CumulantErrGraph_v3_normalized_pPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v3Cumulant_pPb/Merged.root");
+	f = new TFile("~/Summer2016/v3_crosscheck_0809.root");
 
 
 	for (Int_t i = 0; i < 5; i++){
@@ -225,6 +225,6 @@ void CumulantErrGraph_v3_normalized_pPb(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","v3_pPb_185_260");
+	//SaveCanvas(c3,"pics","v3_pPb_185_260");
 
 }

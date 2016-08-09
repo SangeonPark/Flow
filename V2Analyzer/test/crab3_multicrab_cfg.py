@@ -4,16 +4,16 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
+process.load("Flow.V2Analyzer.v3analyzerCumulant_cfi")
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_v2_pPb_96bins_cross_check_185_220_AchNotCorrected'
+outputName = 'multicrab_CMW_v3_crosscheck_185_220'
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'v2analyzerCumulant_cfg.py'
+config.JobType.psetName = 'v3analyzerCumulant_cfg.py'
 config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 10
