@@ -4,7 +4,7 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
+process.load("Flow.V2Analyzer.v3analyzerCumulant_cfi")
 
 #ntrkRange = [200,400,800,1500]
 ntrkLow = [60,70,80,90,100,120,140,160]
@@ -14,7 +14,7 @@ efftableNameList = ["eff_5","eff_5","eff_4","eff_4","eff_4","eff_3","eff_1","eff
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root"]
 
 
-outputName = "multicrab_CMW_v2_PbPb_crosscheck"
+outputName = "multicrab_CMW_v3_PbPb_crosscheck"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
