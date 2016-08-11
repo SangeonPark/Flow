@@ -1,11 +1,13 @@
 #include "RiceStyle.h"
 using namespace std;
 
-void CumulantErrGraph_v2_normalized_pPb(){
+void v2_pPb_crosscheck(){
 
 	TFile *f;
 
 	const int NAchBins = 7;
+	const int ntrkmin = 220;
+	const int ntrkmax = 260;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -25,9 +27,18 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	double variance_pos;
 	double variance_neg;
 	double variance_diff;
+	cout << ntrkmin << ntrkmax << endl; 
+	TFile* file = new TFile(Form("../../../rootfiles/crosscheck/v2_pPb_%d_%d_AchCorrected/vnasym_pPb_%d%d.root",ntrkmin,ntrkmax,ntrkmin,ntrkmax));
+	TGraphErrors* gr1[3];
+	gr1[0] = (TGraphErrors*) file->Get("v2vschasym_pos");
+	gr1[1] = (TGraphErrors*) file->Get("v2vschasym_neg");
+	gr1[2] = (TGraphErrors*) file->Get("v2vschasym_diff");
+
+	gr1[1] -> SetMarkerStyle(24);
 
 
-	f = new TFile("../../../rootfiles/crosscheck/v2_pPb_185_220_AchCorrected/Merged.root");
+
+	f = new TFile(Form("../../../rootfiles/crosscheck/v2_pPb_%d_%d_AchCorrected/Merged.root",ntrkmin,ntrkmax));
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -75,7 +86,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 	}
 	for(i=0;i<NAchBins;i++){
-		cout << "average ach of " << i+1 << " th bin: " << x[i] << endl;
+		cout << x[i] << ", ";
 	}	
 	cout << endl << "v2" << endl;
 	for(i=0;i<NAchBins;i++){
@@ -88,7 +99,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.090, 0.102);
+	base->GetYaxis()->SetRangeUser(0.065, 0.072);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
@@ -157,8 +168,8 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 
 
-	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_b = makeLatex(Form("%d #leq N_{trk}^{offline} < %d",ntrkmin,ntrkmax),0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -169,12 +180,15 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 
 
-	TLegend* leg = new TLegend(0.76,0.80,0.94,.88);
+	TLegend* leg = new TLegend(0.70,0.74,0.94,.88);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
 	leg->AddEntry(gr_pos, "v_{2}^{#plus}{2}","p");
 	leg->AddEntry(gr_neg , "v_{2}^{#minus}{2}","p");
+	leg->AddEntry(gr1[0] , "Wei's v_{2}^{#plus}{2}","p");
+	leg->AddEntry(gr1[1] , "Wei's v_{2}^{#minus}{2}","p");
+
 
 
 
@@ -184,22 +198,33 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	gr_neg->Draw("PSame");
 	text_a->DrawClone("Same");
 	text_b->DrawClone("Same");
-	text_c->DrawClone("Same");
-	text_d->DrawClone("Same");
+	//text_c->DrawClone("Same");
+	//text_d->DrawClone("Same");
 
-	leg->DrawClone("Same");
+	//leg->DrawClone("Same");
 
 
     //Define a linear function
 	TF1* fit1 = new TF1("f1", "[0]+x*[1]", -0.13, 0.13);
+	TF1* fit2 = new TF1("f2", "[0]+x*[1]", -0.13, 0.13);
 
-	fit1->SetLineColor(kRed);
+
+	fit1->SetLineColor(kBlack);
 	fit1->SetLineStyle(2);
+
+	fit2->SetLineColor(kRed);
+	fit2->SetLineStyle(1);
+
 	gr_diff->Fit(fit1,"N0");
 	fit1->Write();
 
 
 	rebinned->Close();
+
+
+
+	gr1[0] -> Draw("PSame");
+	gr1[1] -> Draw("PSame");
 
 	c3->cd(2);
 
@@ -211,6 +236,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	text2->SetTextFont(42);
 	base2->Draw("");
 	fit1->DrawClone("Same");
+
 	gr_diff->SetMarkerStyle(20);
 	gr_diff->Draw("PSame");
 
@@ -228,15 +254,33 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	fa1->SetLineWidth(0);
 	fa1->DrawClone("Same");
 
-	TLegend* leg2 = new TLegend(0.25,0.68,0.5,0.78);
+	TLegend* leg2 = new TLegend(0.25,0.64,0.6,0.78);
 	leg2->SetLineColor(kWhite);
 	leg2->SetFillColor(0);
 	leg2->SetFillStyle(0);
+	gr1[2] -> SetMarkerStyle(24);
+	gr1[2] -> SetMarkerColor(kRed);
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
+	leg2->AddEntry(fit2, "Linear fit to Wei's Points","l");
+	leg2->AddEntry(gr1[2] , "Wei's data","p");
 	leg2->DrawClone("Same");
 
-	//SaveCanvas(c3,"pics",Form("v2_PbPb_185_220_crosscheck"));
+	gr1[2] -> SetMarkerStyle(24);
+	gr1[2] -> SetMarkerColor(kRed);
+	gr1[2] -> Draw("PSame");
+	gr1[2]->Fit(fit2,"N0");
+
+	fit2->Draw("Same");
+
+	TLatex* text3 = makeLatex(Form("Wei's Intercept : %f #pm %f",fit2->GetParameter(0),fit2->GetParError(0)),0.45,0.21) ;
+	TLatex* text4 = makeLatex(Form("Wei's slope : %.4f #pm %.4f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.17) ;
+	text3->SetTextFont(42);
+	text4->SetTextFont(42);
+	text3->Draw("Same");
+	text4->Draw("Same");
+
+	SaveCanvas(c3,"pics",Form("v2_pPb_%d_%d_crosscheck",ntrkmin,ntrkmax));
 
 
 

@@ -27,10 +27,10 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_cent_30_40/Merged.root");
+	f = new TFile("../../../rootfiles/crosscheck/v3_PbPb_185_220_AchCorrected/Merged.root");
 
 
-	for (Int_t i = 0; i < 5; i++){
+	for (Int_t i = 0; i < 7; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -91,12 +91,12 @@ void CumulantErrGraph_v3_normalized_PbPb(){
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
 	gStyle->SetLegendFont(42);
-	TH1D* base = new TH1D("base","base",1,-0.09,0.09);
+	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.024, 0.034);
+	base->GetYaxis()->SetRangeUser(0.020, 0.034);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}{2}");
 	base->GetXaxis()->CenterTitle();
@@ -116,7 +116,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.09,0.09);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
 	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" #frac{ v_{3}^{#minus} #minus v_{3}^{#plus} }{ v_{3}^{#minus} #plus v_{3}^{#plus} } ");
@@ -160,7 +160,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 300",0.25,0.80) ;
+	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -232,6 +232,6 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","v3_PbPb_185_300");
+	SaveCanvas(c3,"pics","v3_PbPb_185_220_crosscheck");
 
 }
