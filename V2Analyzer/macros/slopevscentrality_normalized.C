@@ -87,6 +87,7 @@ void slopevscentrality_normalized(){
 		r = fit1->GetParameter(1);
 		PbPb_centrality_ystaterr[n] = fit1->GetParError(1);
 		PbPb_centrality_yval[n] = r;
+		cout << "slope is: " << r << endl;
 
 	}
 

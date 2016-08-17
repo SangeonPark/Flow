@@ -344,7 +344,7 @@ Implementation:
 //ach binning
  	NAchBins = achBins_.size()-1;
 
- 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",1000,-0.4,0.4);
+ 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",51,-1,1);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
  	scatterHist_twoetarange = fs->make<TH2D>("scatterHist_twoetarange","A_{ch} of two different eta range;A_{ch} |#eta| < 1;A_{ch} |#eta| < 2.4",1000,-0.3,0.3,1000,-0.3,0.3);

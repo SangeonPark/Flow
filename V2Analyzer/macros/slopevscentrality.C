@@ -85,8 +85,8 @@ void slopevscentrality(){
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
 		statErr[n] = fit1->GetParError(1);
+		cout << "slope is: " << r << endl; 
 		y_slope[n] = r;
-		cout << statErr[n] << endl;
 
 	}
 
@@ -194,7 +194,7 @@ void slopevscentrality(){
 //	text_d->DrawClone("Same");
 
     //Define a linear function
-	SaveCanvas(c3,"pics","slopevscent_comparison");
+	//SaveCanvas(c3,"pics","slopevscent_comparison");
 
 
 
