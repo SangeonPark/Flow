@@ -18,7 +18,7 @@ efftableNameList = ["eff_1","eff_2","eff_2","eff_2","eff_3","eff_3","eff_3","eff
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root"]
 
 
-outputName = "multicrab_CMW_v2_PbPb_ntrkranges_finalresult"
+outputName = "multicrab_CMW_v2_PbPb_ntrkranges_finalresult_resubmit"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
