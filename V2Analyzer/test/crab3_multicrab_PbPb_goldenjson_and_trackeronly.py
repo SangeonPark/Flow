@@ -53,12 +53,13 @@ if __name__ == '__main__':
    sampleName = [ "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_v5-70836070e3530d592901940b96c951fe/USER",
                   "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER"]       
    
-   for num in range(0,2):
-      for paths in range(0,8):
+   for num in range(0,1):
+      for paths in range(6,7):
          print 'double check that we are using sample %r ' % (sampleName[num])		
          print 'double check that multiplicity range is fram %r to %r' % (ntrkLow[paths],ntrkUpp[paths])
          print 'double check that we are using %r' % (efftableNameList[paths])
          print 'double check that we are using %r' % (efftablePathList[num])
+         print '%r _ %r ' % (num,paths)
          
 
          process.demo.Nmin = ntrkLow[paths]
