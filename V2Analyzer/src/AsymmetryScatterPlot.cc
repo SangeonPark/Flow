@@ -288,8 +288,8 @@ Implementation:
  		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
  		double dzos = dzbest/dzerror;
  		double dxyos = dxybest/dxyerror;
- 		if( dzSigCut_ <= fabs(dzos) || dxySigCut_ <= fabs(dxyos) ) continue;
-
+ 		if(fabs(dzos) > offlineDCA_) continue;
+ 		if(fabs(dxyos) > offlineDCA_) continue;
 //ptError
  		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
 
