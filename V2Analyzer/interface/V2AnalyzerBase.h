@@ -329,11 +329,13 @@ private:
       // ----------member data ---------------------------
 
       TNtuple* track_Data;
-      TH1D* asym_Dist;
+      TH1D* gen_asym_Dist;
+      TH1D* reco_asym_Dist;
+
       TH1D* NTrkHist;
       TH2D* effTable;
       TH1D* cbinHist;
-      TH2D* scatterHist_twoetarange;
+      TH2D* scatterHist_genreco;
       
       double offlineDCA_;
       double offlineptErr_;
@@ -361,9 +363,13 @@ private:
 
 //      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
 
-      TH1D* c2_pos[100][2];
-      TH1D* c2_neg[100][2];
-      TH1D* ach_hist[100];
+      TH1D* gen_c2_pos[100][2];
+      TH1D* gen_c2_neg[100][2];
+      TH1D* gen_ach_hist[100];
+
+      TH1D* reco_c2_pos[100][2];
+      TH1D* reco_c2_neg[100][2];
+      TH1D* reco_ach_hist[100];
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
