@@ -18,7 +18,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_pPb_v2_systematics_vertexZ_Narrow'
+outputName = 'multicrab_CMW_pPb_v2_systematics_vertexZ_Wide'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'v2analyzerCumulant_cfg.py'
