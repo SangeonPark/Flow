@@ -34,7 +34,6 @@
 //
      V2Analyzer::V2Analyzer(const edm::ParameterSet& iConfig){
 
-     	offlineptErr_ = iConfig.getUntrackedParameter<double>("offlineptErr");
     offlineDCA_ = iConfig.getUntrackedParameter<double>("offlineDCA");
      	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
      	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
