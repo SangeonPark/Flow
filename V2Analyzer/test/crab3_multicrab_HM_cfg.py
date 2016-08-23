@@ -51,7 +51,7 @@ if __name__ == '__main__':
 		 "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Reverse_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER"]
    beam = [False,False,True]
 
-   for paths in range(0,5):
+   for paths in range(2,3):
    	  for num in range(0,3):
 		
                 print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
