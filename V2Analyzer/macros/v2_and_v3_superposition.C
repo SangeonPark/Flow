@@ -5,7 +5,9 @@ using namespace std;
 void v2_and_v3_superposition(){
 
 	TFile *f;
-	const int NAchBins = 5;
+	const int NAchBins = 7;
+	const double correction = 0.5195;
+
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -32,7 +34,7 @@ void v2_and_v3_superposition(){
 	double err_v3[NAchBins];
 
 
-	f = new TFile("../../../rootfiles/slope_vs_centrality/PbPb502_1.root");
+	f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/30_40/Merged.root");
 
 	for (Int_t i = 0; i < NAchBins; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
@@ -47,6 +49,7 @@ void v2_and_v3_superposition(){
 	for(Int_t i=0; i<NAchBins; i++){
 
 		x_v2[i]=ach_hist[i]->GetMean();
+		x_v2[i] *= correction; 
 
 //v2 positive
 		cmean = c2_pos[i][0] -> GetMean();
@@ -80,7 +83,7 @@ void v2_and_v3_superposition(){
 
 	}
 
-	f = new TFile("../../../rootfiles/v3Cumulant_PbPb_cent_30_40/Merged.root");
+	f = new TFile("../../../rootfiles/crosscheck/PbPb/v3/30_40/Merged.root");
 
 	for (Int_t i = 0; i < NAchBins; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
@@ -95,6 +98,7 @@ void v2_and_v3_superposition(){
 	for(Int_t i=0; i<NAchBins; i++){
 
 		x_v3[i]=ach_hist[i]->GetMean();
+		x_v3[i] *= correction;
 
 //v2 positive
 		cmean = c2_pos[i][0] -> GetMean();
@@ -138,8 +142,14 @@ void v2_and_v3_superposition(){
 	base->GetYaxis()->SetTitle("#frac{v_{n}(-) - v_{n}(+)}{v_{n}(-) + v_{n}(+)}");
 
 
-	TGraphErrors *gr_v2_diff = new TGraphErrors(5,x_v2,y_v2,NULL,err_v2);
-	TGraphErrors *gr_v3_diff = new TGraphErrors(5,x_v3,y_v3,NULL,err_v3);
+	TGraphErrors *gr_v2_diff = new TGraphErrors(NAchBins,x_v2,y_v2,NULL,err_v2);
+	TGraphErrors *gr_v3_diff = new TGraphErrors(NAchBins,x_v3,y_v3,NULL,err_v3);
+
+	gr_v2_diff->RemovePoint(0);
+	gr_v2_diff->RemovePoint(5);
+	gr_v3_diff->RemovePoint(0);
+	gr_v3_diff->RemovePoint(5);
+
 
 	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure4_1.root","RECREATE");
 	gr_v2_diff->Write();
@@ -147,19 +157,19 @@ void v2_and_v3_superposition(){
 
 
     //Define a linear function
-	TF1* fit1 = new TF1("f1", "[0]+x*[1]", -0.09, 0.09);
+	TF1* fit1 = new TF1("f1", "[0]+x*[1]", -0.08, 0.08);
 	fit1->SetLineColor(kBlue);
 	fit1->SetLineStyle(2);
-	gr_v2_diff->Fit(fit1);
+	gr_v2_diff->Fit(fit1,"N0");
 	fit1->Write();
 
-	TF1* fit2 = new TF1("f2", "[0]+x*[1]", -0.09, 0.09);
+	TF1* fit2 = new TF1("f2", "[0]+x*[1]", -0.08, 0.08);
 	fit2->SetLineColor(kRed);
 	fit2->SetLineStyle(2);
-	gr_v3_diff->Fit(fit2);
+	gr_v3_diff->Fit(fit2,"N0");
 	fit2->Write();
 
-		rebinned->Close();
+	rebinned->Close();
 
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
@@ -178,8 +188,8 @@ void v2_and_v3_superposition(){
 
 	gStyle->SetLegendFont(42);	gStyle->SetOptTitle(0);
 
-	TH1D* base = new TH1D("base","base",1,-0.1,0.1);
-	base->GetYaxis()->SetRangeUser(-0.03,0.03);
+	TH1D* base = new TH1D("base","base",1,-0.2,0.2);
+	base->GetYaxis()->SetRangeUser(-0.06,0.06);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("normalized #Deltav_{n}");
 	base->GetXaxis()->CenterTitle();

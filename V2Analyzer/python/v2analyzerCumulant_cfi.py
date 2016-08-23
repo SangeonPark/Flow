@@ -20,8 +20,11 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       #don't change this part
                       etaHFLow = cms.double(3.0),
                       etaHFUpp = cms.double(5.0),
-                      dxySigCut = cms.double(3.0),
-                      dzSigCut = cms.double(3.0),                      
+                      offlineDCA = cms.untracked.double(3.0),
+                      offlineptErr = cms.untracked.double(0.1),
+
+                      vzLow = cms.untracked.double(0.0),
+                      vzHigh = cms.untracked.double(15.0),                      
                       #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
                       doAchEffCorrection = cms.bool(True),

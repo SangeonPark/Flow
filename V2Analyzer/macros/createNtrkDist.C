@@ -1,6 +1,6 @@
 #include "RiceStyle.h"
 
-void createAchDist()
+void createNtrkDist()
 {   
    /*
    TH1D* achdist[6];
@@ -18,7 +18,7 @@ void createAchDist()
       cout << i << endl;
 
       //f = new TFile(Form("~/Summer2016/rootfiles/crosscheck/v2_pPb_%d_%d_AchCorrected/Merged.root",ntrklist[i],ntrklist[i+1]));
-      f = new TFile(Form("~/Summer2016/rootfiles/crosscheck/PbPb/v2/ntrk/%d_%d/Merged.root",centralitylist[i],centralitylist[i+1]));
+      f = new TFile(Form("~/Summer2016/rootfiles/crosscheck/PbPb/v2/%d_%d/Merged.root",centralitylist[i],centralitylist[i+1]));
       /*
 
       for (Int_t j = 0; j < 7; j++){
@@ -34,7 +34,7 @@ void createAchDist()
       }
       */
 
-      achdist[i] = (TH1D*)f->Get(Form("demo/ChargeAsym"));
+      achdist[i] = (TH1D*)f->Get(Form("demo/NTrkHist"));
 
       achdist[i]->SetName(Form("h_%d",i));
       
@@ -44,7 +44,7 @@ void createAchDist()
 
 
 
-   TFile *histlist = new TFile("~/Summer2016/achdistribution/achdist_PbPb_6ranges.root","RECREATE");
+   TFile *histlist = new TFile("~/Summer2016/Ntrkdist_PbPb_6ranges.root","RECREATE");
 
    for (int i = 0; i < 6; ++i)
    {

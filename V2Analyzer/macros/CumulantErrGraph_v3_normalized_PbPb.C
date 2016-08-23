@@ -5,20 +5,24 @@ using namespace std;
 void CumulantErrGraph_v3_normalized_PbPb(){
 
 	TFile *f;
-	TH1D* c2_pos[5][2];
-	TH1D* c2_neg[5][2];
 
-	TH1D* ach_hist[5];
-	double x[5];
+	const int NAchBins = 7;
+	const double correction = 0.5195;
+
+	TH1D* c2_pos[NAchBins][2];
+	TH1D* c2_neg[NAchBins][2];
+
+	TH1D* ach_hist[NAchBins];
+	double x[NAchBins];
 
 
 
-	double v2_pos[5];
-	double v2_neg[5];
-	double v2_diff[5];
-	double err_neg[5];
-	double err_pos[5];
-	double err_diff[5];
+	double v2_pos[NAchBins];
+	double v2_neg[NAchBins];
+	double v2_diff[NAchBins];
+	double err_neg[NAchBins];
+	double err_pos[NAchBins];
+	double err_diff[NAchBins];
 	double cmean;
 	double errmean;
 	double sum;
@@ -27,10 +31,10 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/crosscheck/v3_PbPb_185_220_AchCorrected/Merged.root");
+	f = new TFile("../../../rootfiles/crosscheck/PbPb/v3/30_40/Merged.root");
 
 
-	for (Int_t i = 0; i < 7; i++){
+	for (Int_t i = 0; i < NAchBins; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -40,9 +44,10 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
 		
 	}
-	for(Int_t i=0; i<5; i++){
+	for(Int_t i=0; i< NAchBins; i++){
 
 		x[i]=ach_hist[i]->GetMean();
+		x[i] *= correction;
 
 //v2 positive
 		cmean = c2_pos[i][0] -> GetMean();
@@ -74,29 +79,18 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 	}
-	for(i=0;i<5;i++){
-		cout << x[i] << ", ";
-	}	
-	cout << endl << "v2" << endl;
-	for(i=0;i<5;i++){
-		cout << v2_diff[i] << ", ";
-	}
-	cout << endl << "v2 error" <<endl;
-	for(i=0;i<5;i++){
-		cout << err_diff[i] << ", ";
-	}		
 
 
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
 	gStyle->SetLegendFont(42);
-	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
+	TH1D* base = new TH1D("base","base",1,-0.2,0.2);
 	//pPb
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.020, 0.034);
+	base->GetYaxis()->SetRangeUser(0.030, 0.04);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}{2}");
 	base->GetXaxis()->CenterTitle();
@@ -116,7 +110,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.2,0.2);
 	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" #frac{ v_{3}^{#minus} #minus v_{3}^{#plus} }{ v_{3}^{#minus} #plus v_{3}^{#plus} } ");
@@ -138,9 +132,20 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure4_0.root","RECREATE");
 
-	TGraphErrors *gr_pos = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
-	TGraphErrors *gr_neg = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
-	TGraphErrors *gr_diff = new TGraphErrors(5,x,v2_diff,NULL,err_diff);
+	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
+
+	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
+	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
+	
+	gr_pos->RemovePoint(0);
+	gr_pos->RemovePoint(5);
+
+	gr_neg->RemovePoint(0);
+	gr_neg->RemovePoint(5);
+	
+	gr_diff->RemovePoint(0);
+	gr_diff->RemovePoint(5);
+	
 
 	gr_pos->Write();
 	gr_neg->Write();

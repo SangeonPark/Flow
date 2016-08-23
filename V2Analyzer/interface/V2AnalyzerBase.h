@@ -166,8 +166,7 @@ private:
       TH1D* NTrkHist;
       TH2D* effTable;
       
-      double dxySigCut_;
-      double dzSigCut_;
+      double offlineDCA_;
       double etaCutMin_;
       double etaCutMax_;
       double etaHFLow_;
@@ -218,8 +217,7 @@ private:
       TH1D* NTrkHist;
       TH2D* effTable;
       
-      double dxySigCut_;
-      double dzSigCut_;
+      double offlineDCA_;
       double etaCutMin_;
       double etaCutMax_;
       double etaHFLow_;
@@ -273,8 +271,8 @@ private:
       TH1D* cbinHist;
       TH2D* scatterHist_twoetarange;
       
-      double dxySigCut_;
-      double dzSigCut_;
+      double offlineDCA_;
+      double offlineptErr_;
       double etaCutMin_;
       double etaCutMax_;
       double ptCutMin_;
@@ -282,11 +280,76 @@ private:
       double etaHFLow_;
       double etaHFUpp_;
       double etaGap_;
+      double vzLow_;
+      double vzHigh_;
       int Nmin_;
       int Nmax_;
       int NEtaBins_;
       bool doEffCorrection_;
       bool doAchEffCorrection_;
+      bool reverseBeam_;
+      bool useCentrality_;
+
+      std::vector<double> centBins_;
+      std::vector<double> achBins_;
+      std::string efftablePath_;
+      std::string efftableName_;
+      int NAchBins;
+
+//      double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
+
+      TH1D* c2_pos[100][2];
+      TH1D* c2_neg[100][2];
+      TH1D* ach_hist[100];
+      
+      edm::InputTag trackSrc_;
+      std::string vertexSrc_;
+      edm::InputTag towerSrc_;
+
+};
+
+class Closure : public edm::EDAnalyzer {
+public:
+      explicit Closure(const edm::ParameterSet&);
+      ~Closure();
+
+      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+
+
+private:
+      virtual void beginJob() ;
+      virtual void analyze(const edm::Event&, const edm::EventSetup&);
+      virtual void endJob() ;
+
+      virtual void beginRun(edm::Run const&, edm::EventSetup const&);
+      virtual void endRun(edm::Run const&, edm::EventSetup const&);
+      virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+      virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+
+      // ----------member data ---------------------------
+
+      TNtuple* track_Data;
+      TH1D* asym_Dist;
+      TH1D* NTrkHist;
+      TH2D* effTable;
+      TH1D* cbinHist;
+      TH2D* scatterHist_twoetarange;
+      
+      double offlineDCA_;
+      double offlineptErr_;
+      double etaCutMin_;
+      double etaCutMax_;
+      double ptCutMin_;
+      double ptCutMax_;
+      double etaHFLow_;
+      double etaHFUpp_;
+      double etaGap_;
+      double vzLow_;
+      double vzHigh_;
+      int Nmin_;
+      int Nmax_;
+      int NEtaBins_;
+      bool doEffCorrection_;
       bool reverseBeam_;
       bool useCentrality_;
 
@@ -333,8 +396,7 @@ private:
       TH1D* NTrkHist;
       TH2D* effTable;
       
-      double dxySigCut_;
-      double dzSigCut_;
+      double offlineDCA_;
       double etaCutMin_;
       double etaCutMax_;
       double etaHFLow_;
@@ -388,8 +450,8 @@ private:
       TH1D* cbinHist;
       TH2D* scatterHist_twoetarange;
       
-      double dxySigCut_;
-      double dzSigCut_;
+      double offlineDCA_;
+      double offlineptErr_;
       double etaCutMin_;
       double etaCutMax_;
       double ptCutMin_;
@@ -397,6 +459,8 @@ private:
       double etaHFLow_;
       double etaHFUpp_;
       double etaGap_;
+      double vzLow_;
+      double vzHigh_;
       int NEtaBins_;
       int Nmin_;
       int Nmax_;
@@ -461,8 +525,8 @@ private:
       TH2D* ptEtaScatterHist; 
       TH2D* genptEtaScatterHist;
 
-      double dxySigCut_;
-      double dzSigCut_;
+      double offlineDCA_;
+      double offlineptErr_;
       double etaCutMin_;
       double etaCutMax_;
       double ptCutMin_;

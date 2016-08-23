@@ -35,8 +35,8 @@ Implementation:
  V3AnalyzerCumulant::V3AnalyzerCumulant(const edm::ParameterSet& iConfig)
  {
 
- 	dxySigCut_ = iConfig.getParameter<double>("dxySigCut");
- 	dzSigCut_ = iConfig.getParameter<double>("dzSigCut");
+ 	offlineptErr_ = iConfig.getUntrackedParameter<double>("offlineptErr");
+ 	offlineDCA_ = iConfig.getUntrackedParameter<double>("offlineDCA");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
  	ptCutMin_ = iConfig.getParameter<double>("ptCutMin");
@@ -44,7 +44,8 @@ Implementation:
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
  	etaGap_ = iConfig.getParameter<double>("etaGap");
-
+ 	vzLow_ = iConfig.getUntrackedParameter<double>("vzLow");
+ 	vzHigh_ = iConfig.getUntrackedParameter<double>("vzHigh");
  	Nmin_ = iConfig.getParameter<int>("Nmin");
  	Nmax_ = iConfig.getParameter<int>("Nmax");
  	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
@@ -103,7 +104,7 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 	bestvzError = vtx.zError(); bestvxError = vtx.xError(); bestvyError = vtx.yError();
 
 //vertices selection
-	if(bestvz < -15.0 || bestvz>15.0) return;
+	if( fabs(bestvz) < vzLow_ || fabs(bestvz) > vzHigh_ ) return;
 
 	edm::Handle<reco::TrackCollection> tracks;
 	iEvent.getByLabel(trackSrc_, tracks);
@@ -210,10 +211,11 @@ void V3AnalyzerCumulant::analyze(const edm::Event& iEvent, const edm::EventSetup
 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
 		double dzos = dzbest/dzerror;
 		double dxyos = dxybest/dxyerror;
-		if( dzSigCut_ <= fabs(dzos) || dxySigCut_ <= fabs(dxyos) ) continue;
+		if(fabs(dzos) > offlineDCA_) continue;
+		if(fabs(dxyos) > offlineDCA_) continue;
 
 //ptError
-		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
+		if(fabs(cand->ptError())/cand->pt() > offlineptErr_ ) continue;
 
 		if(fabs(eta)<2.4 && pt > 0.4){
 			nTracks++;

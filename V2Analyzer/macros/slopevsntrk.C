@@ -5,9 +5,22 @@ using namespace std;
 void slopevsntrk(){
 
 	TFile *f;
-	TH1D* c2_pos[5][2];
-	TH1D* c2_neg[5][2];
-	TH1D* ach_hist[5];
+	const int NAchBins = 7;
+	double correctionlist_cent[6] = {0.5195, 0.6754, 0.7080, 0.7381, 0.7507, 0.7542};
+	double correctionlist_ntrk[7] = {0.744,0.751,0.758,0.746,0.7505,0.737,0.713};
+	double correctionlist_pPb[4] = {0.751,0.758,0.746,0.759};
+
+
+	int low_cent[6] = {30,40,50,60,70,80};
+	int upp_cent[6] = {40,50,60,70,80,90};
+	int low_pPb[4] = {120,150,185,220};
+	int upp_pPb[4] = {150,185,220,260};
+	int low_ntrk[7] = {90,120,150,185,220,300,400};
+	int upp_ntrk[7] = {120,150,185,220,300,400,500};
+
+	TH1D* c2_pos[NAchBins][2];
+	TH1D* c2_neg[NAchBins][2];
+	TH1D* ach_hist[NAchBins];
 	TH1D* NTrkHist;
 	TGraphErrors* gr_diff;
 	TF1* fit1;
@@ -29,9 +42,9 @@ void slopevsntrk(){
 	double variance_pos = 0.0;
 	double variance_neg = 0.0;
 	double variance_diff = 0.0;
-	double err_neg[5];
-	double err_pos[5];
-	double err_diff[5];
+	double err_neg[NAchBins];
+	double err_pos[NAchBins];
+	double err_diff[NAchBins];
 	double cmean;
 	double errmean;
 	double sum;
@@ -40,11 +53,11 @@ void slopevsntrk(){
 	for (int n = 0; n <4; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/pPb/Rebin/%d/Merged.root",n));
+		f = new TFile(Form("../../../rootfiles/crosscheck/pPb/v2/%d_%d/Merged.root",low_pPb[n],upp_pPb[n]));
 		NTrkHist = (TH1D*)f->Get("demo/NTrkHist");
 		pPb_xval[n] = NTrkHist->GetMean();
 
-		for (Int_t i = 0; i < 5; i++){
+		for (Int_t i = 0; i < NAchBins; i++){
 			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -56,14 +69,15 @@ void slopevsntrk(){
 
 		}
 
-		double x[5];
-		double v2_pos[5];
-		double v2_neg[5];
-		double v2_diff[5];
+		double x[NAchBins];
+		double v2_pos[NAchBins];
+		double v2_neg[NAchBins];
+		double v2_diff[NAchBins];
 		double r;
-		for(Int_t i=0; i<5; i++){
+		for(Int_t i=0; i<NAchBins; i++){
 
 			x[i]=ach_hist[i]->GetMean();
+			x[i] *= correctionlist_pPb[n];
 
 			cmean = c2_pos[i][0] -> GetMean();
 			v2_pos[i] = sqrt(cmean);
@@ -91,7 +105,7 @@ void slopevsntrk(){
 
 		}
 
-		gr_diff = new TGraphErrors(5,x,v2_diff,NULL, err_diff);
+		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
@@ -107,13 +121,13 @@ void slopevsntrk(){
 
 
 
-	for (int n = 0; n <4; ++n)
+	for (int n = 0; n <7; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_ntrk/PbPb/Rebin/Merged_%d.root",n));
+		f = new TFile(Form("../../../rootfiles/crosscheck/PbPb/v2/ntrk/%d_%d/Merged.root",low_ntrk[n],upp_ntrk[n]));
 		NTrkHist = (TH1D*)f->Get("demo/NTrkHist");
 		PbPb_xval[n] = NTrkHist->GetMean();
-		for (Int_t i = 0; i < 5; i++){
+		for (Int_t i = 0; i < NAchBins; i++){
 			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -125,15 +139,16 @@ void slopevsntrk(){
 
 		}
 
-		double x[5];
-		double v2_pos[5];
-		double v2_neg[5];
-		double v2_diff[5];
+		double x[NAchBins];
+		double v2_pos[NAchBins];
+		double v2_neg[NAchBins];
+		double v2_diff[NAchBins];
 		double r;
-		for(Int_t i=0; i<5; i++){
+		for(Int_t i=0; i<NAchBins; i++){
 
 
 			x[i]=ach_hist[i]->GetMean();
+			x[i]*=correctionlist_ntrk[n];
 
 			cmean = c2_pos[i][0] -> GetMean();
 			v2_pos[i] = sqrt(cmean);
@@ -163,7 +178,7 @@ void slopevsntrk(){
 
 		}
 
-		gr_diff = new TGraphErrors(5,x,v2_diff,NULL, err_diff);
+		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
@@ -173,7 +188,7 @@ void slopevsntrk(){
 	}
 
 
-	TGraphErrors* PbPbslope = new TGraphErrors(4,PbPb_xval,PbPb_yval,NULL,PbPb_ystaterr);
+	TGraphErrors* PbPbslope = new TGraphErrors(7,PbPb_xval,PbPb_yval,NULL,PbPb_ystaterr);
 
 
 
@@ -181,10 +196,10 @@ void slopevsntrk(){
 	for (int n = 0; n <2; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_centrality/PbPb502_%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/crosscheck/PbPb/v2/%d_%d/Merged.root",low_cent[n],upp_cent[n]));
 		NTrkHist = (TH1D*)f->Get("demo/NTrkHist");
 		PbPb_centrality_xval[n] = NTrkHist->GetMean();
-		for (Int_t i = 0; i < 5; i++){
+		for (Int_t i = 0; i < NAchBins; i++){
 			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -196,15 +211,16 @@ void slopevsntrk(){
 
 		}
 
-		double x[5];
-		double v2_pos[5];
-		double v2_neg[5];
-		double v2_diff[5];
+		double x[NAchBins];
+		double v2_pos[NAchBins];
+		double v2_neg[NAchBins];
+		double v2_diff[NAchBins];
 		double r;
-		for(Int_t i=0; i<5; i++){
+		for(Int_t i=0; i<NAchBins; i++){
 
 
 			x[i]=ach_hist[i]->GetMean();
+			x[i]*=correctionlist_cent[n];
 
 			cmean = c2_pos[i][0] -> GetMean();
 			v2_pos[i] = sqrt(cmean);
@@ -235,7 +251,7 @@ void slopevsntrk(){
 		cout << r << endl;
 		cout << PbPb_centrality_xval[n] << endl;
 
-		gr_diff = new TGraphErrors(5,x,v2_diff,NULL, err_diff);
+		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
@@ -252,67 +268,110 @@ void slopevsntrk(){
 	rebinned->Close();
 
 
-	PbPbslope -> SetMarkerStyle(24);
-	PbPbslope -> SetMarkerColor(kBlue);
-	pPbslope -> SetMarkerStyle(20);
-	pPbslope -> SetMarkerColor(kBlue);
-
-	PbPbslope_centrality -> SetMarkerStyle(24);
-	PbPbslope_centrality -> SetMarkerColor(kRed);
-
-	gStyle->SetLegendFont(42);	gStyle->SetOptTitle(0);
-
-	TH1D* base = new TH1D("base","base",1,0,500);
-	base->GetYaxis()->SetRangeUser(0.00,0.4);
-	base->GetXaxis()->SetTitle("N_{trk}^{offline}");
-	base->GetYaxis()->SetTitle("Slope parameter(normalized v_{2})");
-	base->GetXaxis()->CenterTitle();
-	base->GetYaxis()->CenterTitle();
-	base->SetTitleSize  (0.040,"X");
-	base->SetTitleOffset(1.4,"X");
-	base->SetTitleFont  (42,"X");
-	base->SetLabelOffset(0.006,"X");
-	base->SetLabelSize  (0.040,"X");
-	base->SetLabelFont  (42   ,"X");
-
-	base->SetTitleSize  (0.040,"Y");
-	base->SetTitleOffset(1.6,"Y");
-	base->SetTitleFont  (42,"Y");
-	base->SetLabelOffset(0.006,"Y");
-	base->SetLabelSize  (0.040,"Y");
-	base->SetLabelFont  (42   ,"Y");
-	base->SetLineWidth(0);
-
-	TCanvas* c3 = MakeCanvas("c3","c3");
-	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
-	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.84) ;
-	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.78) ;
-
-	text_a->SetTextFont(42);
-	text_b->SetTextFont(42);
-	text_c->SetTextFont(42);
-	text_d->SetTextFont(42);
-
-
-
-	TLegend* leg = new TLegend(.70,.76,.93,.88);
-	leg->SetLineColor(kWhite);
-	leg->SetFillColor(0);
-	leg->SetFillStyle(0);
-	leg->AddEntry(pPbslope, "pPb","p");
-	leg->AddEntry(PbPbslope, "PbPb","p");
-
 	
+	TH1D* base1 = makeHist("base1", "", "N^{offline}_{trk}", "r_{v_{2}}", 6000,0, 6000, kBlack);
+	TH1D* base2 = makeHist("base2", "", "Observed A_{ch}", "v_{2}(-) - v_{2}(+)", 1000, -0.2, 0.2, kBlack);
 
-	c3->cd();
-	base->Draw("");
-	text_c->DrawClone("");
-	text_d->DrawClone("");
-	pPbslope->Draw("PSame");
-	PbPbslope->Draw("PSame");
-//	PbPbslope_centrality->Draw("PSame");
-	leg->DrawClone("PSame");
-	SaveCanvas(c3,"pics","slope_vs_ntrk_pPb_PbPb_superposed");
+	fixedFontHist1D(base1,1.1,1.3);
+	
+	base1->GetYaxis()->SetRangeUser(0.00, 0.5);
+	base1->GetXaxis()->SetRangeUser(60, 2000);
+	base1->GetXaxis()->SetTitleColor(kBlack);
+	base1->GetYaxis()->SetTitleOffset(1.23);
+	base1->GetYaxis()->SetTitleSize(base1->GetYaxis()->GetTitleSize()*1.4);
+	base1->GetXaxis()->SetTitleSize(base1->GetXaxis()->GetTitleSize()*1.4);
+	base1->GetYaxis()->SetLabelSize(base1->GetYaxis()->GetLabelSize()*1.5);
+	base1->GetXaxis()->SetLabelSize(base1->GetXaxis()->GetLabelSize()*1.4);
+	base1->GetXaxis()->SetNdivisions(8,5,0);
+	base1->GetYaxis()->SetNdivisions(4,6,0);
+
+	fixedFontHist1D(base2,1.1,1.25);
+	
+	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
+	base2->GetXaxis()->SetRangeUser(-0.1,0.1);
+	base2->GetXaxis()->SetTitleColor(kBlack);
+	base2->GetYaxis()->SetTitleOffset(1.23);
+	base2->GetYaxis()->SetTitleSize(base2->GetYaxis()->GetTitleSize()*1.4);
+	base2->GetXaxis()->SetTitleSize(base2->GetXaxis()->GetTitleSize()*1.4);
+	base2->GetYaxis()->SetLabelSize(base2->GetYaxis()->GetLabelSize()*1.5);
+	base2->GetXaxis()->SetLabelSize(base2->GetXaxis()->GetLabelSize()*1.4);
+	base2->GetXaxis()->SetNdivisions(8,18,0);
+	base2->GetYaxis()->SetNdivisions(4,6,0);
+
+	TCanvas* c1 = new TCanvas("c1", "c1", 1, 1, 600,600);
+	gPad->SetTicks();
+	gPad->SetLeftMargin(0.13);
+	gPad->SetBottomMargin(0.13);
+	gPad->SetRightMargin(0.05);
+	gStyle->SetPadBorderMode(0.1);
+	gStyle->SetOptTitle(0);
+	gPad->SetLogx(1);
+
+	base1->Draw();
+
+	TLatex* r33 = new TLatex(0.13,0.91, "CMS");
+	r33->SetNDC();
+	r33->SetTextSize(0.04);
+	r33->Draw("same");
+
+	TLatex* r44 = new TLatex(0.23,0.91, "Preliminary");
+	r44->SetNDC();
+	r44->SetTextSize(24);
+	r44->SetTextFont(53);
+	r44->Draw("same");
+
+	TLatex* r22 = new TLatex(0.15, 0.83, "#sqrt{s_{NN}} = 5.02 TeV");
+	r22->SetNDC();
+	r22->SetTextSize(23);
+	r22->SetTextFont(43);
+	r22->SetTextColor(kBlack);
+	r22->Draw("same");
+
+	TLatex* r55 = new TLatex(0.15, 0.76, "185 #leq N^{offline}_{trk} < 260");
+	r55->SetNDC();
+	r55->SetTextSize(23);
+	r55->SetTextFont(43);
+	r55->SetTextColor(kBlack);
+	//r55->Draw("same"); 
+
+	TLatex* r66 = new TLatex(0.58, 0.83, "0.3 #leq p_{T} < 3.0 GeV/c");
+	r66->SetNDC();
+	r66->SetTextSize(23);
+	r66->SetTextFont(43);
+	r66->SetTextColor(kBlack);
+	r66->Draw("same");
+
+
+	pPbslope->SetMarkerStyle(20);
+	pPbslope->SetMarkerSize(1.5);
+	pPbslope->SetMarkerColor(kRed);
+	pPbslope->SetLineColor(kRed);
+	pPbslope->Draw("Psame");
+
+	PbPbslope->SetMarkerStyle(25);
+	PbPbslope->SetMarkerSize(1.5);
+	PbPbslope->SetMarkerColor(kBlue);
+	PbPbslope->SetLineColor(kBlue);
+	PbPbslope->Draw("Psame");
+
+	PbPbslope_centrality->SetMarkerStyle(25);
+	PbPbslope_centrality->SetMarkerSize(1.5);
+	PbPbslope_centrality->SetMarkerColor(kBlue);
+	PbPbslope_centrality->SetLineColor(kBlue);
+	PbPbslope_centrality->Draw("Psame");
+
+	TLegend *w4 = new TLegend(0.7,0.17,0.9,0.3);
+	w4->SetLineColor(kWhite);
+	w4->SetFillColor(0);
+	w4->SetTextSize(23);
+	w4->SetTextFont(45);
+	w4->AddEntry(pPbslope, "pPb ","P");    
+	w4->AddEntry(PbPbslope, "PbPb ","P");
+	w4->Draw("same");
+
+
+	c1->Print("./figure3.pdf");
+
+	//SaveCanvas(c3,"pics","slope_vs_ntrk_pPb_PbPb_superposed");
 
 }

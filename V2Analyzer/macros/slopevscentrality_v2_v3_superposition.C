@@ -5,15 +5,18 @@ using namespace std;
 void slopevscentrality_v2_v3_superposition(){
 
 	TFile *f;
-	TH1D* c2_pos[5][2];
-	TH1D* c2_neg[5][2];
-	TH1D* ach_hist[5];
-	TH1D* cbinHist;
+	const int NAchBins = 7;
+	double correctionlist[6] = {0.5195, 0.6754, 0.7080, 0.7381, 0.7507, 0.7542};
+
+	TH1D* c2_pos[NAchBins][2];
+	TH1D* c2_neg[NAchBins][2];
+	TH1D* ach_hist[NAchBins];
 	TGraphErrors* gr_diff;
 	TF1* fit1;
 
 	double x_centrality[6] = {35, 45, 55, 65, 75, 85};
-	double x_v3_cent[3] = {35, 45, 60};
+	double x_v3_cent[4] = {35, 45, 55, 65};
+
 	double v2_PbPb_centrality_yval[6];
 	double v2_PbPb_centrality_ystaterr[6];
 	double v2_statErr[6];
@@ -26,19 +29,24 @@ void slopevscentrality_v2_v3_superposition(){
 	double variance_pos = 0.0;
 	double variance_neg = 0.0;
 	double variance_diff = 0.0;
-	double err_neg[5];
-	double err_pos[5];
-	double err_diff[5];
+	double err_neg[NAchBins];
+	double err_pos[NAchBins];
+	double err_diff[NAchBins];
 	double cmean;
 	double errmean;
 	double sum;
 
+	int low[6] = {30,40,50,60,70,80};
+	int upp[6] = {40,50,60,70,80,90};
+
+
+
 	for (int n = 0; n <6; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_centrality/PbPb502_%d.root",n+1));
+		f = new TFile(Form("../../../rootfiles/crosscheck/PbPb/v2/%d_%d/Merged.root",low[n],upp[n]));
 
-		for (Int_t i = 0; i < 5; i++){
+		for (Int_t i = 0; i < NAchBins; i++){
 			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -50,15 +58,16 @@ void slopevscentrality_v2_v3_superposition(){
 
 		}
 
-		double x[5];
-		double v2_pos[5];
-		double v2_neg[5];
-		double v2_diff[5];
+		double x[NAchBins];
+		double v2_pos[NAchBins];
+		double v2_neg[NAchBins];
+		double v2_diff[NAchBins];
 		double r;
-		for(Int_t i=0; i<5; i++){
+		for(Int_t i=0; i<NAchBins; i++){
 
 
 			x[i]=ach_hist[i]->GetMean();
+			x[i] *= correctionlist[n];
 
 			cmean = c2_pos[i][0] -> GetMean();
 			v2_pos[i] = sqrt(cmean);
@@ -87,8 +96,9 @@ void slopevscentrality_v2_v3_superposition(){
 		}
 
 
-		gr_diff = new TGraphErrors(5,x,v2_diff,NULL, err_diff);
-		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
+		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
+		
+		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.2, 0.2);
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
 		v2_PbPb_centrality_ystaterr[n] = fit1->GetParError(1);
@@ -102,12 +112,12 @@ void slopevscentrality_v2_v3_superposition(){
 
 
 
-	for (int n = 0; n <3; ++n)
+	for (int n = 0; n <4; ++n)
 	{
 		
-		f = new TFile(Form("../../../rootfiles/slope_vs_centrality_v3/Merged_%d.root",n));
+		f = new TFile(Form("../../../rootfiles/crosscheck/PbPb/v3/%d_%d/Merged.root",low[n],upp[n]));
 
-		for (Int_t i = 0; i < 5; i++){
+		for (Int_t i = 0; i < NAchBins; i++){
 			ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
 			c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
@@ -119,15 +129,16 @@ void slopevscentrality_v2_v3_superposition(){
 
 		}
 
-		double x[5];
-		double v2_pos[5];
-		double v2_neg[5];
-		double v2_diff[5];
+		double x[NAchBins];
+		double v2_pos[NAchBins];
+		double v2_neg[NAchBins];
+		double v2_diff[NAchBins];
 		double r;
-		for(Int_t i=0; i<5; i++){
+		for(Int_t i=0; i<NAchBins; i++){
 
 
 			x[i]=ach_hist[i]->GetMean();
+			x[i] *= correctionlist[n];
 
 			cmean = c2_pos[i][0] -> GetMean();
 			v2_pos[i] = sqrt(cmean);
@@ -156,8 +167,8 @@ void slopevscentrality_v2_v3_superposition(){
 		}
 
 
-		gr_diff = new TGraphErrors(5,x,v2_diff,NULL, err_diff);
-		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
+		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
+		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.2, 0.2);
 		gr_diff->Fit(fit1);
 		r = fit1->GetParameter(1);
 		v3_PbPb_centrality_ystaterr[n] = fit1->GetParError(1);
@@ -168,7 +179,7 @@ void slopevscentrality_v2_v3_superposition(){
 
 	}
 
-	TGraphErrors* v3_PbPbslope_centrality = new TGraphErrors(3,x_v3_cent,v3_PbPb_centrality_yval,NULL,v3_PbPb_centrality_ystaterr);
+	TGraphErrors* v3_PbPbslope_centrality = new TGraphErrors(4,x_v3_cent,v3_PbPb_centrality_yval,NULL,v3_PbPb_centrality_ystaterr);
 	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure5.root","RECREATE");
 	v2_PbPbslope_centrality->Write();
 	v3_PbPbslope_centrality->Write();
@@ -187,7 +198,7 @@ void slopevscentrality_v2_v3_superposition(){
 
 	gStyle->SetLegendFont(42);	gStyle->SetOptTitle(0);
 	TH1D* base = new TH1D("base","base",1,0,100);
-	base->GetYaxis()->SetRangeUser(0.00,0.4);
+	base->GetYaxis()->SetRangeUser(0.00,0.5);
 	base->GetXaxis()->SetTitle("Centrality(%)");
 	base->GetYaxis()->SetTitle("Slope parameter(normalized v_{n})");
 	base->GetXaxis()->CenterTitle();
