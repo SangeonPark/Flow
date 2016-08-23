@@ -363,7 +363,7 @@ Implementation:
  		if(reverseBeam_) { eta *= -1.0;}
 
  		double efficiency = effTable->GetBinContent(effTable->FindBin(eta, pt));
- 		double random = fRand(0.0, 1.0);
+ 		double random = ((double) rand() / (RAND_MAX));
  		if( random > efficiency ) continue;
 
 
