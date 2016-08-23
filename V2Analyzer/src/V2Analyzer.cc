@@ -34,8 +34,8 @@
 //
      V2Analyzer::V2Analyzer(const edm::ParameterSet& iConfig){
 
-     	dxySigCut_ = iConfig.getParameter<double>("dxySigCut");
-     	dzSigCut_ = iConfig.getParameter<double>("dzSigCut");
+     	offlineptErr_ = iConfig.getUntrackedParameter<double>("offlineptErr");
+    offlineDCA_ = iConfig.getUntrackedParameter<double>("offlineDCA");
      	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
      	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
      	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
@@ -149,68 +149,69 @@
      		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
      		double dzos = dzbest/dzerror;
      		double dxyos = dxybest/dxyerror;
-     		if( dzSigCut_ <= fabs(dzos) || dxySigCut_ <= fabs(dxyos) ) continue;
+     		if(fabs(dzos) > offlineDCA_) continue;
+            if(fabs(dxyos) > offlineDCA_) continue;
 
 	//ptError
-     		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
+            if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
 
-     		if(fabs(eta)<2.4 && pt > 0.4){
-     			nTracks++;
-     			if(charge>0){
-     				nTracks_pos++;
-     			}
-     			else{
-     				nTracks_neg++;
-     			}
-     		}
+            if(fabs(eta)<2.4 && pt > 0.4){
+                nTracks++;
+                if(charge>0){
+                   nTracks_pos++;
+               }
+               else{
+                   nTracks_neg++;
+               }
+           }
 
-     		if(pt < 0.3 || pt > 3.0 ) continue;
-     		if(2.4<=fabs(eta)) continue;
-     		if(reverseBeam_) { eta *= -1.0;}
+           if(pt < 0.3 || pt > 3.0 ) continue;
+           if(2.4<=fabs(eta)) continue;
+           if(reverseBeam_) { eta *= -1.0;}
 
 
-     		TComplex e(1,2*phi,1);
+           TComplex e(1,2*phi,1);
 
-     		e *= weight; 
+           e *= weight; 
 
-     		if(eta > 0.0){
-     			N_Q2++;
-     			Q2 += e;
-     			N_tot+=weight;
-     			W_Q2 += weight;
-     			if(charge>0){
-     				N_Q2_pos++;
-     				N_pos+=weight;
-     				Q2_pos += e;
-     				W_Q2_pos += weight;
-     			}
-     			if(charge<0){
-     				N_neg+=weight;
-     				N_Q2_neg++;
-     				Q2_neg += e;
-     				W_Q2_neg += weight;
-     			}
-     		}
+           if(eta > 0.0){
+            N_Q2++;
+            Q2 += e;
+            N_tot+=weight;
+            W_Q2 += weight;
+            if(charge>0){
+               N_Q2_pos++;
+               N_pos+=weight;
+               Q2_pos += e;
+               W_Q2_pos += weight;
+           }
+           if(charge<0){
+               N_neg+=weight;
+               N_Q2_neg++;
+               Q2_neg += e;
+               W_Q2_neg += weight;
+           }
+       }
 
-     		if(eta < 0.0){
-     			Q2C += e;
-     			N_tot+=weight;
-     			N_Q2C++;
-     			W_Q2C += weight;
-     			if(charge>0){
-     				N_pos+=weight;
-     				N_Q2C_pos++;
-     				Q2C_pos += e;
-     				W_Q2C_pos += weight;
-     			}
-     			if(charge<0){
-     				N_neg+=weight;
-     				N_Q2C_neg++;
-     				Q2C_neg += e;
-     				W_Q2C_neg += weight;
-     			}
-     		}
-     	}
+       if(eta < 0.0){
+        Q2C += e;
+        N_tot+=weight;
+        N_Q2C++;
+        W_Q2C += weight;
+        if(charge>0){
+           N_pos+=weight;
+           N_Q2C_pos++;
+           Q2C_pos += e;
+           W_Q2C_pos += weight;
+       }
+       if(charge<0){
+           N_neg+=weight;
+           N_Q2C_neg++;
+           Q2C_neg += e;
+           W_Q2C_neg += weight;
+       }
+   }
+}
 
 
     /*

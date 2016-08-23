@@ -35,8 +35,8 @@ Implementation:
  V3AnalyzerSP::V3AnalyzerSP(const edm::ParameterSet& iConfig)
  {
 
- 	dxySigCut_ = iConfig.getParameter<double>("dxySigCut");
- 	dzSigCut_ = iConfig.getParameter<double>("dzSigCut");
+ 	offlineptErr_ = iConfig.getUntrackedParameter<double>("offlineptErr");
+ 	offlineDCA_ = iConfig.getUntrackedParameter<double>("offlineDCA");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
@@ -140,7 +140,8 @@ Implementation:
  		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
  		double dzos = dzbest/dzerror;
  		double dxyos = dxybest/dxyerror;
- 		if( dzSigCut_ <= fabs(dzos) || dxySigCut_ <= fabs(dxyos) ) continue;
+ 		if(fabs(dzos) > offlineDCA_) continue;
+ 		if(fabs(dxyos) > offlineDCA_) continue;
 
 //ptError
  		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
