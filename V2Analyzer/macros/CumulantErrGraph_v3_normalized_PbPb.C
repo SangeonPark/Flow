@@ -7,7 +7,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	TFile *f;
 
 	const int NAchBins = 7;
-	const double correction = 0.5195;
+	const double correction = 1.0;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -31,17 +31,17 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/crosscheck/PbPb/v3/30_40/Merged.root");
+	f = new TFile("../../../rootfiles/closure/Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/reco_ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/reco_c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/reco_c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/reco_c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/reco_c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i< NAchBins; i++){
@@ -85,12 +85,12 @@ void CumulantErrGraph_v3_normalized_PbPb(){
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
 	gStyle->SetLegendFont(42);
-	TH1D* base = new TH1D("base","base",1,-0.2,0.2);
+	TH1D* base = new TH1D("base","base",1,-0.1,0.1);
 	//pPb
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.030, 0.04);
+	base->GetYaxis()->SetRangeUser(0.095, 0.11);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{3}{2}");
 	base->GetXaxis()->CenterTitle();
@@ -110,7 +110,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.2,0.2);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.1,0.1);
 	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" #frac{ v_{3}^{#minus} #minus v_{3}^{#plus} }{ v_{3}^{#minus} #plus v_{3}^{#plus} } ");
@@ -237,6 +237,6 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","v3_PbPb_185_220_crosscheck");
+	SaveCanvas(c3,"pics","closuretest_reco");
 
 }

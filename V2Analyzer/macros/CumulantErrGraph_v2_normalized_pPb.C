@@ -6,7 +6,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	TFile *f;
 
 	const int NAchBins = 7;
-	const double correction = 0.746;
+	const double correction = 1.0;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -27,17 +27,17 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/crosscheck/v2_pPb_185_220_AchCorrected/Merged.root");
+	f = new TFile("../../../rootfiles/closure/Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/gen_ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/gen_c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/gen_c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/gen_c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/gen_c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i<NAchBins; i++){
@@ -79,7 +79,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.090, 0.102);
+	base->GetYaxis()->SetRangeUser(0.000, 0.15);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
