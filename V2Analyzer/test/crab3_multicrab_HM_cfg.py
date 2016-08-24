@@ -18,7 +18,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_pPb_v2_systematics_trackselection_Tight'
+outputName = 'multicrab_CMW_pPb_v2_systematics_trackselection_loose'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'v2analyzerCumulant_cfg.py'
