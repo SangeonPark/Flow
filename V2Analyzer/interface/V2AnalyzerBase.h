@@ -270,6 +270,7 @@ private:
       TH1D* vtxZ;
       TH1D* NTrkHist;
       TH2D* effTable;
+      TH2D* AcheffTable;
       TH1D* cbinHist;
       TH2D* scatterHist_twoetarange;
       

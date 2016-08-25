@@ -190,9 +190,14 @@ Implementation:
  		double pt = cand->pt();
  		double phi = cand->phi();
  		double weight = 1.0;
+ 		double Achweight = 1.0;
 
  		if( doEffCorrection_ ){
  			weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
+ 		}
+
+ 		if( doAchEffCorrection_ ){
+ 			Achweight = 1.0/AcheffTable->GetBinContent( AcheffTable->FindBin(eta, pt) );
  		}
 
 //highPurity
@@ -227,9 +232,9 @@ Implementation:
 
  		if(fabs(eta)<1.0){
  			if(doAchEffCorrection_){
- 				eta2_N_tot += weight;
- 				if( charge > 0){ eta2_N_pos+= weight;}
- 				if( charge < 0){ eta2_N_neg+= weight;}
+ 				eta2_N_tot += Achweight;
+ 				if( charge > 0){ eta2_N_pos+= Achweight;}
+ 				if( charge < 0){ eta2_N_neg+= Achweight;}
  			}
  			if(!doAchEffCorrection_){
  				eta2_N_tot += 1.0;
@@ -248,17 +253,11 @@ Implementation:
  		e *= weight; 
 
 
- 		if(doAchEffCorrection_){
- 			N_tot += weight;
- 			if( charge > 0){ N_pos+= weight;}
- 			if( charge < 0){ N_neg+= weight;}
- 		}
- 		if(!doAchEffCorrection_){
- 			N_tot += 1.0;
- 			if( charge > 0){ N_pos+= 1.0;}
- 			if( charge < 0){ N_neg+= 1.0;}
 
- 		}
+ 		N_tot += Achweight;
+ 		if( charge > 0){ N_pos+= Achweight;}
+ 		if( charge < 0){ N_neg+= Achweight;}
+ 		
 
  		for (int i = 0; i < NBins; ++i)
  		{
@@ -352,12 +351,16 @@ Implementation:
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
  	vtxZ = fs->make<TH1D>("vtxZ",";vz", 400,-20,20);
  	scatterHist_twoetarange = fs->make<TH2D>("scatterHist_twoetarange","A_{ch} of two different eta range;A_{ch} |#eta| < 1;A_{ch} |#eta| < 2.4",1000,-0.3,0.3,1000,-0.3,0.3);
- 
+
 
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
  	effTable = (TH2D*)f1.Get(efftableName_.c_str());
+
+ 	edm::FileInPath fip2("Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root");  
+ 	TFile f2(fip2.fullPath().c_str(),"READ");
+ 	AcheffTable = (TH2D*)f2.Get("eff_5");
 
 //list of c2 histograms
  	for (Int_t i = 0; i < NAchBins; i++){
