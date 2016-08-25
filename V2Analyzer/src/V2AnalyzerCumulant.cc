@@ -104,6 +104,8 @@ Implementation:
 //vertices selection
  	if( fabs(bestvz) < vzLow_ || fabs(bestvz) > vzHigh_ ) return;
 
+ 	vtxZ->Fill( bestvz );
+
  	edm::Handle<reco::TrackCollection> tracks;
  	iEvent.getByLabel(trackSrc_, tracks);
 
