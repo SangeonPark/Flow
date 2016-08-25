@@ -14,7 +14,7 @@ void corrfactor(){
 	TH2D* recogenach;
 
 
-	f = new TFile("../../../rootfiles/closure/Merged.root");
+	f = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
 
 
 

@@ -7,7 +7,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	TFile *f;
 
 	const int NAchBins = 7;
-	const double correction = 1.0;
+	const double correction = 0.6527;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -31,17 +31,17 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/closure/Merged.root");
+	f = new TFile("../../../rootfiles/crosscheck/PbPb/v3/30_40/Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/reco_ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/reco_c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/reco_c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/reco_c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/reco_c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i< NAchBins; i++){
@@ -237,6 +237,8 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","closuretest_reco");
+	//SaveCanvas(c3,"pics","closuretest_reco");
+
+
 
 }

@@ -7,15 +7,22 @@ void fitscatterplot()
 
    // generate a 2-d histogram using a TCutG
    TFile *f;
-   f = new TFile("../../../rootfiles/closure/Merged.root");
+   f = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
    TH2D *h2 = new TH2D("h2","h2",1000,-0.3,0.3,1000,-0.3,0.3);
+
+
 
    TCanvas *c1 = new TCanvas("c1","show profile",1,1,1200,600);
    c1->Divide(2,1,0.01,0.01);
 
    h2 = (TH2D*)f->Get("demo/genrecoach");
-//   h2->Rebin2D(5,1);
 
+   double r;
+
+
+   
+   h2->Rebin2D(5,1);
+   r = h2->GetCorrelationFactor();
    c1->cd(2);
 
    //use a TProfile to convert the 2-d to 1-d problem
@@ -34,14 +41,14 @@ void fitscatterplot()
    prof->SetMarkerStyle(1);
    prof->SetLineStyle(1);
    prof->SetLineWidth(1);   
-   prof->Fit("pol1","0");
+   prof->Fit("pol1");
    TF1 *fit1 = prof->GetListOfFunctions()->FindObject("pol1");
    TLatex* text2 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.55,0.25) ;
 
 
    if(fit1)
    {
-      fit1->SetLineColor(4); 
+      fit1->SetLineColor(kRed); 
       fit1->SetLineWidth(3);
       fit1->SetLineStyle(1);
    }
@@ -63,8 +70,8 @@ void fitscatterplot()
 
    h2 -> GetXaxis()->CenterTitle();
    h2 -> GetYaxis()->CenterTitle();
-   h2 ->GetXaxis()->SetRangeUser(-0.1, 0.1);
-   h2 ->GetYaxis()->SetRangeUser(-0.1, 0.1);
+   h2 ->GetXaxis()->SetRangeUser(-0.15, 0.15);
+   h2 ->GetYaxis()->SetRangeUser(-0.15, 0.15);
 
 
    h2->Draw("colz");
@@ -74,6 +81,12 @@ void fitscatterplot()
 
 
    prof->Draw("Same");
+
+
+   TLatex* text3 = makeLatex(Form("correlationfactor : %f",r),0.55,0.17) ;
+
+   text3->Draw("same");
+
 
  //  text_a->Draw("Same");
 
@@ -105,7 +118,7 @@ void fitscatterplot()
 
    */
 
-   SaveCanvas(c1,"pics",Form("fitscatterplot_profonscatter_nofit"));
+   SaveCanvas(c1,"pics",Form("fitscatterplot_clsouretest_pPb_185_220"));
 
 }
 

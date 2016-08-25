@@ -6,9 +6,9 @@ void slopevsntrk(){
 
 	TFile *f;
 	const int NAchBins = 7;
-	double correctionlist_cent[6] = {0.5195, 0.6754, 0.7080, 0.7381, 0.7507, 0.7542};
-	double correctionlist_ntrk[7] = {0.744,0.751,0.758,0.746,0.7505,0.737,0.713};
-	double correctionlist_pPb[4] = {0.751,0.758,0.746,0.759};
+	double correctionlist_cent[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
+	double correctionlist_ntrk[7] = {0.7439,0.7520,0.7575,0.7463,0.7508,0.7374,0.7127};
+	double correctionlist_pPb[4] = {0.7520,0.7575,0.7463,0.7595};
 
 
 	int low_cent[6] = {30,40,50,60,70,80};

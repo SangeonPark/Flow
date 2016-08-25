@@ -31,8 +31,8 @@ process.source = cms.Source("PoolSource",
 )
 
 #loads analyzer
-process.load("Flow.V2Analyzer.closure_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("closuretest_0822.root"))
+process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
+process.TFileService = cms.Service("TFileService",fileName = cms.string("systematics_0824.root"))
 
 
 process.p = cms.Path(process.demo)

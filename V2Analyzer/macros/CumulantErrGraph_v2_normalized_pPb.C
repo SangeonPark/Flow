@@ -6,7 +6,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	TFile *f;
 
 	const int NAchBins = 7;
-	const double correction = 1.0;
+	const double correction = 0.7463;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -27,17 +27,24 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/closure/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/trackselection/loose/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/trackselection/tight/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/vtz/wide/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/vtz/narrow/Merged.root");
+	f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/ntrk/185_220/Merged.root");
+
+	// = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
+
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/gen_ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/gen_c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/gen_c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/gen_c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/gen_c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i<NAchBins; i++){
@@ -79,7 +86,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.000, 0.15);
+	base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
@@ -122,7 +129,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_0.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_1.root","RECREATE");
 
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
@@ -227,7 +234,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
 
-	//SaveCanvas(c3,"pics",Form("v2_PbPb_185_220_crosscheck"));
+	//SaveCanvas(c3,"pics",Form("Closuretest_pPb_185_220_reco"));
 
 
 

@@ -267,6 +267,7 @@ private:
 
       TNtuple* track_Data;
       TH1D* asym_Dist;
+      TH1D* vtxZ;
       TH1D* NTrkHist;
       TH2D* effTable;
       TH1D* cbinHist;
