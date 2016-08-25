@@ -24,7 +24,7 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       offlineptErr = cms.untracked.double(0.1),
 
                       vzLow = cms.untracked.double(0.0),
-                      vzHigh = cms.untracked.double(15.0),                      
+                      vzHigh = cms.untracked.double(3.0),                      
                       #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
                       doAchEffCorrection = cms.bool(True),
