@@ -18,10 +18,10 @@ ntrkUpp = [80,100,120,140,160,180]
 
 #efftableNameList = ["eff_1","eff_2","eff_2","eff_2","eff_3","eff_3","eff_3","eff_4"]
 efftableNameList = ["eff_5","eff_4","eff_4","eff_3","eff_1","eff_1"]
-efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root"]
+efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_tight.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_tight.root"]
 
 
-outputName = "multicrab_CMW_v2_PbPb_systematics_vtz_wide_0825_correct"
+outputName = "multicrab_CMW_v2_PbPb_systematics_trkSelection_tight_0825_correct"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True

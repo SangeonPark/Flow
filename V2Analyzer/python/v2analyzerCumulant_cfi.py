@@ -20,8 +20,8 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       #don't change this part
                       etaHFLow = cms.double(3.0),
                       etaHFUpp = cms.double(5.0),
-                      offlineDCA = cms.untracked.double(5.0),
-                      offlineptErr = cms.untracked.double(0.1),
+                      offlineDCA = cms.untracked.double(2.0),
+                      offlineptErr = cms.untracked.double(0.05),
 
                       vzLow = cms.untracked.double(0.0),
                       vzHigh = cms.untracked.double(15.0),                      
@@ -45,7 +45,7 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       #efftablePath = cms.string('Flow/V2Analyzer/data/EPOS_eff_loose.root'),
                       #efftableName = cms.string('recoHist'),
                       #PbPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_tight.root'),
                       efftableName = cms.string('eff_5'),
 
                       #5Bins
