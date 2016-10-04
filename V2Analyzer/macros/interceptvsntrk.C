@@ -2,17 +2,17 @@
 
 using namespace std;
 
-void slopevsntrk(){
+void interceptvsntrk(){
 
 	TFile *f;
 	const int NAchBins = 7;
-//	double correctionlist_cent[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
-//	double correctionlist_ntrk[7] = {0.7439,0.7520,0.7575,0.7463,0.7508,0.7374,0.7127};
-//	double correctionlist_pPb[4] = {0.7520,0.7575,0.7463,0.7595};
+	double correctionlist_cent[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
+	double correctionlist_ntrk[7] = {0.7439,0.7520,0.7575,0.7463,0.7508,0.7374,0.7127};
+	double correctionlist_pPb[4] = {0.7520,0.7575,0.7463,0.7595};
 
-	double correctionlist_cent[6] = {1, 1, 1, 1, 1, 1};
-	double correctionlist_ntrk[7] = {1,1,1,1,1,1,1};
-	double correctionlist_pPb[4] = {1,1,1,1};
+//	double correctionlist_cent[6] = {1, 1, 1, 1, 1, 1};
+//	double correctionlist_ntrk[7] = {1,1,1,1,1,1,1};
+//	double correctionlist_pPb[4] = {1,1,1,1};
 
 
 
@@ -113,8 +113,8 @@ void slopevsntrk(){
 		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 		gr_diff->Fit(fit1);
-		r = fit1->GetParameter(1);
-		pPb_ystaterr[n] = fit1->GetParError(1);
+		r = fit1->GetParameter(0);
+		pPb_ystaterr[n] = fit1->GetParError(0);
 		pPb_yval[n] = r;
 		cout << r << endl;
 
@@ -186,8 +186,8 @@ void slopevsntrk(){
 		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 		gr_diff->Fit(fit1);
-		r = fit1->GetParameter(1);
-		PbPb_ystaterr[n] = fit1->GetParError(1);
+		r = fit1->GetParameter(0);
+		PbPb_ystaterr[n] = fit1->GetParError(0);
 		PbPb_yval[n] = r;
 
 	}
@@ -259,12 +259,12 @@ void slopevsntrk(){
 		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
 		gr_diff->Fit(fit1);
-		r = fit1->GetParameter(1);
-		PbPb_centrality_ystaterr[n] = fit1->GetParError(1);
+		r = fit1->GetParameter(0);
+		PbPb_centrality_ystaterr[n] = fit1->GetParError(0);
 		PbPb_centrality_yval[n] = r;
 
 	}
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure3.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/intercept_vs_ntrk_AchCorrected.root","RECREATE");
 
 	TGraphErrors* PbPbslope_centrality = new TGraphErrors(2,PbPb_centrality_xval,PbPb_centrality_yval,NULL,PbPb_centrality_ystaterr);
 	pPbslope->Write();
@@ -279,7 +279,7 @@ void slopevsntrk(){
 
 	fixedFontHist1D(base1,1.1,1.3);
 	
-	base1->GetYaxis()->SetRangeUser(0.00, 0.5);
+	base1->GetYaxis()->SetRangeUser(-0.01, 0.01);
 	base1->GetXaxis()->SetRangeUser(60, 2000);
 	base1->GetXaxis()->SetTitleColor(kBlack);
 	base1->GetYaxis()->SetTitleOffset(1.23);

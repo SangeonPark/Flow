@@ -6,7 +6,8 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	TFile *f;
 
 	const int NAchBins = 7;
-	const double correction = 0.7463;
+	//const double correction = 0.7463;
+	const double correction = 1.0;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];

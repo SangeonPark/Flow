@@ -6,7 +6,8 @@ void slopevscentrality_v2_v3_superposition(){
 
 	TFile *f;
 	const int NAchBins = 7;
-	double correctionlist[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
+	//double correctionlist[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
+	double correctionlist[6] = {1, 1, 1, 1, 1, 1};
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];

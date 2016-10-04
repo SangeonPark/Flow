@@ -193,7 +193,7 @@ Implementation:
  		reco_WQ2_neg[i] = 0.0;
 
  	}
-
+ 	
  	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
  		double eta = cand->eta();
@@ -226,7 +226,7 @@ Implementation:
  				nTracks_pos++;
  			}
  			else{
- 				nTracks_neg++;
+ 				nTracks_neg++;	
  			}
  		}
 

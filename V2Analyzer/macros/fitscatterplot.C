@@ -12,15 +12,17 @@ void fitscatterplot()
 
 
 
-   TCanvas *c1 = new TCanvas("c1","show profile",1,1,1200,600);
-   c1->Divide(2,1,0.01,0.01);
+   TCanvas *c1 = new TCanvas("c1","show profile",1,1,600,600);
+   //c1->Divide(2,1,0.01,0.01);
 
    h2 = (TH2D*)f->Get("demo/genrecoach");
 
    double r;
+   r = h2->GetCorrelationFactor();
 
 
-   
+
+   /*
    h2->Rebin2D(5,1);
    r = h2->GetCorrelationFactor();
    c1->cd(2);
@@ -63,27 +65,29 @@ void fitscatterplot()
 
 
 
-
+*/
    c1->cd(1);
    c1->cd(1)->SetRightMargin(0.12);
 
 
    h2 -> GetXaxis()->CenterTitle();
    h2 -> GetYaxis()->CenterTitle();
-   h2 ->GetXaxis()->SetRangeUser(-0.15, 0.15);
-   h2 ->GetYaxis()->SetRangeUser(-0.15, 0.15);
+   h2 ->GetXaxis()->SetRangeUser(-0.4, 0.4);
+   h2 ->GetYaxis()->SetRangeUser(-0.4, 0.4);
+   h2->Rebin2D(8,8);
+
 
 
    h2->Draw("colz");
 
-   prof->SetLineColor(kRed); 
-   prof->SetLineWidth(5);
+ //  prof->SetLineColor(kRed); 
+//   prof->SetLineWidth(5);
 
 
-   prof->Draw("Same");
+//   prof->Draw("Same");
 
 
-   TLatex* text3 = makeLatex(Form("correlationfactor : %f",r),0.55,0.17) ;
+   TLatex* text3 = makeLatex(Form("correlationfactor : %f",r),0.40,0.17) ;
 
    text3->Draw("same");
 

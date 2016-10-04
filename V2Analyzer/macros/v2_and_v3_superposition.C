@@ -6,7 +6,8 @@ void v2_and_v3_superposition(){
 
 	TFile *f;
 	const int NAchBins = 7;
-	const double correction = 0.6527;
+	//const double correction = 0.6527;
+	const double correction = 1.0;
 
 
 	TH1D* c2_pos[NAchBins][2];

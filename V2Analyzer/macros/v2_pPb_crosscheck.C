@@ -28,17 +28,19 @@ void v2_pPb_crosscheck(){
 	double variance_neg;
 	double variance_diff;
 	cout << ntrkmin << ntrkmax << endl; 
-	TFile* file = new TFile(Form("../../../rootfiles/crosscheck/v2_pPb_%d_%d_AchCorrected/vnasym_pPb_%d%d.root",ntrkmin,ntrkmax,ntrkmin,ntrkmax));
+	TFile* file = new TFile(Form("~/Dropbox/CMWplottingMacros/dataPoints/Weischecks/vnasym_pPb_%d%d.root",ntrkmin,ntrkmax));
 	TGraphErrors* gr1[3];
 	gr1[0] = (TGraphErrors*) file->Get("v2vschasym_pos");
 	gr1[1] = (TGraphErrors*) file->Get("v2vschasym_neg");
 	gr1[2] = (TGraphErrors*) file->Get("v2vschasym_diff");
 
 	gr1[1] -> SetMarkerStyle(24);
+	gr1[0] -> SetMarkerStyle(28);
 
 
 
-	f = new TFile(Form("../../../rootfiles/crosscheck/v2_pPb_%d_%d_AchCorrected/Merged.root",ntrkmin,ntrkmax));
+
+	f = new TFile(Form("~/Summer2016/rootfiles/crosscheck/pPb/v2/%d_%d/Merged.root",ntrkmin,ntrkmax));
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -99,7 +101,7 @@ void v2_pPb_crosscheck(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.065, 0.072);
+	base->GetYaxis()->SetRangeUser(0.067, 0.073);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
@@ -142,16 +144,12 @@ void v2_pPb_crosscheck(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_0.root","RECREATE");
 
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
 
-	gr_pos->Write();
-	gr_neg->Write();
-	gr_diff->Write();
 
 
 
@@ -180,14 +178,14 @@ void v2_pPb_crosscheck(){
 
 
 
-	TLegend* leg = new TLegend(0.70,0.74,0.94,.88);
+	TLegend* leg = new TLegend(0.66,0.74,0.92,.88);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
 	leg->AddEntry(gr_pos, "v_{2}^{#plus}{2}","p");
 	leg->AddEntry(gr_neg , "v_{2}^{#minus}{2}","p");
-	leg->AddEntry(gr1[0] , "Wei's v_{2}^{#plus}{2}","p");
-	leg->AddEntry(gr1[1] , "Wei's v_{2}^{#minus}{2}","p");
+	leg->AddEntry(gr1[0] , "Crosscheck v_{2}^{#plus}{2}","p");
+	leg->AddEntry(gr1[1] , "Crosscheck v_{2}^{#minus}{2}","p");
 
 
 
@@ -198,10 +196,10 @@ void v2_pPb_crosscheck(){
 	gr_neg->Draw("PSame");
 	text_a->DrawClone("Same");
 	text_b->DrawClone("Same");
-	//text_c->DrawClone("Same");
-	//text_d->DrawClone("Same");
+	text_c->DrawClone("Same");
+	text_d->DrawClone("Same");
 
-	//leg->DrawClone("Same");
+	leg->DrawClone("Same");
 
 
     //Define a linear function
@@ -216,11 +214,6 @@ void v2_pPb_crosscheck(){
 	fit2->SetLineStyle(1);
 
 	gr_diff->Fit(fit1,"N0");
-	fit1->Write();
-
-
-	rebinned->Close();
-
 
 
 	gr1[0] -> Draw("PSame");
@@ -230,8 +223,8 @@ void v2_pPb_crosscheck(){
 
 
 
-	TLatex* text2 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.45,0.30) ;
-	TLatex* text1 = makeLatex(Form("slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
+	TLatex* text2 = makeLatex(Form("Intercept : %.3f #pm %.3f",fit1->GetParameter(0),fit1->GetParError(0)),0.43,0.29) ;
+	TLatex* text1 = makeLatex(Form("slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.43,0.25) ;
 	text1->SetTextFont(42);
 	text2->SetTextFont(42);
 	base2->Draw("");
@@ -262,8 +255,8 @@ void v2_pPb_crosscheck(){
 	gr1[2] -> SetMarkerColor(kRed);
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
-	leg2->AddEntry(fit2, "Linear fit to Wei's Points","l");
-	leg2->AddEntry(gr1[2] , "Wei's data","p");
+	leg2->AddEntry(fit2, "Linear fit to crosscheck","l");
+	leg2->AddEntry(gr1[2] , "crosscheck","p");
 	leg2->DrawClone("Same");
 
 	gr1[2] -> SetMarkerStyle(24);
@@ -273,8 +266,8 @@ void v2_pPb_crosscheck(){
 
 	fit2->Draw("Same");
 
-	TLatex* text3 = makeLatex(Form("Wei's Intercept : %f #pm %f",fit2->GetParameter(0),fit2->GetParError(0)),0.45,0.21) ;
-	TLatex* text4 = makeLatex(Form("Wei's slope : %.4f #pm %.4f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.17) ;
+	TLatex* text3 = makeLatex(Form("Crosscheck Intercept : %.3f #pm %.3f",fit2->GetParameter(0),fit2->GetParError(0)),0.43,0.21) ;
+	TLatex* text4 = makeLatex(Form("Crosscheck slope : %.4f #pm %.4f",fit2->GetParameter(1),fit2->GetParError(1)),0.43,0.17) ;
 	text3->SetTextFont(42);
 	text4->SetTextFont(42);
 	text3->Draw("Same");

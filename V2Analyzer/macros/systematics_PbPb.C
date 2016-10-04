@@ -2,12 +2,11 @@
 
 using namespace std;
 
-void CumulantErrGraph_v3_normalized_PbPb(){
+void systematics_PbPb(){
 
 	TFile *f;
 
 	const int NAchBins = 7;
-	//const double correction = 0.6527;
 	const double correction = 1;
 
 	TH1D* c2_pos[NAchBins][2];
@@ -32,7 +31,12 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/crosscheck/PbPb/v3/30_40/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/PbPb/trkselection/tight/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/PbPb/trkselection/loose/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/PbPb/vtz/narrow/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/PbPb/vtz/wide/Merged.root");
+	f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/30_40/Merged.root");
+
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -91,9 +95,9 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.095, 0.11);
+	base->GetYaxis()->SetRangeUser(0.095, 0.105);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
-	base->GetYaxis()->SetTitle("v_{3}{2}");
+	base->GetYaxis()->SetTitle("v_{2}{2}");
 	base->GetXaxis()->CenterTitle();
 	base->GetYaxis()->CenterTitle();
 	base->SetTitleSize  (0.040,"X");
@@ -114,7 +118,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	TH1D* base2 = new TH1D("base2","base2",1,-0.1,0.1);
 	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle(" #frac{ v_{3}^{#minus} #minus v_{3}^{#plus} }{ v_{3}^{#minus} #plus v_{3}^{#plus} } ");
+	base2->GetYaxis()->SetTitle(" #frac{ v_{2}^{#minus} #minus v_{2}^{#plus} }{ v_{2}^{#minus} #plus v_{2}^{#plus} } ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");
@@ -131,8 +135,6 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure4_0.root","RECREATE");
-
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
 
 	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
@@ -147,11 +149,6 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	gr_diff->RemovePoint(0);
 	gr_diff->RemovePoint(5);
 	
-
-	gr_pos->Write();
-	gr_neg->Write();
-	rebinned->Close();
-
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
 	TCanvas* c3 = new TCanvas("c3","c3",1,1,1200,600);
@@ -166,7 +163,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
+	TLatex* text_b = makeLatex("30-40%",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -181,8 +178,8 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(gr_pos, "v_{3}^{#plus}{2}","p");
-	leg->AddEntry(gr_neg , "v_{3}^{#minus}{2}","p");
+	leg->AddEntry(gr_pos, "v_{2}^{#plus}{2}","p");
+	leg->AddEntry(gr_neg , "v_{2}^{#minus}{2}","p");
 
 
 
@@ -209,7 +206,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 	TLatex* text2 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.45,0.30) ;
-	TLatex* text1 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
+	TLatex* text1 = makeLatex(Form("slope : %.5f #pm %.5f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
 	text1->SetTextFont(42);
 	text2->SetTextFont(42);
 	base2->Draw("");
@@ -238,7 +235,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-	//SaveCanvas(c3,"pics","closuretest_reco");
+	SaveCanvas(c3,"pics","systematics_default");
 
 
 

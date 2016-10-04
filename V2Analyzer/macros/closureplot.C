@@ -1,23 +1,18 @@
 #include "RiceStyle.h"
-
 using namespace std;
 
-void CumulantErrGraph_v3_normalized_PbPb(){
+void closureplot(){
 
 	TFile *f;
 
 	const int NAchBins = 7;
-	//const double correction = 0.6527;
-	const double correction = 1;
+	const double correction = 1.0;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
 
 	TH1D* ach_hist[NAchBins];
 	double x[NAchBins];
-
-
-
 	double v2_pos[NAchBins];
 	double v2_neg[NAchBins];
 	double v2_diff[NAchBins];
@@ -32,23 +27,30 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	double variance_diff;
 
 
-	f = new TFile("../../../rootfiles/crosscheck/PbPb/v3/30_40/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/trackselection/loose/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/trackselection/tight/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/vtz/wide/Merged.root");
+	//f = new TFile("../../../rootfiles/systematics/vtz/narrow/Merged.root");
+	//f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/ntrk/185_220/Merged.root");
+
+	f = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
+
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/reco_ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/reco_c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/reco_c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/reco_c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/reco_c2neg_%d_sin",i));
 		
 	}
-	for(Int_t i=0; i< NAchBins; i++){
+	for(Int_t i=0; i<NAchBins; i++){
 
 		x[i]=ach_hist[i]->GetMean();
-		x[i] *= correction;
+		x[i] *= correction; 
 
 //v2 positive
 		cmean = c2_pos[i][0] -> GetMean();
@@ -80,20 +82,16 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 	}
-
-
-
- //   TCanvas* c1 = new TCanvas("c1","c1");
- //   TCanvas* c2 = new TCanvas("c2","c2");
+	
 	gStyle->SetLegendFont(42);
-	TH1D* base = new TH1D("base","base",1,-0.1,0.1);
+	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
+	base->GetYaxis()->SetRangeUser(0.065, 0.075);
 
 	//PbPb
-	base->GetYaxis()->SetRangeUser(0.095, 0.11);
-	base->GetXaxis()->SetTitle("Observed A_{ch}");
-	base->GetYaxis()->SetTitle("v_{3}{2}");
+	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
+	base->GetXaxis()->SetTitle("Reconstructed A_{ch}");
+	base->GetYaxis()->SetTitle("v_{2}{2}");
 	base->GetXaxis()->CenterTitle();
 	base->GetYaxis()->CenterTitle();
 	base->SetTitleSize  (0.040,"X");
@@ -111,10 +109,10 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.1,0.1);
-	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
-	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle(" #frac{ v_{3}^{#minus} #minus v_{3}^{#plus} }{ v_{3}^{#minus} #plus v_{3}^{#plus} } ");
+	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
+	base2->GetYaxis()->SetRangeUser(-0.03, 0.03);
+	base2->GetXaxis()->SetTitle("Reconstructed A_{ch}");
+	base2->GetYaxis()->SetTitle(" (v^{#minus}_{2} #minus v^{#plus}_{2})/(v^{#minus}_{2} #plus v^{#plus}_{2}) ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");
@@ -131,26 +129,13 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure4_0.root","RECREATE");
+	//TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_1.root","RECREATE");
+
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
-
 	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
-	
-	gr_pos->RemovePoint(0);
-	gr_pos->RemovePoint(5);
 
-	gr_neg->RemovePoint(0);
-	gr_neg->RemovePoint(5);
-	
-	gr_diff->RemovePoint(0);
-	gr_diff->RemovePoint(5);
-	
-
-	gr_pos->Write();
-	gr_neg->Write();
-	rebinned->Close();
 
  //   TCanvas* c1 = new TCanvas("c1","c1");
  //   TCanvas* c2 = new TCanvas("c2","c2");
@@ -165,7 +150,7 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
 
-	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
 	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
@@ -181,8 +166,8 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(gr_pos, "v_{3}^{#plus}{2}","p");
-	leg->AddEntry(gr_neg , "v_{3}^{#minus}{2}","p");
+	leg->AddEntry(gr_pos, "v_{2}^{#plus}{2}","p");
+	leg->AddEntry(gr_neg , "v_{2}^{#minus}{2}","p");
 
 
 
@@ -199,17 +184,18 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 
 
     //Define a linear function
-	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.085, 0.085);
+	TF1* fit1 = new TF1("f1", "[0]+x*[1]", -0.13, 0.13);
+
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
-	gr_diff->Fit(fit1,"N0");
+	gr_diff->Fit(fit1,"RN0");
 
 	c3->cd(2);
 
 
 
 	TLatex* text2 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.45,0.30) ;
-	TLatex* text1 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
+	TLatex* text1 = makeLatex(Form("slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
 	text1->SetTextFont(42);
 	text2->SetTextFont(42);
 	base2->Draw("");
@@ -238,7 +224,9 @@ void CumulantErrGraph_v3_normalized_PbPb(){
 	leg2->AddEntry(fit1, "Linear fit","l");
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
-	//SaveCanvas(c3,"pics","closuretest_reco");
+
+	SaveCanvas(c3,"pics",Form("Closuretest_pPb_185_220_Reconst"));
+
 
 
 
