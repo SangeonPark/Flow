@@ -18,20 +18,23 @@ process.load("Flow.V2Analyzer.closure_cfi")
 #ntrkLow = [300,500,1000]
 #ntrkUpp = [330,550,1100]
 
-ntrkLow = [975,950,925,900]
-ntrkUpp = [1025,1050,1075,1100]
+#ntrkLow = [975,950,925,900]
+#ntrkUpp = [1025,1050,1075,1100]
+
+ntrkLow = [60,90,120,155,190,230,270,360,450,650,950,1050]
+ntrkUpp = [120,150,180,215,250,290,330,440,550,750,1050,1150]
 
 
 #efftableNameList = ["eff_1","eff_2","eff_2","eff_2","eff_3","eff_3","eff_3","eff_4"]
 #efftableNameList = ["eff_5","eff_4","eff_4","eff_3","eff_1","eff_1"]
 #efftableNameList = ["eff_3","eff_4","eff_5"]
-efftableNameList = ["eff_5","eff_5","eff_5","eff_5"]
-
+#efftableNameList = ["eff_5","eff_5","eff_5","eff_5"]
+efftableNameList = ["eff_1","eff_1","eff_2","eff_2","eff_3","eff_3","eff_3","eff_3","eff_4","eff_4","eff_5","eff_5"]
 
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_closuretest_smearing_uniformtest"
+outputName = "multicrab_CMW_closuretest_smearing_functionderivation"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
