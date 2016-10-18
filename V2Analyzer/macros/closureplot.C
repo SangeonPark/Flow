@@ -33,7 +33,7 @@ void closureplot(){
 	//f = new TFile("../../../rootfiles/systematics/vtz/narrow/Merged.root");
 	//f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/ntrk/185_220/Merged.root");
 
-	f = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
+	f = new TFile("../../../rootfiles/closure/addinquad_1000.root");
 
 
 

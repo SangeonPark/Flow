@@ -36,7 +36,7 @@ void compareAch()
    }
 
    myAch->GetXaxis()->SetRangeUser(-0.25,0.25);
-   myAch->GetYaxis()->SetRangeUser(0,600000);
+   myAch->GetYaxis()->SetRangeUser(0,1);
 
    myAch->GetXaxis()->SetTitle("A_{ch}");
    myAch->GetYaxis()->SetTitle(" Counts ");
@@ -57,8 +57,46 @@ void compareAch()
    weiAch->SetLineWidth(1); 
 
    Double_t norm = 1;
-   myAch->Scale(norm, "width");
-   weiAch->Scale(norm,"width");
+   myAch->Scale(1.0/myAch->Integral());
+   weiAch->Scale(1.0/weiAch->Integral());
+
+   cout << myAch->Integral() << endl;
+   cout << weiAch->Integral() << endl;
+
+   TF1 *myfit = new TF1("genfit","gaus", -1, 1);
+   TF1 *weifit = new TF1("recofit","gaus", -1, 1);
+
+   myAch->Fit(myfit,"R");
+   weiAch->Fit(weifit,"R");
+
+   cout << "myfitparam0: " << myfit->GetParameter(0) << endl;
+   cout << "myfitparam1: " << myfit->GetParameter(1) << endl;
+
+   cout << "myfitparam2: " << myfit->GetParameter(2) << endl;
+
+   cout << "weifitparam0: " << weifit->GetParameter(0) << endl;
+   cout << "weifitparam1: " << weifit->GetParameter(1) << endl;
+
+   cout << "weifitparam2: " << weifit->GetParameter(2) << endl;
+
+
+
+
+
+   //myAch->Scale(1.0/myAch->Integral());
+   //weiAch->Scale(1.0/weiAch->Integral());
+   //myAch->Scale(norm, "width");
+   //weiAch->Scale(norm, "width");
+
+
+
+
+
+//   myAch->Scale(norm/myAch->Integral(), "width");
+ //  weiAch->Scale(norm/weiAch->Integral(), "width");
+
+   //myAch->Scale(norm, "width");
+   //weiAch->Scale(norm,"width");
 
    //myAch->Rebin(10);
    //weiAch->Rebin(10);
@@ -74,8 +112,9 @@ void compareAch()
 
 
 
-   myAch->Draw();
-   weiAch->Draw("same");
+   
+   weiAch->Draw();
+   myAch->Draw("same");
    leg->Draw("same");
    //text_a->Draw("same");
 
