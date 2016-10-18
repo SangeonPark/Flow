@@ -31,7 +31,7 @@ efftableNameList = ["eff_5","eff_5","eff_5","eff_5"]
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_closuretest_smearing_1003"
+outputName = "multicrab_CMW_closuretest_smearing_uniformtest"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
