@@ -161,6 +161,7 @@ Implementation:
 
 //NTrackOffline values
  	int nTracks = 0;
+ 	int reconTracks = 0;
  	int nTracks_pos = 0;
  	int nTracks_neg = 0;
 
@@ -193,7 +194,137 @@ Implementation:
  		reco_WQ2_neg[i] = 0.0;
 
  	}
- 	
+ 	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
+
+ 		double eta = cand->eta();
+ 		double charge = (double)cand->charge();
+ 		double pt = cand->pt();
+ 		double phi = cand->phi();
+ 		double weight = 1.0;
+
+ 		if( doEffCorrection_ ){
+ 			weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
+ 		}
+
+//highPurity
+ 		if(!cand->quality(reco::TrackBase::highPurity)) continue;
+
+//DCA
+ 		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
+ 		double dzbest = cand->dz(bestvtx);
+ 		double dxybest = cand->dxy(bestvtx);
+ 		double dzerror = sqrt(cand->dzError()*cand->dzError()+bestvzError*bestvzError);
+ 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
+ 		double dzos = dzbest/dzerror;
+ 		double dxyos = dxybest/dxyerror;
+ 		if(fabs(dzos) > offlineDCA_) continue;
+ 		if(fabs(dxyos) > offlineDCA_) continue;
+
+//ptError
+ 		if(fabs(cand->ptError())/cand->pt() > offlineptErr_ ) continue;
+
+ 		if(fabs(eta)<2.4 && pt > 0.4){
+ 			reconTracks++;
+ 		}
+
+
+
+
+//kinematic cuts
+ 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+ 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
+ 		if(reverseBeam_) { eta *= -1.0;}
+
+ 		double efficiency = effTable->GetBinContent(effTable->FindBin(eta, pt));
+ 		double random = ((double) rand() / (RAND_MAX));
+ 		if( random > efficiency ) continue;
+
+
+
+ 		TComplex e(1,2*phi,1);
+ 		e *= weight; 
+
+
+
+ 		reco_N_tot += 1.0;
+ 		if( charge > 0){ reco_N_pos+= 1.0;}
+ 		if( charge < 0){ reco_N_neg+= 1.0;}
+
+
+ 		for (int i = 0; i < NBins; ++i)
+ 		{
+ 			double lb = Binsize*i+etaCutMin_;
+ 			double ub = Binsize*(i+1)+etaCutMin_;
+ 			if(lb <= eta && eta < ub){
+ 				if(charge > 0){
+ 					reco_Q2_pos[i] += e; 
+ 					reco_WQ2_pos[i] += weight;
+
+ 				}
+ 				if (charge < 0){
+ 					reco_Q2_neg[i] += e;
+ 					reco_WQ2_neg[i] += weight;
+
+ 				}
+
+ 				
+ 			}
+ 		}
+ 		
+ 	}
+
+ 	//Cut on NTrackOffline (Should be disabled if useCentrality = True)	
+ 	if(!useCentrality_){
+
+ 		if( reconTracks < Nmin_ || reconTracks >= Nmax_ ) return;
+
+ 	}
+
+ 	NTrkHist->Fill(reconTracks);
+
+ 	double reco_N_diff = reco_N_pos - reco_N_neg;
+ 	double reco_ach = reco_N_diff/reco_N_tot;
+ 	reco_asym_Dist->Fill(reco_ach);
+
+ 	for(Int_t i=0;i<NAchBins;i++){
+
+ 		if(achBins_[i] <= reco_ach && reco_ach < achBins_[i+1]){
+ 			
+ 			reco_ach_hist[i]->Fill(reco_ach);
+ 			TComplex z(0,0);
+ 			double Npairs=0.0;
+
+ 			for (int j = 0; j < NBins; j++)
+ 			{
+ 				for(int k = 0; k < NBins; k++){
+
+ 					if(abs(j-k) <= (etaGap_/Binsize)) continue;
+
+
+ 					z = reco_Q2_pos[j] * TComplex::Conjugate(reco_Q2_pos[k]);
+ 					Npairs = reco_WQ2_pos[j] * reco_WQ2_pos[k];
+ 					z /= Npairs;
+
+
+
+ 					reco_c2_pos[i][0]->Fill(z.Re(), Npairs);
+ 					reco_c2_pos[i][1]->Fill(z.Im(), Npairs);
+
+ 					z = reco_Q2_neg[j] * TComplex::Conjugate(reco_Q2_neg[k]);
+ 					Npairs = reco_WQ2_neg[j] * reco_WQ2_neg[k];
+ 					z /= Npairs;
+ 					reco_c2_neg[i][0]->Fill(z.Re(), Npairs);
+ 					reco_c2_neg[i][1]->Fill(z.Im(), Npairs);
+
+ 				}
+ 			} 			
+ 		}
+ 	}
+
+
+
+
+
  	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
  		double eta = cand->eta();
@@ -268,18 +399,10 @@ Implementation:
  		
  	}
 
-//Cut on NTrackOffline (Should be disabled if useCentrality = True)	
- 	if(!useCentrality_){
-
- 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
-
- 	}
-
 //asymmetry calculation
  	double gen_N_diff = gen_N_pos - gen_N_neg;
  	double gen_ach = gen_N_diff/gen_N_tot;
  	gen_asym_Dist->Fill(gen_ach);
- 	NTrkHist->Fill(nTracks);
 
 //asymmetry calculation for a differente eta range
 
@@ -318,125 +441,7 @@ Implementation:
  		}
  	}
 
- 	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
- 		double eta = cand->eta();
- 		double charge = (double)cand->charge();
- 		double pt = cand->pt();
- 		double phi = cand->phi();
- 		double weight = 1.0;
-
- 		if( doEffCorrection_ ){
- 			weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
- 		}
-
-//highPurity
- 		if(!cand->quality(reco::TrackBase::highPurity)) continue;
-
-//DCA
- 		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
- 		double dzbest = cand->dz(bestvtx);
- 		double dxybest = cand->dxy(bestvtx);
- 		double dzerror = sqrt(cand->dzError()*cand->dzError()+bestvzError*bestvzError);
- 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
- 		double dzos = dzbest/dzerror;
- 		double dxyos = dxybest/dxyerror;
- 		if(fabs(dzos) > offlineDCA_) continue;
- 		if(fabs(dxyos) > offlineDCA_) continue;
-
-//ptError
- 		if(fabs(cand->ptError())/cand->pt() > offlineptErr_ ) continue;
-
- 		if(fabs(eta)<2.4 && pt > 0.4){
- 			nTracks++;
- 			if(charge>0){
- 				nTracks_pos++;
- 			}
- 			else{
- 				nTracks_neg++;
- 			}
- 		}
-
-//kinematic cuts
- 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
- 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
- 		if(reverseBeam_) { eta *= -1.0;}
-
- 		double efficiency = effTable->GetBinContent(effTable->FindBin(eta, pt));
- 		double random = ((double) rand() / (RAND_MAX));
- 		if( random > efficiency ) continue;
-
-
- 		TComplex e(1,2*phi,1);
- 		e *= weight; 
-
-
-
- 		reco_N_tot += 1.0;
- 		if( charge > 0){ reco_N_pos+= 1.0;}
- 		if( charge < 0){ reco_N_neg+= 1.0;}
-
-
- 		for (int i = 0; i < NBins; ++i)
- 		{
- 			double lb = Binsize*i+etaCutMin_;
- 			double ub = Binsize*(i+1)+etaCutMin_;
- 			if(lb <= eta && eta < ub){
- 				if(charge > 0){
- 					reco_Q2_pos[i] += e; 
- 					reco_WQ2_pos[i] += weight;
-
- 				}
- 				if (charge < 0){
- 					reco_Q2_neg[i] += e;
- 					reco_WQ2_neg[i] += weight;
-
- 				}
-
- 				
- 			}
- 		}
- 		
- 	}
-
- 	double reco_N_diff = reco_N_pos - reco_N_neg;
- 	double reco_ach = reco_N_diff/reco_N_tot;
- 	reco_asym_Dist->Fill(reco_ach);
-
- 	for(Int_t i=0;i<NAchBins;i++){
-
- 		if(achBins_[i] <= reco_ach && reco_ach < achBins_[i+1]){
- 			
- 			reco_ach_hist[i]->Fill(reco_ach);
- 			TComplex z(0,0);
- 			double Npairs=0.0;
-
- 			for (int j = 0; j < NBins; j++)
- 			{
- 				for(int k = 0; k < NBins; k++){
-
- 					if(abs(j-k) <= (etaGap_/Binsize)) continue;
-
-
- 					z = reco_Q2_pos[j] * TComplex::Conjugate(reco_Q2_pos[k]);
- 					Npairs = reco_WQ2_pos[j] * reco_WQ2_pos[k];
- 					z /= Npairs;
-
-
-
- 					reco_c2_pos[i][0]->Fill(z.Re(), Npairs);
- 					reco_c2_pos[i][1]->Fill(z.Im(), Npairs);
-
- 					z = reco_Q2_neg[j] * TComplex::Conjugate(reco_Q2_neg[k]);
- 					Npairs = reco_WQ2_neg[j] * reco_WQ2_neg[k];
- 					z /= Npairs;
- 					reco_c2_neg[i][0]->Fill(z.Re(), Npairs);
- 					reco_c2_neg[i][1]->Fill(z.Im(), Npairs);
-
- 				}
- 			} 			
- 		}
- 	}
  	scatterHist_genreco->Fill(reco_ach,gen_ach);
 
 

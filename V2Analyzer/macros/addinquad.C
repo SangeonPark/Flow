@@ -16,7 +16,11 @@ void addinquad()
    TCanvas *c1 = new TCanvas("c1","show profile",1,1,1800,600);
    c1->Divide(3,1);
 
-   f = new TFile("../../../rootfiles/closure/addinquad_300.root");
+   int N=975;
+   const double ach_low=0.00;
+   const double ach_high=0.02;
+
+   f = new TFile(Form("../../../rootfiles/closure/uniformtest_%d.root",N));
 
    genAch = (TH1D*)f->Get("demo/GenChargeAsym");
    recoAch = (TH1D*)f->Get("demo/RecoChargeAsym");
@@ -26,7 +30,7 @@ void addinquad()
    TAxis *yaxis = genrecoach->GetYaxis();
 
 
-   smearingAch = genrecoach->ProjectionX("smearingdist",yaxis->FindBin(-0.09),yaxis->FindBin(-0.07));
+   smearingAch = genrecoach->ProjectionX("smearingdist",yaxis->FindBin(ach_low),yaxis->FindBin(ach_high));
 
 
    genAch->Scale(1.0/genAch->Integral());
@@ -120,7 +124,7 @@ void addinquad()
 
 
 
-   SaveCanvas(c1,"pics","addinquad_1000_0");
+   SaveCanvas(c1,"pics",Form("uniformtest_%d_%f_%f",N,ach_low,ach_high));
 
 
 
