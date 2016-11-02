@@ -82,7 +82,7 @@ Implementation:
 // ------------ method called for each event  ------------
  void SelfCorrTestSP::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  {
-  	using namespace edm;
+ 	using namespace edm;
  	using namespace std;
 
  	edm::Handle<reco::VertexCollection> vertices;
@@ -450,10 +450,11 @@ Implementation:
  			c2_pos_case2[i][j][1] = fs->make<TH1D>(Form("c2pos_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
  			c2_neg_case2[i][j][0] = fs->make<TH1D>(Form("c2neg_%d_%d_cos_case2",i,j),"c2 Distribution",1000,-1,1);
  			c2_neg_case2[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
- 			ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
 
 
  		}
+ 		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+
  	}
 
 
