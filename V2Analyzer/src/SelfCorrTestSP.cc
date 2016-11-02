@@ -292,8 +292,11 @@ Implementation:
  	}
 
 
- 	if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
+ 	if(!useCentrality_){
 
+ 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
+
+ 	}
 
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
