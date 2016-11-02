@@ -55,10 +55,12 @@ Implementation:
  	vertexSrc_ = iConfig.getParameter<std::string>("vertexSrc");
  	towerSrc_ = iConfig.getParameter<edm::InputTag>("towerSrc");
 
+
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	doAchEffCorrection_ = iConfig.getParameter<bool>("doAchEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
+
 
  	centBins_ = iConfig.getUntrackedParameter<std::vector<double>>("centBins");
  	achBins_ = iConfig.getUntrackedParameter<std::vector<double>>("achBins");
@@ -155,11 +157,6 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
-//variables for charge asymmetry calculation of different eta range
- 	double eta2_N_pos = 0.0;
- 	double eta2_N_neg = 0.0;
- 	double eta2_N_tot = 0.0;	
-
 //NTrackOffline values
  	int nTracks = 0;
  	int nTracks_pos = 0;
@@ -199,7 +196,7 @@ Implementation:
  		}
 
  		if( doAchEffCorrection_ ){
- 			Achweight = 1.0/AcheffTable->GetBinContent( AcheffTable->FindBin(eta, pt) );
+ 			Achweight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
  		}
 
 //highPurity
@@ -231,20 +228,6 @@ Implementation:
 
 //kinematic cuts
  		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
-
- 		if(fabs(eta)<1.0){
- 			if(doAchEffCorrection_){
- 				eta2_N_tot += Achweight;
- 				if( charge > 0){ eta2_N_pos+= Achweight;}
- 				if( charge < 0){ eta2_N_neg+= Achweight;}
- 			}
- 			if(!doAchEffCorrection_){
- 				eta2_N_tot += 1.0;
- 				if( charge > 0){ eta2_N_pos+= 1.0;}
- 				if( charge < 0){ eta2_N_neg+= 1.0;}
-
- 			}
- 		}
 
  		
  		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
@@ -295,11 +278,6 @@ Implementation:
  	double ach = N_diff/N_tot;
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
-
-//asymmetry calculation for a differente eta range
- 	double eta2_N_diff = eta2_N_pos - eta2_N_neg;
- 	double eta2_ach = eta2_N_diff/eta2_N_tot;
- 	scatterHist_twoetarange->Fill(eta2_ach,ach);	
 
  	for(Int_t i=0;i<NAchBins;i++){
 
@@ -352,17 +330,18 @@ Implementation:
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
  	vtxZ = fs->make<TH1D>("vtxZ",";vz", 400,-20,20);
- 	scatterHist_twoetarange = fs->make<TH2D>("scatterHist_twoetarange","A_{ch} of two different eta range;A_{ch} |#eta| < 1;A_{ch} |#eta| < 2.4",1000,-0.3,0.3,1000,-0.3,0.3);
 
 
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
  	effTable = (TH2D*)f1.Get(efftableName_.c_str());
-
+/*
  	edm::FileInPath fip2("Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root");  
  	TFile f2(fip2.fullPath().c_str(),"READ");
  	AcheffTable = (TH2D*)f2.Get("eff_5");
+*/
+
 
 //list of c2 histograms
  	for (Int_t i = 0; i < NAchBins; i++){

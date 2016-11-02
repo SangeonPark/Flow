@@ -50,7 +50,7 @@ void addinquad()
 
    genAch->GetXaxis()->SetRangeUser(-0.2,0.2);
    genAch->GetXaxis()->SetTitle("A_{ch}");
-   genAch->GetYaxis()->SetTitle("Normalized Counts");
+   genAch->GetYaxis()->SetTitle("Count");
    genAch->GetXaxis()->CenterTitle();
    genAch->GetYaxis()->CenterTitle();
    genAch->SetTitleOffset(1.8,"Y");
@@ -62,7 +62,7 @@ void addinquad()
 
    recoAch->GetXaxis()->SetRangeUser(-0.2,0.2);
    recoAch->GetXaxis()->SetTitle("A_{ch}");
-   recoAch->GetYaxis()->SetTitle("Normalized Counts");   
+   recoAch->GetYaxis()->SetTitle("Count");   
    recoAch->GetXaxis()->CenterTitle();
    recoAch->GetYaxis()->CenterTitle();
    recoAch->SetTitleOffset(1.8,"Y");
@@ -74,7 +74,7 @@ void addinquad()
 
    smearingAch->GetXaxis()->SetRangeUser(-0.2,0.2);
    smearingAch->GetXaxis()->SetTitle("A_{ch}");
-   smearingAch->GetYaxis()->SetTitle("Normalized Counts");   
+   smearingAch->GetYaxis()->SetTitle("Count");   
    smearingAch->GetXaxis()->CenterTitle();
    smearingAch->GetYaxis()->CenterTitle();
    smearingAch->SetTitleOffset(1.8,"Y");
@@ -95,6 +95,9 @@ void addinquad()
    double smearingwidth = smearingfit->GetParameter(2);
 
    TLatex* text1 = makeLatex(Form("width : %f",genfit->GetParameter(2)),0.25,0.80) ;
+   TLatex* text4 = makeLatex("Gen Ach",0.7,0.80) ;
+   text4->Draw("same");
+
    text1->Draw("same");
 
 
@@ -105,6 +108,8 @@ void addinquad()
    recofit->Draw("same");   
    TLatex* text2 = makeLatex(Form("width : %f",recofit->GetParameter(2)),0.25,0.80) ;
    text2->Draw("same");
+   TLatex* text5 = makeLatex("Reco Ach",0.7,0.80) ;
+   text5->Draw("same");
 
    c1->cd(3);
    smearingAch->Draw();
@@ -113,6 +118,9 @@ void addinquad()
    smearingfit->Draw("same");   
    TLatex* text3 = makeLatex(Form("width : %f",smearingfit->GetParameter(2)),0.25,0.80) ;
    text3->Draw("same");
+
+   TLatex* text6 = makeLatex("Smearing dist",0.7,0.80) ;
+   text6->Draw("same");
 
    cout << recowidth*recowidth << endl;
 

@@ -1,9 +1,9 @@
 // -*- C++ -*-
 //
-// Package:    V2AnalyzerSP
-// Class:      V2AnalyzerSP
+// Package:    SelfCorrTestSP
+// Class:      SelfCorrTestSP
 // 
-/**\class V2AnalyzerSP V2AnalyzerSP.cc Flow/V2AnalyzerSP/src/V2AnalyzerSP.cc
+/**\class SelfCorrTestSP SelfCorrTestSP.cc Flow/SelfCorrTestSP/src/SelfCorrTestSP.cc
 
 Description: [one line class summary]
 
@@ -32,7 +32,7 @@ Implementation:
 //
 // constructors and destructor
 //
- V2AnalyzerSP::V2AnalyzerSP(const edm::ParameterSet& iConfig)
+ SelfCorrTestSP::SelfCorrTestSP(const edm::ParameterSet& iConfig)
  {
 
  	offlineptErr_ = iConfig.getUntrackedParameter<double>("offlineptErr");
@@ -55,6 +55,7 @@ Implementation:
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
+ 	isAchinMinusEta_ = iConfig.getParameter<bool>("isAchinMinusEta");
 
 
  	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
@@ -68,7 +69,7 @@ Implementation:
  }
 
 
- V2AnalyzerSP::~V2AnalyzerSP()
+ SelfCorrTestSP::~SelfCorrTestSP()
  {
 
 // do anything here that needs to be done at desctruction time
@@ -82,9 +83,9 @@ Implementation:
 //
 
 // ------------ method called for each event  ------------
- void V2AnalyzerSP::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+ void SelfCorrTestSP::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
  {
- 	using namespace edm;
+  	using namespace edm;
  	using namespace std;
 
  	edm::Handle<reco::VertexCollection> vertices;
@@ -114,8 +115,7 @@ Implementation:
 
 
  	int nTracks = 0;
- 	int nTracks_pos = 0;
- 	int nTracks_neg = 0;
+
 
 //define the flow vectors 
  	TComplex Q2pluseta_pos(0,0);
@@ -159,12 +159,6 @@ Implementation:
 
  		if(fabs(eta)<2.4 && pt > 0.4){
  			nTracks++;
- 			if(charge>0){
- 				nTracks_pos++;
- 			}
- 			else{
- 				nTracks_neg++;
- 			}
  		}
 
  		if(pt < 0.3 || pt > 3.0 ) continue;
@@ -174,46 +168,55 @@ Implementation:
 
  		TComplex e(1,2*phi,1);
 
- 		e *= weight; 
+ 		e *= weight;
+
+ 		if(isAchinMinusEta_){
+ 			if(-2.4 < eta && eta < 0){
+ 				N_tot += weight;
+ 				if(charge > 0.0){
+ 					N_pos+=weight;
+ 				}
+ 				if(charge < 0.0){
+ 					N_neg+=weight;
+ 				}
+ 			}
+ 		}
+ 		if(!isAchinMinusEta_){
+ 			if(0 < eta && eta < 2.4){
+ 				N_tot += weight;
+ 				if(charge > 0.0){
+ 					N_pos+=weight;
+ 				}
+ 				if(charge < 0.0){
+ 					N_neg+=weight;
+ 				}
+ 			}
+ 		}
 
 
  		if(-1.0 <= eta && eta < 1.0){
  			Q2C += e;
- 			N_tot+=weight;
  			W_Q2C += weight;
- 			if(charge > 0.0){
- 				N_pos+=weight;
- 			}
- 			if(charge < 0.0){
- 				N_neg+=weight;
- 			}
-
  		}
- 		if(1.0 <= eta && eta < 2.4){
- 			N_tot += weight;
+ 		if(0 < eta && eta < 2.4){
  			if(charge > 0.0){
- 				N_pos+=weight;
  				Q2pluseta_pos += e;
  				W_Q2pluseta_pos += weight;
 
  			}
  			if(charge < 0.0){
- 				N_neg+=weight;
  				Q2pluseta_neg += e;
  				W_Q2pluseta_neg += weight;
 
  			}
  		}
- 		if(-2.4 <= eta && eta < -1.0){
- 			N_tot += weight;
+ 		if(-2.4 < eta && eta < 0){
  			if(charge > 0.0){
- 				N_pos+=weight;
  				Q2minuseta_pos += e;
  				W_Q2minuseta_pos += weight;
 
  			}
  			if(charge < 0.0){
- 				N_neg+=weight;
  				Q2minuseta_neg += e;
  				W_Q2minuseta_neg += weight;
 
@@ -380,7 +383,7 @@ Implementation:
 
 
 // ------------ method called once each job just before starting event loop  ------------
- void V2AnalyzerSP::beginJob()    
+ void SelfCorrTestSP::beginJob()    
  {
  	edm::Service<TFileService> fs;
  	TH1D::SetDefaultSumw2();
@@ -389,8 +392,10 @@ Implementation:
 
 
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",1000,-0.4,0.4);
- 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+ 	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
 
+
+ 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
@@ -413,41 +418,43 @@ Implementation:
 
  		}
  	}
+
+
  }
 
 // ------------ method called once each job just after ending the event loop  ------------
  void
- V2AnalyzerSP::endJob() 
+ SelfCorrTestSP::endJob() 
  {    
  }
 
 // ------------ method called when starting to processes a run  ------------
  void 
- V2AnalyzerSP::beginRun(edm::Run const&, edm::EventSetup const&)
+ SelfCorrTestSP::beginRun(edm::Run const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when ending the processing of a run  ------------
  void 
- V2AnalyzerSP::endRun(edm::Run const&, edm::EventSetup const&)
+ SelfCorrTestSP::endRun(edm::Run const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when starting to processes a luminosity block  ------------
  void 
- V2AnalyzerSP::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+ SelfCorrTestSP::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method called when ending the processing of a luminosity block  ------------
  void 
- V2AnalyzerSP::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+ SelfCorrTestSP::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
  {
  }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
  void
- V2AnalyzerSP::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+ SelfCorrTestSP::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
 //The following says we do not know what parameters are allowed so do no validation
 // Please change this to state exactly what you do use, even if it is no parameters
  	edm::ParameterSetDescription desc;
@@ -456,4 +463,4 @@ Implementation:
  }
 
 //define this as a plug-in
- DEFINE_FWK_MODULE(V2AnalyzerSP);
+ DEFINE_FWK_MODULE(SelfCorrTestSP);
