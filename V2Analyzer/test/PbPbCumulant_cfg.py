@@ -31,7 +31,7 @@ process.source = cms.Source("PoolSource",
 )
 
 #loads analyzer
-process.load("Flow.V2Analyzer.closure_cfi")
+process.load("Flow.V2Analyzer.SelfCorrTestSP_cfi")
 process.TFileService = cms.Service("TFileService",fileName = cms.string("selfcortest.root"))
 
 
