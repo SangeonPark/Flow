@@ -298,7 +298,6 @@ Implementation:
 
  	}
 
- 	cout << nTracks << endl;
 
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
@@ -434,7 +433,7 @@ Implementation:
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
 
 
- 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+ 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
