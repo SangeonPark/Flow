@@ -41,7 +41,6 @@ Implementation:
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
- 	etaGap_ = iConfig.getParameter<double>("etaGap");
  	Nmin_ = iConfig.getParameter<int>("Nmin");
  	Nmax_ = iConfig.getParameter<int>("Nmax");
  	vzLow_ = iConfig.getUntrackedParameter<double>("vzLow");
