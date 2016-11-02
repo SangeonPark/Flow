@@ -159,6 +159,7 @@ Implementation:
 
  	double pt_tot = 0.0;
  	double pt_avg = 0.0;
+ 	double pt_weight = 0.0;
 
 
 //NTrackOffline values
@@ -242,6 +243,7 @@ Implementation:
  		e *= weight; 
 
  		pt_tot += pt*weight; 
+ 		pt_weight += weight; 
 
 
 
@@ -282,7 +284,7 @@ Implementation:
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
- 	pt_avg = pt_tot/N_tot; 
+ 	pt_avg = pt_tot/pt_weight; 
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
