@@ -308,7 +308,7 @@ Implementation:
 
  		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
- 			pt_host[i]->Fill(ach);
+ 			pt_hist[i]->Fill(ach);
 
  			TComplex z;
  			double Npairs;
