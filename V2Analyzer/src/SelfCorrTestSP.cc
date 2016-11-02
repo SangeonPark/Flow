@@ -142,6 +142,13 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
+ 	double pt_tot_poseta = 0.0;
+ 	double pt_avg_poseta = 0.0;
+ 	double pt_weight_poseta = 0.0;
+ 	double pt_tot_negeta = 0.0;
+ 	double pt_avg_negeta = 0.0;
+ 	double pt_weight_negeta = 0.0;
+
 
  	double W_Q2C = 0.0;
  	double W_Q2pluseta_pos = 0.0;
@@ -235,6 +242,8 @@ Implementation:
  			W_Q2C += weight;
  		}
  		if(0 < eta && eta < 2.4){
+ 			pt_tot_poseta += weight*pt;
+ 			pt_weight_poseta += weight;
  			if(charge > 0.0){
  				Q2pluseta_pos += e;
  				W_Q2pluseta_pos += weight;
@@ -247,6 +256,8 @@ Implementation:
  			}
  		}
  		if(-2.4 < eta && eta < 0){
+ 			pt_tot_negeta += weight*pt;
+ 			pt_weight_negeta += weight; 
  			if(charge > 0.0){
  				Q2minuseta_pos += e;
  				W_Q2minuseta_pos += weight;
@@ -304,11 +315,17 @@ Implementation:
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
+ 	pt_avg_poseta = pt_tot_poseta/pt_weight_poseta;
+ 	pt_avg_negeta = pt_tot_negeta/pt_weight_negeta;
+
+
  	for(Int_t i=0;i<NAchBins;i++){
 
  		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
- 			pt_hist[i]->Fill(ach);
+ 			pt_hist_poseta[i]->Fill(pt_avg_poseta);
+ 			pt_hist_negeta[i]->Fill(pt_avg_negeta);
+
 
  			TComplex z;
  			double Npairs;
@@ -456,7 +473,9 @@ Implementation:
 
  		}
  		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
- 		pt_hist[i] = fs->make<TH1D>(Form("pt_%d",i+1),Form("pt_%d",i+1),1000,0.0,4.0);
+ 		pt_hist_negeta[i] = fs->make<TH1D>(Form("pt_negeta_%d",i+1),Form("pt_negeta_%d",i+1),1000,0.0,4.0);
+ 		pt_hist_poseta[i] = fs->make<TH1D>(Form("pt_poseta_%d",i+1),Form("pt_poseta_%d",i+1),1000,0.0,4.0);
+
 
 
  	}

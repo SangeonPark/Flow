@@ -157,6 +157,10 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
+ 	double pt_tot = 0.0;
+ 	double pt_avg = 0.0;
+
+
 //NTrackOffline values
  	int nTracks = 0;
  	int nTracks_pos = 0;
@@ -237,6 +241,8 @@ Implementation:
  		TComplex e(1,2*phi,1);
  		e *= weight; 
 
+ 		pt_tot += pt*weight; 
+
 
 
  		N_tot += Achweight;
@@ -276,6 +282,7 @@ Implementation:
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
+ 	pt_avg = pt_tot/N_tot; 
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
@@ -284,7 +291,7 @@ Implementation:
  		if(achBins_[i] <= ach && ach < achBins_[i+1]){
  			
  			ach_hist[i]->Fill(ach);
- 			pt_hist[i]->Fill(pt);
+ 			pt_hist[i]->Fill(pt_avg);
  			TComplex z(0,0);
  			double Npairs=0.0;
 
