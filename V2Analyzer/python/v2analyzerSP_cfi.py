@@ -18,7 +18,6 @@ demo = cms.EDAnalyzer('V2AnalyzerSP',
 
 
                       doEffCorrection = cms.bool(True),
-                      reverseBeam = cms.bool(False),
 
                       #pPb
                       #efftablePath = cms.string('Flow/V2Analyzer/data/TrackCorrections_HIJING_538_OFFICIAL_Mar24.root'),
