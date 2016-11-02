@@ -101,6 +101,45 @@ Implementation:
  	edm::Handle<reco::TrackCollection> tracks;
  	iEvent.getByLabel(trackSrc_, tracks);
 
+ 	//centrality range selection
+
+ 	Handle<CaloTowerCollection> towers;
+ 	iEvent.getByLabel(towerSrc_, towers);
+
+
+
+ 	double etHFtowerSumPlus = 0.0;
+ 	double etHFtowerSumMinus = 0.0;
+ 	double etHFtowerSum = 0.0;
+
+ 	if( useCentrality_ ){
+
+ 		for( unsigned i = 0; i<towers->size(); ++ i){
+ 			const CaloTower & tower = (*towers)[ i ];
+ 			double eta = tower.eta();
+ 			bool isHF = tower.ietaAbs() > 29;
+ 			if(isHF && eta > 0){
+ 				etHFtowerSumPlus += tower.pt();
+ 			}
+ 			if(isHF && eta < 0){
+ 				etHFtowerSumMinus += tower.pt();
+ 			}
+ 		}
+ 		etHFtowerSum=etHFtowerSumPlus + etHFtowerSumMinus;
+
+ 		int bin = -1;
+ 		for(int j=0; j<200; j++){
+ 			if( etHFtowerSum >= centBins_[j] ){
+ 				bin = j; break;
+ 			}
+ 		}
+
+ 		int hiBin = bin;
+ 		cbinHist->Fill( hiBin );
+ 		if( hiBin < Nmin_ || hiBin >= Nmax_ ) return;
+
+ 	}
+
  	double N_pos = 0.0;
  	double N_neg = 0.0;
  	double N_tot = 0.0;
@@ -390,6 +429,8 @@ Implementation:
 
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",1000,-0.4,0.4);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+ 	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
+
 
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
