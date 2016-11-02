@@ -298,6 +298,8 @@ Implementation:
 
  	}
 
+ 	cout << nTracks << endl;
+
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
  	asym_Dist->Fill(ach);
