@@ -39,8 +39,6 @@ Implementation:
  	offlineDCA_ = iConfig.getUntrackedParameter<double>("offlineDCA");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
- 	ptCutMin_ = iConfig.getParameter<double>("ptCutMin");
- 	ptCutMax_ = iConfig.getParameter<double>("ptCutMax");
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
  	etaGap_ = iConfig.getParameter<double>("etaGap");
