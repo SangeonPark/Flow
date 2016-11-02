@@ -268,7 +268,7 @@ Implementation:
 
  	for(Int_t i=0;i<NAchBins;i++){
 
- 		if(Bins[i] < ach && ach <= Bins[i+1]){
+ 		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
 
  			TComplex z;
