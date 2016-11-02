@@ -254,6 +254,8 @@ private:
       TH1D* c2_tot_case2[100][4][2];
 
       TH1D* ach_hist[100];
+      TH1D* pt_hist[100];
+
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
@@ -324,6 +326,8 @@ private:
       TH1D* c2_tot_case2[100][4][2];
 
       TH1D* ach_hist[100];
+      TH1D* pt_hist[100];
+
       
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
@@ -390,7 +394,8 @@ private:
       TH1D* c2_pos[100][2];
       TH1D* c2_neg[100][2];
       TH1D* ach_hist[100];
-      
+      TH1D* pt_hist[100];
+
       edm::InputTag trackSrc_;
       std::string vertexSrc_;
       edm::InputTag towerSrc_;

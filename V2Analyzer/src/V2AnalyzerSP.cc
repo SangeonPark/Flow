@@ -303,6 +303,7 @@ Implementation:
 
  		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
+ 			pt_hist[i]->Fill(pt);
 
  			TComplex z;
  			double Npairs;
@@ -449,6 +450,8 @@ Implementation:
 
  		}
  		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+ 		pt_hist[i] = fs->make<TH1D>(Form("pt_%d",i+1),Form("pt_%d",i+1),1000,0.0,4.0);
+
 
  	}
  }

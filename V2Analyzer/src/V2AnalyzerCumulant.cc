@@ -284,6 +284,7 @@ Implementation:
  		if(achBins_[i] <= ach && ach < achBins_[i+1]){
  			
  			ach_hist[i]->Fill(ach);
+ 			pt_hist[i]->Fill(pt);
  			TComplex z(0,0);
  			double Npairs=0.0;
 
@@ -351,6 +352,8 @@ Implementation:
  		c2_neg[i][0] = fs->make<TH1D>(Form("c2neg_%d_cos",i),"c2 Distribution",2000,-1,1);
  		c2_neg[i][1] = fs->make<TH1D>(Form("c2neg_%d_sin",i),"c2 Distribution",2000,-1,1);
  		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+ 		pt_hist[i] = fs->make<TH1D>(Form("pt_%d",i+1),Form("pt_%d",i+1),1000,0.0,4.0);
+
  		
  	}
 
