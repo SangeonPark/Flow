@@ -261,9 +261,6 @@ Implementation:
 
  	}
 
- 	Handle<CaloTowerCollection> towers;
- 	iEvent.getByLabel(towerSrc_, towers);
-
  	double W_Q2A = 0;
  	double W_Q2B = 0;
 
