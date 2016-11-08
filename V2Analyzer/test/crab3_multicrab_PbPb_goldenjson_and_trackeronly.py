@@ -43,7 +43,7 @@ efftableNameList = ["eff_5"]
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_selfcorrelation_ScalarProduct_v2"
+outputName = "multicrab_CMW_appletoapple_ScalarProduct_ALICE"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
