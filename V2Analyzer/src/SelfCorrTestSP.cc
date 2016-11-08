@@ -346,6 +346,8 @@ Implementation:
 
 
  	double N_diff = N_pos - N_neg;
+ 	double N_diff_otherside = N_pos_otherside - N_neg_otherside;
+
  	double ach = N_diff/N_tot;
  	double ach_otherside = N_diff_otherside;/N_tot_otherside;
  	asym_Dist->Fill(ach);
