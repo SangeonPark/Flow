@@ -313,7 +313,9 @@ Implementation:
 
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
- 	pt_avg = pt_tot/pt_weight; 
+ 	pt_avg_pos = pt_tot_pos/pt_weight_pos; 
+ 	pt_avg_neg = pt_tot_neg/pt_weight_neg; 
+
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
