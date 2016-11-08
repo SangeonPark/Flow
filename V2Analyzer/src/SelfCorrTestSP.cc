@@ -150,16 +150,16 @@ Implementation:
  	double pt_tot_pos_poseta = 0.0;
  	double pt_avg_pos_poseta = 0.0;
  	double pt_weight_pos_poseta = 0.0;
- 	double pt_tot__neg_poseta = 0.0;
- 	double pt_avg__neg_poseta = 0.0;
- 	double pt_weight__neg_poseta = 0.0;
+ 	double pt_tot_neg_poseta = 0.0;
+ 	double pt_avg_neg_poseta = 0.0;
+ 	double pt_weight_neg_poseta = 0.0;
 
  	double pt_tot_pos_negeta = 0.0;
  	double pt_avg_pos_negeta = 0.0;
  	double pt_weight_pos_negeta = 0.0;
- 	double pt_tot__neg_negeta = 0.0;
- 	double pt_avg__neg_negeta = 0.0;
- 	double pt_weight__neg_negeta = 0.0;
+ 	double pt_tot_neg_negeta = 0.0;
+ 	double pt_avg_neg_negeta = 0.0;
+ 	double pt_weight_neg_negeta = 0.0;
 
 
  	double W_Q2C = 0.0;
@@ -290,14 +290,14 @@ Implementation:
  		}
  		if(-2.4 < eta && eta < 0){
  			if(charge > 0.0){
- 				pt_tot_pos__negeta += weight*pt;
+ 				pt_tot_pos_negeta += weight*pt;
  				pt_weight_pos_negeta += weight; 
  				Q2minuseta_pos += e;
  				W_Q2minuseta_pos += weight;
 
  			}
  			if(charge < 0.0){
- 				pt_tot_neg__negeta += weight*pt;
+ 				pt_tot_neg_negeta += weight*pt;
  				pt_weight_neg_negeta += weight; 
  				Q2minuseta_neg += e;
  				W_Q2minuseta_neg += weight;
