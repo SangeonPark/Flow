@@ -471,7 +471,9 @@ Implementation:
 
  		}
  		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
- 		pt_hist[i] = fs->make<TH1D>(Form("pt_%d",i+1),Form("pt_%d",i+1),1000,0.0,4.0);
+ 		pt_pos[i] = fs->make<TH1D>(Form("pt_pos_%d",i+1),Form("pt_pos_%d",i+1),1000,0.0,4.0);
+ 		pt_neg[i] = fs->make<TH1D>(Form("pt_neg_%d",i+1),Form("pt_neg_%d",i+1),1000,0.0,4.0);
+
 
 
  	}
