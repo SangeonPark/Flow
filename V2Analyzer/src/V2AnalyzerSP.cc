@@ -39,6 +39,9 @@ Implementation:
  	offlineDCA_ = iConfig.getUntrackedParameter<double>("offlineDCA");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
+ 	ptCutMin_ = iConfig.getParameter<double>("ptCutMin");
+ 	ptCutMax_ = iConfig.getParameter<double>("ptCutMax");
+
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
  	Nmin_ = iConfig.getParameter<int>("Nmin");
@@ -211,19 +214,23 @@ Implementation:
  			}
  		}
 
- 		if(pt < 0.3 || pt > 3.0 ) continue;
- 		if(2.4 < fabs(eta)) continue;
+ 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+ 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
+ 		etaHist->Fill(eta);
 
  		TComplex e(1,2*phi,1);
 
  		e *= weight;
+ 		N_tot += weight; 
  		if( charge > 0){
+ 			N_pos+=weight;
  			pt_tot_pos += pt*weight;
  			pt_weight_pos += weight; 
  		}
  		if( charge < 0){
+ 			N_neg+=weight;
  			pt_tot_neg += pt*weight;
  			pt_weight_neg += weight;
 
@@ -232,41 +239,29 @@ Implementation:
 
  		if(-1.0 <= eta && eta < 1.0){
  			Q2C += e;
- 			N_tot+=weight;
  			W_Q2C += weight;
- 			if(charge > 0.0){
- 				N_pos+=weight;
- 			}
- 			if(charge < 0.0){
- 				N_neg+=weight;
- 			}
+
 
  		}
- 		if(1.0 <= eta && eta < 2.4){
- 			N_tot += weight;
+ 		if(0 < eta && eta < 2.4){
  			if(charge > 0.0){
- 				N_pos+=weight;
  				Q2pluseta_pos += e;
  				W_Q2pluseta_pos += weight;
 
  			}
  			if(charge < 0.0){
- 				N_neg+=weight;
  				Q2pluseta_neg += e;
  				W_Q2pluseta_neg += weight;
 
  			}
  		}
- 		if(-2.4 <= eta && eta < -1.0){
- 			N_tot += weight;
+ 		if(-2.4 < eta && eta < 0){
  			if(charge > 0.0){
- 				N_pos+=weight;
  				Q2minuseta_pos += e;
  				W_Q2minuseta_pos += weight;
 
  			}
  			if(charge < 0.0){
- 				N_neg+=weight;
  				Q2minuseta_neg += e;
  				W_Q2minuseta_neg += weight;
 
@@ -449,6 +444,8 @@ Implementation:
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",1000,-0.4,0.4);
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
+ 	etaHist = fs->make<TH1D>("etaHist",";etaHist", 1000,-2.4,2.4);
+
 
 
 

@@ -237,8 +237,6 @@ Implementation:
 
 //kinematic cuts
  		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
-
- 		
  		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
@@ -353,6 +351,8 @@ Implementation:
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
  	vtxZ = fs->make<TH1D>("vtxZ",";vz", 400,-20,20);
+ 	etaHist = fs->make<TH1D>("etaHist",";etaHist", 1000,-2.4,2.4);
+
 
 
 
