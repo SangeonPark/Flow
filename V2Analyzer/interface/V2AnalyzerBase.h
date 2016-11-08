@@ -254,7 +254,8 @@ private:
       TH1D* c2_tot_case2[100][4][2];
 
       TH1D* ach_hist[100];
-      TH1D* pt_hist[100];
+      TH1D* pt_pos[100];
+      TH1D* pt_neg[100];
 
       
       edm::InputTag trackSrc_;
@@ -326,9 +327,11 @@ private:
       TH1D* c2_tot_case2[100][4][2];
 
       TH1D* ach_hist[100];
-      TH1D* pt_hist_negeta[100];
-      TH1D* pt_hist_poseta[100];
-
+      TH1D* ach_hist_otherside[100];
+      TH1D* pt_pos_negeta[100];
+      TH1D* pt_pos_poseta[100];
+      TH1D* pt_neg_negeta[100];
+      TH1D* pt_neg_poseta[100];
 
       
       edm::InputTag trackSrc_;
@@ -396,7 +399,9 @@ private:
       TH1D* c2_pos[100][2];
       TH1D* c2_neg[100][2];
       TH1D* ach_hist[100];
-      TH1D* pt_hist[100];
+      TH1D* pt_pos[100];
+      TH1D* pt_neg[100];
+
 
       edm::InputTag trackSrc_;
       std::string vertexSrc_;

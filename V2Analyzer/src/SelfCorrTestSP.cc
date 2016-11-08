@@ -142,12 +142,24 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
- 	double pt_tot_poseta = 0.0;
- 	double pt_avg_poseta = 0.0;
- 	double pt_weight_poseta = 0.0;
- 	double pt_tot_negeta = 0.0;
- 	double pt_avg_negeta = 0.0;
- 	double pt_weight_negeta = 0.0;
+ 	double N_pos_otherside = 0.0;
+ 	double N_neg_otherside = 0.0;
+ 	double N_tot_otherside = 0.0;
+
+
+ 	double pt_tot_pos_poseta = 0.0;
+ 	double pt_avg_pos_poseta = 0.0;
+ 	double pt_weight_pos_poseta = 0.0;
+ 	double pt_tot__neg_poseta = 0.0;
+ 	double pt_avg__neg_poseta = 0.0;
+ 	double pt_weight__neg_poseta = 0.0;
+
+ 	double pt_tot_pos_negeta = 0.0;
+ 	double pt_avg_pos_negeta = 0.0;
+ 	double pt_weight_pos_negeta = 0.0;
+ 	double pt_tot__neg_negeta = 0.0;
+ 	double pt_avg__neg_negeta = 0.0;
+ 	double pt_weight__neg_negeta = 0.0;
 
 
  	double W_Q2C = 0.0;
@@ -223,6 +235,15 @@ Implementation:
  					N_neg+=weight;
  				}
  			}
+ 			if(0 < eta && eta < 2.4){
+ 				N_tot_otherside += weight;
+ 				if(charge > 0.0){
+ 					N_pos_otherside+=weight;
+ 				}
+ 				if(charge < 0.0){
+ 					N_neg_otherside+=weight;
+ 				}
+ 			}
  		}
  		if(!isAchinMinusEta_){
  			if(0 < eta && eta < 2.4){
@@ -234,7 +255,17 @@ Implementation:
  					N_neg+=weight;
  				}
  			}
+ 			if(-2.4 < eta && eta < 0){
+ 				N_tot_otherside += weight;
+ 				if(charge > 0.0){
+ 					N_pos_otherside+=weight;
+ 				}
+ 				if(charge < 0.0){
+ 					N_neg_otherside+=weight;
+ 				}
+ 			}
  		}
+
 
 
  		if(-1.0 <= eta && eta < 1.0){
@@ -242,28 +273,32 @@ Implementation:
  			W_Q2C += weight;
  		}
  		if(0 < eta && eta < 2.4){
- 			pt_tot_poseta += weight*pt;
- 			pt_weight_poseta += weight;
  			if(charge > 0.0){
+ 				pt_tot_pos_poseta += weight*pt;
+ 				pt_weight_pos_poseta += weight;
  				Q2pluseta_pos += e;
  				W_Q2pluseta_pos += weight;
 
  			}
  			if(charge < 0.0){
+ 				pt_tot_neg_poseta += weight*pt;
+ 				pt_weight_neg_poseta += weight;
  				Q2pluseta_neg += e;
  				W_Q2pluseta_neg += weight;
 
  			}
  		}
  		if(-2.4 < eta && eta < 0){
- 			pt_tot_negeta += weight*pt;
- 			pt_weight_negeta += weight; 
  			if(charge > 0.0){
+ 				pt_tot_pos__negeta += weight*pt;
+ 				pt_weight_pos_negeta += weight; 
  				Q2minuseta_pos += e;
  				W_Q2minuseta_pos += weight;
 
  			}
  			if(charge < 0.0){
+ 				pt_tot_neg__negeta += weight*pt;
+ 				pt_weight_neg_negeta += weight; 
  				Q2minuseta_neg += e;
  				W_Q2minuseta_neg += weight;
 
@@ -312,20 +347,27 @@ Implementation:
 
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
+ 	double ach_otherside = N_diff_otherside;/N_tot_otherside;
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
- 	pt_avg_poseta = pt_tot_poseta/pt_weight_poseta;
- 	pt_avg_negeta = pt_tot_negeta/pt_weight_negeta;
+ 	pt_avg_pos_poseta = pt_tot_pos_poseta/pt_weight_pos_poseta;
+ 	pt_avg_pos_negeta = pt_tot_pos_negeta/pt_weight_pos_negeta;
+
+ 	pt_avg_neg_poseta = pt_tot_neg_poseta/pt_weight_neg_poseta;
+ 	pt_avg_neg_negeta = pt_tot_neg_negeta/pt_weight_neg_negeta;
+
 
 
  	for(Int_t i=0;i<NAchBins;i++){
 
  		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
- 			pt_hist_poseta[i]->Fill(pt_avg_poseta);
- 			pt_hist_negeta[i]->Fill(pt_avg_negeta);
-
+ 			ach_hist_otherside[i]->Fill(ach_otherside);
+ 			pt_pos_poseta[i]->Fill(pt_avg_pos_poseta);
+ 			pt_pos_negeta[i]->Fill(pt_avg_pos_negeta);
+ 			pt_neg_poseta[i]->Fill(pt_avg_neg_poseta);
+ 			pt_neg_negeta[i]->Fill(pt_avg_neg_negeta);
 
  			TComplex z;
  			double Npairs;
@@ -450,7 +492,6 @@ Implementation:
  	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",1000,-0.4,0.4);
  	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
 
-
  	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
 
  	edm::FileInPath fip1(efftablePath_.c_str());  
@@ -473,8 +514,13 @@ Implementation:
 
  		}
  		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
- 		pt_hist_negeta[i] = fs->make<TH1D>(Form("pt_negeta_%d",i+1),Form("pt_negeta_%d",i+1),1000,0.0,4.0);
- 		pt_hist_poseta[i] = fs->make<TH1D>(Form("pt_poseta_%d",i+1),Form("pt_poseta_%d",i+1),1000,0.0,4.0);
+ 		ach_hist_otherside[i] = fs->make<TH1D>(Form("ach_otherside_%d",i+1),Form("ach_otherside_%d",i+1),1000,-0.4,0.4);
+
+ 		pt_pos_negeta[i] = fs->make<TH1D>(Form("pt_pos_negeta_%d",i+1),Form("pt_pos_negeta_%d",i+1),1000,0.0,4.0);
+ 		pt_neg_negeta[i] = fs->make<TH1D>(Form("pt_neg_negeta_%d",i+1),Form("pt_neg_negeta_%d",i+1),1000,0.0,4.0);
+ 		pt_pos_poseta[i] = fs->make<TH1D>(Form("pt_pos_poseta_%d",i+1),Form("pt_pos_poseta_%d",i+1),1000,0.0,4.0);
+ 		pt_neg_poseta[i] = fs->make<TH1D>(Form("pt_neg_poseta_%d",i+1),Form("pt_neg_poseta_%d",i+1),1000,0.0,4.0);
+
 
 
 

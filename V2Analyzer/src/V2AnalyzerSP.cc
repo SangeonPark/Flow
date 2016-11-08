@@ -141,10 +141,13 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
- 	double pt_tot = 0.0;
- 	double pt_avg = 0.0;
- 	double pt_weight = 0.0;
+ 	double pt_tot_pos = 0.0;
+ 	double pt_avg_pos = 0.0;
+ 	double pt_weight_pos = 0.0;
 
+ 	double pt_tot_neg = 0.0;
+ 	double pt_avg_neg = 0.0;
+ 	double pt_weight_neg = 0.0;
 
 
  	double W_Q2C = 0.0;
@@ -216,8 +219,15 @@ Implementation:
  		TComplex e(1,2*phi,1);
 
  		e *= weight;
- 		pt_tot += pt*weight; 
- 		pt_weight += weight; 
+ 		if( charge > 0){
+ 			pt_tot_pos += pt*weight;
+ 			pt_weight_pos += weight; 
+ 		}
+ 		if( charge < 0){
+ 			pt_tot_neg += pt*weight;
+ 			pt_weight_neg += weight;
+
+ 		}
 
 
  		if(-1.0 <= eta && eta < 1.0){
@@ -311,7 +321,8 @@ Implementation:
 
  		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
- 			pt_hist[i]->Fill(pt_avg);
+ 			pt_pos[i]->Fill(pt_avg_pos);
+ 			pt_neg[i]->Fill(pt_avg_neg);
 
  			TComplex z;
  			double Npairs;

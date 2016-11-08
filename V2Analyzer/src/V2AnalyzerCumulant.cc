@@ -157,9 +157,13 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
- 	double pt_tot = 0.0;
- 	double pt_avg = 0.0;
- 	double pt_weight = 0.0;
+ 	double pt_tot_pos = 0.0;
+ 	double pt_avg_pos = 0.0;
+ 	double pt_weight_pos = 0.0;
+
+ 	double pt_tot_neg = 0.0;
+ 	double pt_avg_neg = 0.0;
+ 	double pt_weight_neg = 0.0;
 
 
 //NTrackOffline values
@@ -242,14 +246,19 @@ Implementation:
  		TComplex e(1,2*phi,1);
  		e *= weight; 
 
- 		pt_tot += pt*weight; 
- 		pt_weight += weight; 
-
-
 
  		N_tot += Achweight;
- 		if( charge > 0){ N_pos+= Achweight;}
- 		if( charge < 0){ N_neg+= Achweight;}
+ 		if( charge > 0){
+ 			N_pos+= Achweight;
+ 			pt_tot_pos += pt*weight;
+ 			pt_weight_pos += weight; 
+ 		}
+ 		if( charge < 0){
+ 			N_neg+= Achweight;
+ 			pt_tot_neg += pt*weight;
+ 			pt_weight_neg += weight;
+
+ 		}
  		
 
  		for (int i = 0; i < NBins; ++i)
@@ -284,7 +293,9 @@ Implementation:
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;
  	double ach = N_diff/N_tot;
- 	pt_avg = pt_tot/pt_weight; 
+ 	pt_avg_pos = pt_tot_pos/pt_weight_pos; 
+ 	pt_avg_neg = pt_tot_neg/pt_weight_neg; 
+
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
@@ -293,7 +304,9 @@ Implementation:
  		if(achBins_[i] <= ach && ach < achBins_[i+1]){
  			
  			ach_hist[i]->Fill(ach);
- 			pt_hist[i]->Fill(pt_avg);
+ 			pt_pos[i]->Fill(pt_avg_pos);
+ 			pt_neg[i]->Fill(pt_avg_neg);
+
  			TComplex z(0,0);
  			double Npairs=0.0;
 
@@ -361,7 +374,9 @@ Implementation:
  		c2_neg[i][0] = fs->make<TH1D>(Form("c2neg_%d_cos",i),"c2 Distribution",2000,-1,1);
  		c2_neg[i][1] = fs->make<TH1D>(Form("c2neg_%d_sin",i),"c2 Distribution",2000,-1,1);
  		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
- 		pt_hist[i] = fs->make<TH1D>(Form("pt_%d",i+1),Form("pt_%d",i+1),1000,0.0,4.0);
+ 		pt_pos[i] = fs->make<TH1D>(Form("pt_pos_%d",i+1),Form("pt_pos_%d",i+1),1000,0.0,4.0);
+ 		pt_neg[i] = fs->make<TH1D>(Form("pt_neg_%d",i+1),Form("pt_neg_%d",i+1),1000,0.0,4.0);
+
 
  		
  	}
