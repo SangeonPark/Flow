@@ -34,7 +34,7 @@ process.source = cms.Source("PoolSource",
 
 #loads analyzer
 process.load("Flow.V2Analyzer.SelfCorrTestSP_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("selfcortest_new.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("appletoapple_aliceacceptance.root"))
 
 
 process.p = cms.Path(process.demo)
