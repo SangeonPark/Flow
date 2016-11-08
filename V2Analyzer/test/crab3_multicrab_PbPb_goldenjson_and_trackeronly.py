@@ -4,7 +4,7 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.SelfCorrTestSP_cfi")
+process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
 
 #ntrkRange = [200,400,800,1500]
 #ntrkLow = [60,70,80,90,100,120,140,160]
