@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void selfcorr_SP(){
+void selfcorr_SP_new(){
 
 	const int NAchBins = 7;
 
@@ -62,6 +62,8 @@ void selfcorr_SP(){
 	}
 */
 	double x[NAchBins];
+	double x_otherside[NAchBins];
+
 	double v2_pos_poseta[NAchBins];
 	double v2_neg_poseta[NAchBins];
 	double v2_diff_poseta[NAchBins];
@@ -80,6 +82,8 @@ void selfcorr_SP(){
 		
 
 		x[i]=ach_hist[i]->GetMean();
+		x_otherside[i]=ach_otherside[i]->GetMean();
+
 
 
 // positive eta region
@@ -140,14 +144,14 @@ void selfcorr_SP(){
 	TGraph *gr_neg_poseta = new TGraph(NAchBins,x,v2_neg_poseta);
 	TGraph *gr_diff_poseta = new TGraph(NAchBins,x,v2_diff_poseta);
 
-	TGraph *gr_pos_negeta = new TGraph(NAchBins,x,v2_pos_negeta);
-	TGraph *gr_neg_negeta = new TGraph(NAchBins,x,v2_neg_negeta);
-	TGraph *gr_diff_negeta = new TGraph(NAchBins,x,v2_diff_negeta);
+	TGraph *gr_pos_negeta = new TGraph(NAchBins,x_otherside,v2_pos_poseta);
+	TGraph *gr_neg_negeta = new TGraph(NAchBins,x_otherside,v2_neg_poseta);
+	TGraph *gr_diff_negeta = new TGraph(NAchBins,x_otherside,v2_diff_poseta);
 
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.102, 0.112);
+	base->GetYaxis()->SetRangeUser(0.095, 0.105);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
@@ -217,17 +221,21 @@ void selfcorr_SP(){
 	gStyle->SetOptTitle(0);
 
 //	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_a = makeLatex("40-50% centrality",0.25,0.85) ;
+	TLatex* text_a = makeLatex("30-40% centrality",0.25,0.85) ;
 //	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_b = makeLatex("A_{ch} in -2.4 < #eta < 0",0.25,0.80) ;
 	TLatex* text_d = makeLatex("v_{2} in -2.4 < #eta < 0",0.25,0.75) ;
 	TLatex* text_c = makeLatex("v_{2} in 0 < #eta < 2.4",0.25,0.75) ;
+	TLatex* text_e = makeLatex("A_{ch} in 0 < #eta < 2.4",0.25,0.80) ;
+
 
 
 	text_a->SetTextFont(42);
 	text_b->SetTextFont(42);
 	text_c->SetTextFont(42);
 	text_d->SetTextFont(42);
+	text_e->SetTextFont(42);
+
 
 	TLegend* leg = new TLegend(0.76,0.80,0.94,.88);
 	leg->SetLineColor(kWhite);
@@ -296,9 +304,9 @@ void selfcorr_SP(){
 //	leg->DrawClone("Same");
 
 	text_a->DrawClone("Same");
-	text_b->DrawClone("Same");
+	text_c->DrawClone("Same");
 	//text_c->DrawClone("Same");
-	text_d->DrawClone("Same");
+	text_e->DrawClone("Same");
 
 	leg2->DrawClone("Same");
     //Define a linear function
@@ -324,12 +332,49 @@ void selfcorr_SP(){
 
 	fit2->DrawClone("Same");
 
-	c1->Print("~/Summer2016/selfcorr_SP_diff_40.pdf");
-	c1->Print("~/Summer2016/selfcorr_SP_diff_40.gif");
+	TCanvas* c3 = new TCanvas("c3","c3",1,1,600,600);
+	TGraph *gr_ach = new TGraph(NAchBins,x,x_otherside);
+	TH1D* base3 = new TH1D("base3","base3",1,-0.15,0.15);
+	//pPb
+	base3->GetYaxis()->SetRangeUser(-0.15, 0.15);
+
+	//PbPb
+	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
+	base3->GetXaxis()->SetTitle("A_{ch} eta < 0");
+	base3->GetYaxis()->SetTitle("A_{ch} eta > 0");
+	base3->GetXaxis()->CenterTitle();
+	base3->GetYaxis()->CenterTitle();
+	base3->SetTitleSize  (0.040,"X");
+	base3->SetTitleOffset(1.4,"X");
+	base3->SetTitleFont  (42,"X");
+	base3->SetLabelOffset(0.006,"X");
+	base3->SetLabelSize  (0.040,"X");
+	base3->SetLabelFont  (42   ,"X");
+
+	base3->SetTitleSize  (0.040,"Y");
+	base3->SetTitleOffset(2.2,"Y");
+	base3->SetTitleFont  (42,"Y");
+	base3->SetLabelOffset(0.006,"Y");
+	base3->SetLabelSize  (0.040,"Y");
+	base3->SetLabelFont  (42   ,"Y");
+	base3->SetLineWidth(0);
+	c3->cd();
+
+	base3->Draw("");
+	gr_ach->Draw("PSame");
 
 
-	c2->Print("~/Summer2016/selfcorr_SP_same_40.pdf");
-	c2->Print("~/Summer2016/selfcorr_SP_same_40.gif");
+
+	c1->Print("~/Summer2016/selfcorr_SP_new_30_case1.pdf");
+	c1->Print("~/Summer2016/selfcorr_SP_new_30_case1.gif");
+
+
+	c2->Print("~/Summer2016/selfcorr_SP_new_30_case2.pdf");
+	c2->Print("~/Summer2016/selfcorr_SP_new_30_case2.gif");
+
+	c3->Print("~/Summer2016/Achcorr_30.pdf");
+	c3->Print("~/Summer2016/Achcorr_30.gif");
+	
 
 
 }

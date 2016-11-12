@@ -34,7 +34,7 @@ process.source = cms.Source("PoolSource",
 
 #loads analyzer
 process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
-process.TFileService = cms.Service("TFileService",fileName = cms.string("appletoapple_aliceacceptance.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("v2_ScalarProduct.root"))
 
 
 process.p = cms.Path(process.demo)

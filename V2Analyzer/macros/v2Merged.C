@@ -30,7 +30,7 @@ using namespace std;
 
 void v2Merged(){
 
-	TFile *f = new TFile("../../../rootfiles/PbPbcrabData.root");
+	TFile *f = new TFile("../../../rootfiles/appletoapple/ALICE.root");
 	TH1D* c2_pos_case1[5][5][2];
 	TH1D* c2_neg_case1[5][5][2];
 	TH1D* c2_tot_case1[5][5][2];
@@ -225,7 +225,7 @@ void v2Merged(){
 		err_neg[i] = sqrt(esquared);
 
 
-		v2_diff[i] = v2_neg[i]-v2_pos[i];
+		v2_diff[i] = (v2_neg[i]-v2_pos[i])/(v2_neg[i]+v2_pos[i]);
 		cout << "difference : " << v2_diff[i] <<endl;
 		err_diff[i] = sqrt(err_neg[i]*err_neg[i]+err_pos[i]*err_pos[i]);
 
