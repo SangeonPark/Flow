@@ -181,6 +181,42 @@ Implementation:
  		double charge = (double)cand->charge();
  		double pt = cand->pt();
  		double phi = cand->phi();
+
+//highPurity
+ 		if(!cand->quality(reco::TrackBase::highPurity)) continue;
+ 		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
+ 		double dzbest = cand->dz(bestvtx);
+ 		double dxybest = cand->dxy(bestvtx);
+ 		double dzerror = sqrt(cand->dzError()*cand->dzError()+bestvzError*bestvzError);
+ 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
+ 		double dzos = dzbest/dzerror;
+ 		double dxyos = dxybest/dxyerror;
+ 		if(fabs(dzos) > 3) continue;
+ 		if(fabs(dxyos) > 3) continue;
+ 		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
+ 		if(fabs(eta)<2.4 && pt > 0.4){
+ 			nTracks++;
+ 			if(charge>0){
+ 				nTracks_pos++;
+ 			}
+ 			else{
+ 				nTracks_neg++;
+ 			}
+ 		}
+ 	}
+ 	//Cut on NTrackOffline (Should be disabled if useCentrality = True)	
+ 	if(!useCentrality_){
+
+ 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
+
+ 	}
+
+ 	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
+
+ 		double eta = cand->eta();
+ 		double charge = (double)cand->charge();
+ 		double pt = cand->pt();
+ 		double phi = cand->phi();
  		double weight = 1.0;
 
  		if( doEffCorrection_ ){
@@ -204,15 +240,6 @@ Implementation:
 //ptError
  		if(fabs(cand->ptError())/cand->pt() > offlineptErr_ ) continue;
 
- 		if(fabs(eta)<2.4 && pt > 0.4){
- 			nTracks++;
- 			if(charge>0){
- 				nTracks_pos++;
- 			}
- 			else{
- 				nTracks_neg++;
- 			}
- 		}
 
  		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
  		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
@@ -297,13 +324,6 @@ Implementation:
  			W_Q2B+=w;
  			Q2B += e;
  		}
- 	}
-
-
- 	if(!useCentrality_){
-
- 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
-
  	}
 
  	double N_diff = N_pos - N_neg;
