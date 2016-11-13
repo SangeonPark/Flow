@@ -180,8 +180,6 @@ Implementation:
  		double eta = cand->eta();
  		double charge = (double)cand->charge();
  		double pt = cand->pt();
- 		double phi = cand->phi();
-
 //highPurity
  		if(!cand->quality(reco::TrackBase::highPurity)) continue;
  		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
