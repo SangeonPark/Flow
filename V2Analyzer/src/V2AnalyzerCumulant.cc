@@ -265,6 +265,9 @@ Implementation:
  		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
+ 		etaHist->Fill(eta);
+
+
 
  		TComplex e(1,2*phi,1);
  		e *= weight; 

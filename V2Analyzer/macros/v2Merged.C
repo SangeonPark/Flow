@@ -1,4 +1,4 @@
-#include <iostream>
+	#include <iostream>
 #include <vector>
 #include <sstream>
 #include <string>
@@ -31,23 +31,23 @@ using namespace std;
 void v2Merged(){
 
 	TFile *f = new TFile("../../../rootfiles/appletoapple/ALICE.root");
-	TH1D* c2_pos_case1[5][5][2];
-	TH1D* c2_neg_case1[5][5][2];
-	TH1D* c2_tot_case1[5][5][2];
+	TH1D* c2_pos_case1[100][4][2];
+	TH1D* c2_neg_case1[100][4][2];
+	TH1D* c2_tot_case1[100][4][2];
 
-	TH1D* c2_pos_case2[5][4][2];
-	TH1D* c2_neg_case2[5][4][2];
-	TH1D* c2_tot_case2[5][4][2];
+	TH1D* c2_pos_case2[100][4][2];
+	TH1D* c2_neg_case2[100][4][2];
+	TH1D* c2_tot_case2[100][4][2];
 
-	TH1D* ach_hist[5];
+	TH1D* ach_hist[100];
 
-	TH1D* c2_pos[5][4];
-	TH1D* c2_neg[5][4];
+	TH1D* c2_pos[100][4];
+	TH1D* c2_neg[100][4];
 
-	for (Int_t i = 0; i < 5; i++){
+	for (Int_t i = 0; i < 7; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 		
-		for(Int_t j = 0 ; j < 5; j++){
+		for(Int_t j = 0 ; j < 4; j++){
 			
 			c2_tot_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case1",i,j));
 			c2_tot_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_sin_case1",i,j));
@@ -73,7 +73,7 @@ void v2Merged(){
 		}
 	}
 
-	for (int i = 0; i < 5; ++i)
+	for (int i = 0; i < 7; ++i)
 	{
 		c2_pos[i][0] =  new TH1D(*c2_pos_case1[i][0][0]);
 		c2_pos[i][0] -> Add(c2_pos_case2[i][0][0],1.);
@@ -119,7 +119,7 @@ void v2Merged(){
 	c6->cd();
 	c2_pos_case2[0][0][0]->DrawClone(); */
 
-	double x[5];
+	double x[7];
 	/*
 	double v2_pos_case1[5];
 	double err_pos_case1[5];
@@ -146,12 +146,12 @@ void v2Merged(){
 	double err_diff_case2[5];
 	*/
 
-	double v2_pos[5];
-	double v2_neg[5];
-	double err_pos[5];
-	double err_neg[5];
-	double v2_diff[5];
-	double err_diff[5];
+	double v2_pos[7];
+	double v2_neg[7];
+	double err_pos[7];
+	double err_neg[7];
+	double v2_diff[7];
+	double err_diff[7];
 
 
 
@@ -163,7 +163,7 @@ void v2Merged(){
 	double esquared;
 	
 	
-	for(Int_t i=0; i<5; i++){
+	for(Int_t i=0; i<7; i++){
 		
 		cout << i << "th term" << endl;
 
@@ -232,7 +232,7 @@ void v2Merged(){
 		
 	}
 
-	TH1D* base = new TH1D("base","base",100,-0.1,0.1);
+	TH1D* base = new TH1D("base","base",100,-0.15,0.15);
 	base->GetYaxis()->SetRangeUser(0.095,0.105);
 	
 	/*
@@ -246,9 +246,9 @@ void v2Merged(){
 	TGraphErrors *gr_diff_case1 = new TGraphErrors(5,x,v2_diff_case1,NULL,err_diff_case1);
 	TGraphErrors *gr_diff_case2 = new TGraphErrors(5,x,v2_diff_case2,NULL,err_diff_case2); */
 
-	TGraphErrors *gr_pos = new TGraphErrors(5,x,v2_pos,NULL,err_pos);
-	TGraphErrors *gr_neg = new TGraphErrors(5,x,v2_neg,NULL,err_neg);
-	TGraphErrors *gr_diff = new TGraphErrors(5,x,v2_diff,NULL,err_diff);
+	TGraphErrors *gr_pos = new TGraphErrors(7,x,v2_pos,NULL,err_pos);
+	TGraphErrors *gr_neg = new TGraphErrors(7,x,v2_neg,NULL,err_neg);
+	TGraphErrors *gr_diff = new TGraphErrors(7,x,v2_diff,NULL,err_diff);
 
 
     /*
@@ -305,8 +305,8 @@ void v2Merged(){
 
 //  c2->Divide(2,1,0,0);
     c2->cd();
-    gr_diff->GetYaxis()->SetRangeUser(-0.002,0.003);
-    gr_diff->GetXaxis()->SetLimits(-0.1,0.1);
+    gr_diff->GetYaxis()->SetRangeUser(-0.1,0.1);
+    gr_diff->GetXaxis()->SetLimits(-0.15,0.15);
     gr_diff->GetXaxis()->SetTitle("A_{ch}");
     gr_diff->GetYaxis()->SetTitle("v_{2}(-) - v_{2}(+)");
     gr_diff->GetYaxis()->SetTitleOffset(1.1);
