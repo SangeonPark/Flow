@@ -327,7 +327,7 @@ Implementation:
 
 
 //asymmetry calculation
- 	double N_diff = N_pos - N_neg;
+ 	//double N_diff = N_pos - N_neg;
  	double N_diff_fixed = N_pos_fixed - N_neg_fixed;
  	double ach = N_diff_fixed/N_tot_fixed;
  	pt_avg_pos = pt_tot_pos/pt_weight_pos; 
