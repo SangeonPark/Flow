@@ -157,6 +157,12 @@ Implementation:
  	double N_neg = 0.0;
  	double N_tot = 0.0;
 
+ 	double N_pos_fixed = 0.0;
+ 	double N_neg_fixed = 0.0;
+ 	double N_tot_fixed = 0.0;
+
+
+
  	double pt_tot_pos = 0.0;
  	double pt_avg_pos = 0.0;
  	double pt_weight_pos = 0.0;
@@ -196,6 +202,10 @@ Implementation:
  		double eta = cand->eta();
  		double charge = (double)cand->charge();
  		double pt = cand->pt();
+ 		double weight = 1.0;
+ 		if( doEffCorrection_ ){
+ 			weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
+ 		}
 
 //highPurity
  		if(!cand->quality(reco::TrackBase::highPurity)) continue;
@@ -218,6 +228,11 @@ Implementation:
  				nTracks_neg++;
  			}
  		}
+ 		if(pt <= 0.3 ||  3.0 <= pt ) continue;
+ 		if(eta <= -2.4 || 2.4 <= eta) continue;
+ 		N_tot_fixed += weight;
+ 		if(charge>0){ N_pos_fixed += weight; }
+ 		if(charge<0){ N_neg_fixed += weight; }
  	}
  	//Cut on NTrackOffline (Should be disabled if useCentrality = True)	
  	if(!useCentrality_){
@@ -313,7 +328,8 @@ Implementation:
 
 //asymmetry calculation
  	double N_diff = N_pos - N_neg;
- 	double ach = N_diff/N_tot;
+ 	double N_diff_fixed = N_pos_fixed - N_neg_fixed;
+ 	double ach = N_diff_fixed/N_tot_fixed;
  	pt_avg_pos = pt_tot_pos/pt_weight_pos; 
  	pt_avg_neg = pt_tot_neg/pt_weight_neg; 
 
