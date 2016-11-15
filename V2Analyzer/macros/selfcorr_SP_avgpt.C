@@ -86,7 +86,7 @@ void selfcorr_SP_avgpt(){
 	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
 	base2->GetYaxis()->SetRangeUser(-0.1, 0.1);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle(" <pt>_{neg} - <pt>_{pos} ");
+	base2->GetYaxis()->SetTitle(" <pt>_{neg}-<pt>_{pos}/<pt>_{neg}+<pt>_{pos} ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");

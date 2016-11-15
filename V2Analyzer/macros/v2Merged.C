@@ -1,36 +1,9 @@
-	#include <iostream>
-#include <vector>
-#include <sstream>
-#include <string>
-
-#include "TString.h"
-#include "TF1.h"
-#include "TH1.h"
-#include "TH2.h"
-#include "TH3.h"
-#include "TMath.h"
-#include "TTree.h"
-#include "TChain.h"
-#include "TFile.h"
-#include "TCanvas.h"
-#include "TSystem.h"
-#include "TROOT.h"
-#include "TGraph.h"
-#include "TGraphErrors.h"
-#include "TGraphAsymmErrors.h"
-#include "TMultiGraph.h"
-#include "TCanvas.h"
-#include "TPad.h"
-#include "TLegend.h"
-#include "TLatex.h"
-#include "TLine.h"
-#include "TAxis.h"
-
+#include "RiceStyle.h"
 using namespace std;
 
 void v2Merged(){
 
-	TFile *f = new TFile("../../../rootfiles/appletoapple/ALICE.root");
+	TFile *f = new TFile("../../../rootfiles/narrowpt/v2_narrowpt_40.root");
 	TH1D* c2_pos_case1[100][4][2];
 	TH1D* c2_neg_case1[100][4][2];
 	TH1D* c2_tot_case1[100][4][2];
@@ -231,91 +204,107 @@ void v2Merged(){
 
 		
 	}
+	gStyle->SetLegendFont(42);
+	TH1D* base = new TH1D("base","base",1,-0.2,0.2);
+	//pPb
+	base->GetYaxis()->SetRangeUser(0.125, 0.135);
+	base->GetXaxis()->SetTitle("Observed A_{ch}");
+	base->GetYaxis()->SetTitle("v_{2}{SP}");
+	base->GetXaxis()->CenterTitle();
+	base->GetYaxis()->CenterTitle();
+	base->SetTitleSize  (0.040,"X");
+	base->SetTitleOffset(1.4,"X");
+	base->SetTitleFont  (42,"X");
+	base->SetLabelOffset(0.006,"X");
+	base->SetLabelSize  (0.040,"X");
+	base->SetLabelFont  (42   ,"X");
 
-	TH1D* base = new TH1D("base","base",100,-0.15,0.15);
-	base->GetYaxis()->SetRangeUser(0.095,0.105);
-	
-	/*
-	TGraphErrors *gr_pos_case1 = new TGraphErrors(5,x,v2_pos_case1,NULL,err_pos_case1);
-	TGraphErrors *gr_neg_case1 = new TGraphErrors(5,x,v2_neg_case1,NULL,err_neg_case1);
-	TGraphErrors *gr_tot_case1 = new TGraphErrors(5,x,v2_tot_case1,NULL,err_tot_case1);
-	TGraphErrors *gr_pos_case2 = new TGraphErrors(5,x,v2_pos_case2,NULL,err_pos_case2);
-	TGraphErrors *gr_neg_case2 = new TGraphErrors(5,x,v2_neg_case2,NULL,err_neg_case2);
-	TGraphErrors *gr_tot_case2 = new TGraphErrors(5,x,v2_tot_case2,NULL,err_tot_case2);
-	
-	TGraphErrors *gr_diff_case1 = new TGraphErrors(5,x,v2_diff_case1,NULL,err_diff_case1);
-	TGraphErrors *gr_diff_case2 = new TGraphErrors(5,x,v2_diff_case2,NULL,err_diff_case2); */
+	base->SetTitleSize  (0.040,"Y");
+	base->SetTitleOffset(2.2,"Y");
+	base->SetTitleFont  (42,"Y");
+	base->SetLabelOffset(0.006,"Y");
+	base->SetLabelSize  (0.040,"Y");
+	base->SetLabelFont  (42   ,"Y");
+	base->SetLineWidth(0);
+
+	TH1D* base2 = new TH1D("base2","base2",1,-0.2,0.2);
+	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
+	base2->GetXaxis()->SetTitle("Observed A_{ch}");
+	base2->GetYaxis()->SetTitle(" (v^{#minus}_{2} #minus v^{#plus}_{2})/(v^{#minus}_{2} #plus v^{#plus}_{2}) ");
+	base2->GetXaxis()->CenterTitle();
+	base2->GetYaxis()->CenterTitle();
+	base2->SetTitleSize  (0.040,"X");
+	base2->SetTitleOffset(1.4,"X");
+	base2->SetTitleFont  (42,"X");
+	base2->SetLabelOffset(0.006,"X");
+	base2->SetLabelSize  (0.040,"X");
+	base2->SetLabelFont  (42   ,"X");
+	base2->SetTitleSize  (0.040,"Y");
+	base2->SetTitleOffset(2.0,"Y");
+	base2->SetTitleFont  (42,"Y");
+	base2->SetLabelOffset(0.006,"Y");
+	base2->SetLabelSize  (0.040,"Y");
+	base2->SetLabelFont  (42   ,"Y");
+	base2->SetLineWidth(0);
+
+	cout << v2_pos[0] << endl;
+
 
 	TGraphErrors *gr_pos = new TGraphErrors(7,x,v2_pos,NULL,err_pos);
 	TGraphErrors *gr_neg = new TGraphErrors(7,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff = new TGraphErrors(7,x,v2_diff,NULL,err_diff);
 
 
-    /*
-    gr_pos_case1->GetYaxis()->SetRangeUser(0.095,0.115);
-    gr_pos_case1->GetXaxis()->SetLimits(-0.1,0.1);
-    gr_neg_case1->GetYaxis()->SetRangeUser(0.095,0.115);
-    gr_neg_case1->GetXaxis()->SetLimits(-0.1,0.1);
-    gr_tot_case1->GetYaxis()->SetRangeUser(0.095,0.115);
-    gr_tot_case1->GetXaxis()->SetLimits(-0.1,0.1);
-    gr_pos_case2->GetYaxis()->SetRangeUser(0.095,0.115);
-    gr_pos_case2->GetXaxis()->SetLimits(-0.1,0.1);
-    gr_neg_case2->GetYaxis()->SetRangeUser(0.095,0.115);
-    gr_neg_case2->GetXaxis()->SetLimits(-0.1,0.1);
-    gr_tot_case2->GetYaxis()->SetRangeUser(0.095,0.115);
-    gr_tot_case2->GetXaxis()->SetLimits(-0.1,0.1); */
-/*
-    gr_pos_case1 -> SetName("positive tracks case1");
-    gr_neg_case1 -> SetName("negative tracks case1");
-    gr_tot_case1 -> SetName("total tracks case1");
-    gr_pos_case1 -> SetTitle("positive tracks case1");
-    gr_neg_case1 -> SetTitle("negative tracks case1");
-    gr_tot_case1 -> SetTitle("total tracks case1");
+	TCanvas* c1 = new TCanvas("c1","c1");
+	TCanvas* c2 = new TCanvas("c2","c2");
+	gr_neg -> SetMarkerStyle(20);
+	gr_neg -> SetMarkerColor(kBlue);
+	gr_pos -> SetMarkerStyle(34);	
+	gr_pos -> SetMarkerColor(kRed);
+	TLatex* text_a = makeLatex("CMS, 40-50% centrality",0.25,0.85) ;
+	TLatex* text_b = makeLatex("0.75 < p_{T} < 0.8",0.25,0.80) ;
 
-    gr_diff_case1 -> SetTitle("difference case1");
 
-    gr_pos_case2 -> SetName("positive tracks case2");
-    gr_neg_case2 -> SetName("negative tracks case2");
-    gr_tot_case2 -> SetName("total tracks case2");
-    gr_pos_case2 -> SetTitle("positive tracks case2");
-    gr_neg_case2 -> SetTitle("negative tracks case2");
-    gr_tot_case2 -> SetTitle("total tracks case2");
+	text_a->SetTextFont(42);
+	text_b->SetTextFont(42);
 
-    gr_diff_case2 -> SetTitle("difference case2"); */
 
-    TCanvas* c1 = new TCanvas("c1","c1");
-    TCanvas* c2 = new TCanvas("c2","c2");
 
-    gr_pos -> SetMarkerStyle(20);
-	gr_pos -> SetMarkerColor(kBlue);
-	gr_neg -> SetMarkerStyle(28);
-	gr_neg -> SetMarkerColor(kRed);
+	c1->cd();
+	base->Draw("");
+	gr_pos->Draw("PSame");
+	gr_neg->Draw("PSame");
+	text_a->Draw("Same");
+	text_b->Draw("Same");
 
-    
-    c1->cd();
-    base->Draw("");
-    gr_pos->Draw("PSame");
-    gr_neg->Draw("PSame");
 
     //Define a linear function
-    TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.09, 0.09);
-    fit1->SetLineColor(kRed);
-    fit1->SetLineStyle(2);
-    gr_diff->Fit(fit1);
+	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.2, 0.2);
+	fit1->SetLineColor(kRed);
+	fit1->SetLineStyle(2);
+	gr_diff->Fit(fit1,"RN0");
 
 //  c2->Divide(2,1,0,0);
-    c2->cd();
-    gr_diff->GetYaxis()->SetRangeUser(-0.1,0.1);
-    gr_diff->GetXaxis()->SetLimits(-0.15,0.15);
-    gr_diff->GetXaxis()->SetTitle("A_{ch}");
-    gr_diff->GetYaxis()->SetTitle("v_{2}(-) - v_{2}(+)");
-    gr_diff->GetYaxis()->SetTitleOffset(1.1);
-    gr_diff->GetXaxis()->SetTitleOffset(1.1);
+	c2->cd();
 
-    TLatex* text1 = new TLatex(-0.09, 0.0025, Form("slope r = %f #pm %f",fit1->GetParameter(1),fit1->GetParError(1))) ;
-    
-    gr_diff->Draw("A*");
-    text1->DrawClone("Same");
-    fit1->DrawClone("Same");
+	base2->Draw("");
+
+
+
+	TLatex* text2 = makeLatex(Form("Intercept : %f #pm %f",fit1->GetParameter(0),fit1->GetParError(0)),0.45,0.30) ;
+	TLatex* text1 = makeLatex(Form("slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
+	text1->SetTextFont(42);
+	text2->SetTextFont(42);
+	gr_diff->Draw("PSame");
+	text1->DrawClone("Same");
+	text2->DrawClone("Same");
+
+	fit1->DrawClone("Same");
+
+
+	c1->Print("~/Summer2016/v2narrowslope_40.pdf");
+	c1->Print("~/Summer2016/v2narrowslope_40.gif");
+	c2->Print("~/Summer2016/v2narrowdiffslope_40.pdf");
+	c2->Print("~/Summer2016/v2narrowdiffslope_40.gif");
 
 }

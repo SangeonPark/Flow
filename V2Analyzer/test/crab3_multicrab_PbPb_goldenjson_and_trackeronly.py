@@ -4,7 +4,7 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
+process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
 
 #ntrkRange = [200,400,800,1500]
 #ntrkLow = [60,70,80,90,100,120,140,160]
@@ -15,8 +15,8 @@ process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
 #ntrkLow = [60,80,100,120,140,160]
 #ntrkUpp = [80,100,120,140,160,180]
 
-ntrkLow = [60]
-ntrkUpp = [80]
+ntrkLow = [60,80]
+ntrkUpp = [80,100]
 
 
 #ntrkLow = [80,140,160]
@@ -34,7 +34,7 @@ ntrkUpp = [80]
 
 #efftableNameList = ["eff_1","eff_2","eff_2","eff_2","eff_3","eff_3","eff_3","eff_4"]
 #efftableNameList = ["eff_5","eff_4","eff_3","eff_2","eff_1","eff_1"]
-efftableNameList = ["eff_5"]
+efftableNameList = ["eff_5","eff_4"]
 
 #efftableNameList = ["eff_3","eff_4","eff_5"]
 #efftableNameList = ["eff_5","eff_5","eff_5","eff_5"]
@@ -43,7 +43,7 @@ efftableNameList = ["eff_5"]
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_v2_Cumulant_Systematics_FixedAchCut_vtz_Wide"
+outputName = "multicrab_CMW_v2_SP_NarrowPT"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -78,8 +78,8 @@ if __name__ == '__main__':
    sampleName = [ "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_v5-70836070e3530d592901940b96c951fe/USER",
                   "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER"]       
    
-   for num in range(0,2):
-      for paths in range(0,1):
+   for num in range(1,2):
+      for paths in range(0,2):
          print 'double check that we are using sample %r ' % (sampleName[num])		
          print 'double check that ntrk range is fram %r to %r' % (ntrkLow[paths],ntrkUpp[paths])
          print 'double check that we are using %r' % (efftableNameList[paths])
