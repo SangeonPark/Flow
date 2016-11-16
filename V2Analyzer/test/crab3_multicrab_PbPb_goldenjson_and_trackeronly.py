@@ -43,7 +43,7 @@ efftableNameList = ["eff_5"]
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_CumualntSyst_trk_tight_retry_correctversion"
+outputName = "multicrab_CMW_CumualntSyst_vtz_wide_retry"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -78,7 +78,7 @@ if __name__ == '__main__':
    sampleName = [ "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_v5-70836070e3530d592901940b96c951fe/USER",
                   "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER"]       
    
-   for num in range(1,2):
+   for num in range(0,1):
       for paths in range(0,1):
          print 'double check that we are using sample %r ' % (sampleName[num])		
          print 'double check that ntrk range is fram %r to %r' % (ntrkLow[paths],ntrkUpp[paths])
