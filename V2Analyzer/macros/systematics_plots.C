@@ -143,7 +143,7 @@ void systematics_plots(){
 
 	diff_list[1] = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
 
-	f = new TFile("~/Summer2016/rootfiles/crosscheck/pPb/v2/185_220/Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_2particleCumulant_30.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
