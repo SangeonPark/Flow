@@ -32,7 +32,8 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	//f = new TFile("../../../rootfiles/systematics/trackselection/tight/Merged.root");
 	//f = new TFile("../../../rootfiles/systematics/vtz/wide/Merged.root");
 	//f = new TFile("../../../rootfiles/systematics/vtz/narrow/Merged.root");
-	f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/ntrk/185_220/Merged.root");
+	//f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/ntrk/185_220/Merged.root");
+	f = new TFile("../../../rootfiles/systematics_redo/v2_Cumulant_40.root");
 
 	// = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
 
@@ -87,7 +88,8 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.065, 0.075);
+	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
+	base->GetYaxis()->SetRangeUser(0.10, 0.12);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
@@ -157,7 +159,9 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 
 	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
+	//TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
+	TLatex* text_b = makeLatex("40-50%",0.25,0.80) ;
+
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -235,7 +239,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
 
-	//SaveCanvas(c3,"pics",Form("Closuretest_pPb_185_220_reco"));
+	SaveCanvas(c3,"pics",Form("40-50Cumulant"));
 
 
 

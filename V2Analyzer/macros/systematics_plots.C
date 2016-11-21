@@ -31,8 +31,7 @@ void systematics_plots(){
 	double variance_diff;
 
 
-	f = new TFile("~/Summer2016/rootfiles/systematics/pPb/trackselection/loose/Merged.root");
-
+	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_vtz_wide.root");
 
 	for (Int_t i = 0; i < NAchBins; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
@@ -91,7 +90,7 @@ void systematics_plots(){
 
 	diff_list[0] = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
 
-	f = new TFile("~/Summer2016/rootfiles/systematics/pPb/trackselection/tight/Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_vtz_narrow.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -143,7 +142,7 @@ void systematics_plots(){
 
 	diff_list[1] = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
 
-	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_2particleCumulant_30.root");
+	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_Cumulant_30.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -204,8 +203,8 @@ void systematics_plots(){
 	gStyle->SetLegendFont(42);
 
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.1,0.1);
-	base2->GetYaxis()->SetRangeUser(-0.02, 0.02);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
+	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" #frac{ v_{2}^{#minus} #minus v_{2}^{#plus} }{ v_{2}^{#minus} #plus v_{2}^{#plus} } ");
 	base2->GetXaxis()->CenterTitle();
@@ -243,27 +242,33 @@ void systematics_plots(){
 
 
     //Define a linear function
-	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.085, 0.085);
+	TF1* fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.15, 0.15);
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
 	diff_list[0]->Fit(fit1,"N0");
 
 
 
-	TF1* fit2 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.085, 0.085);
+	TF1* fit2 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.15, 0.15);
 	fit2->SetLineColor(kBlue);
 	fit2->SetLineStyle(2);
 	diff_list[1]->Fit(fit2,"N0");
 
-	TF1* fit3 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.085, 0.085);
+	TF1* fit3 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.15, 0.15);
 	fit3->SetLineColor(kBlack);
 	fit3->SetLineStyle(2);
 	diff_list[2]->Fit(fit3,"N0");
 
 
-	TLatex* text1 = makeLatex(Form("slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;
+	TLatex* text1 = makeLatex(Form("wide slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;	
+	TLatex* text2 = makeLatex(Form("narrow slope : %.3f #pm %.3f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.30) ;
+	TLatex* text3= makeLatex(Form("def. slope : %.3f #pm %.3f",fit3->GetParameter(1),fit3->GetParError(1)),0.45,0.35) ;
+
+
 	text1->SetTextFont(42);
-//	text2->SetTextFont(42);
+	text2->SetTextFont(42);
+
+	text3->SetTextFont(42);
 	base2->Draw("fit2");
 	fit1->SetLineWidth(3);
 
@@ -274,7 +279,7 @@ void systematics_plots(){
 
 
 	fit1->DrawClone("Same");
-	//fit2->DrawClone("Same");
+	fit2->DrawClone("Same");
 	fit3->DrawClone("Same");
 
 
@@ -282,7 +287,7 @@ void systematics_plots(){
 	diff_list[0]->Draw("PSame");
 
 	diff_list[1]->SetMarkerStyle(20);
-	//diff_list[1]->Draw("PSame");
+	diff_list[1]->Draw("PSame");
 
 	diff_list[2]->SetMarkerStyle(20);
 	diff_list[2]->Draw("PSame");
@@ -291,8 +296,10 @@ void systematics_plots(){
 	text_b->DrawClone("Same");
 	
 
-//	text1->DrawClone("Same");
-//	text2->DrawClone("Same");
+	text1->DrawClone("Same");
+	text2->DrawClone("Same");
+		text3->DrawClone("Same");
+
 
 	
 
@@ -306,7 +313,7 @@ void systematics_plots(){
 	leg2->SetFillColor(0);
 	leg2->SetFillStyle(0);
 	leg2->AddEntry(fit1, "loose","l");
-	//leg2->AddEntry(fit2 , "tight","l");
+	leg2->AddEntry(fit2 , "tight","l");
 	leg2->AddEntry(fit3 , "default","l");
 
 	leg2->DrawClone("Same");

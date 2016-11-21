@@ -3,7 +3,7 @@ using namespace std;
 
 void v2Merged(){
 
-	TFile *f = new TFile("../../../rootfiles/narrowpt/v2_narrowpt_40.root");
+	TFile *f = new TFile("../../../rootfiles/ScalarProduct/v2_SP_40.root");
 	TH1D* c2_pos_case1[100][4][2];
 	TH1D* c2_neg_case1[100][4][2];
 	TH1D* c2_tot_case1[100][4][2];
@@ -207,7 +207,7 @@ void v2Merged(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.2,0.2);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.125, 0.135);
+	base->GetYaxis()->SetRangeUser(0.10, 0.11);
 	base->GetXaxis()->SetTitle("Observed A_{ch}");
 	base->GetYaxis()->SetTitle("v_{2}{SP}");
 	base->GetXaxis()->CenterTitle();
@@ -275,7 +275,7 @@ void v2Merged(){
 	gr_pos->Draw("PSame");
 	gr_neg->Draw("PSame");
 	text_a->Draw("Same");
-	text_b->Draw("Same");
+	//text_b->Draw("Same");
 
 
     //Define a linear function
@@ -302,9 +302,9 @@ void v2Merged(){
 	fit1->DrawClone("Same");
 
 
-	c1->Print("~/Summer2016/v2narrowslope_40.pdf");
-	c1->Print("~/Summer2016/v2narrowslope_40.gif");
-	c2->Print("~/Summer2016/v2narrowdiffslope_40.pdf");
-	c2->Print("~/Summer2016/v2narrowdiffslope_40.gif");
+	c1->Print("~/Summer2016/v2SPslope_40.pdf");
+	c1->Print("~/Summer2016/v2SPslope_40.gif");
+	c2->Print("~/Summer2016/v2SPdiffslope_40.pdf");
+	c2->Print("~/Summer2016/v2SPdiffslope_40.gif");
 
 }
