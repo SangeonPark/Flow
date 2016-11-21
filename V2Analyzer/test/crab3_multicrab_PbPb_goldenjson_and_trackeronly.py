@@ -43,7 +43,7 @@ efftableNameList = ["eff_5"]
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_Cumulant_NarrowPt_range2"
+outputName = "multicrab_CMW_Cumulant_NarrowPt_range3"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
