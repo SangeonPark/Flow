@@ -35,8 +35,8 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       etaCutMin = cms.double(-2.4),
                       etaCutMax = cms.double(2.4),
                       etaGap = cms.double(2.0),
-                      ptCutMin = cms.double(0.75),
-                      ptCutMax = cms.double(0.8),
+                      ptCutMin = cms.double(0.8),
+                      ptCutMax = cms.double(0.85),
                       NEtaBins = cms.int32(96),                        
                      
                       #pPb
