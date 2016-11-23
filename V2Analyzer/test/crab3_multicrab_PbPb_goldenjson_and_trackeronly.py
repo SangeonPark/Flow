@@ -4,7 +4,7 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
+process.load("Flow.V2Analyzer.closure_cfi")
 
 #ntrkRange = [200,400,800,1500]
 #ntrkLow = [60,70,80,90,100,120,140,160]
@@ -12,11 +12,11 @@ process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
 #ntrkLow = [90,120,150,185,220,260,300,400]
 #trkUpp = [120,150,185,220,260,300,400,500]
 
-#ntrkLow = [60,80,100,120,140,160]
-#ntrkUpp = [80,100,120,140,160,180]
+ntrkLow = [60,80,100,120,140,160]
+ntrkUpp = [80,100,120,140,160,180]
 
-ntrkLow = [60]
-ntrkUpp = [80]
+#ntrkLow = [60]
+#ntrkUpp = [80]
 
 
 #ntrkLow = [80,140,160]
@@ -33,8 +33,8 @@ ntrkUpp = [80]
 
 
 #efftableNameList = ["eff_1","eff_2","eff_2","eff_2","eff_3","eff_3","eff_3","eff_4"]
-#efftableNameList = ["eff_5","eff_4","eff_3","eff_2","eff_1","eff_1"]
-efftableNameList = ["eff_5"]
+efftableNameList = ["eff_5","eff_4","eff_3","eff_2","eff_1","eff_1"]
+#efftableNameList = ["eff_5"]
 
 #efftableNameList = ["eff_3","eff_4","eff_5"]
 #efftableNameList = ["eff_5","eff_5","eff_5","eff_5"]
@@ -43,7 +43,7 @@ efftableNameList = ["eff_5"]
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_SP_AppletoApple_ALICE_v2"
+outputName = "multicrab_CMW_closure_centrality_v1"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -79,7 +79,7 @@ if __name__ == '__main__':
                   "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER"]       
    
    for num in range(0,2):
-      for paths in range(0,1):
+      for paths in range(0,6):
          print 'double check that we are using sample %r ' % (sampleName[num])		
          print 'double check that ntrk range is fram %r to %r' % (ntrkLow[paths],ntrkUpp[paths])
          print 'double check that we are using %r' % (efftableNameList[paths])
