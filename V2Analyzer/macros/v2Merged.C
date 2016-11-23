@@ -3,7 +3,7 @@ using namespace std;
 
 void v2Merged(){
 
-	TFile *f = new TFile("../../../rootfiles/ScalarProduct/v2_SP_40.root");
+	TFile *f = new TFile("../../../rootfiles/appletoapple/ALICE.root");
 	TH1D* c2_pos_case1[100][4][2];
 	TH1D* c2_neg_case1[100][4][2];
 	TH1D* c2_tot_case1[100][4][2];
@@ -16,6 +16,10 @@ void v2Merged(){
 
 	TH1D* c2_pos[100][4];
 	TH1D* c2_neg[100][4];
+
+	//const double correction = 0.629;
+
+	const double correction = 1.0;
 
 	for (Int_t i = 0; i < 7; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
@@ -142,6 +146,9 @@ void v2Merged(){
 
 		x[i]=ach_hist[i]->GetMean();
 
+		x[i] *= correction; 
+
+
 		cout << "x : " << x[i] <<endl;
 
 
@@ -198,7 +205,9 @@ void v2Merged(){
 		err_neg[i] = sqrt(esquared);
 
 
-		v2_diff[i] = (v2_neg[i]-v2_pos[i])/(v2_neg[i]+v2_pos[i]);
+		//v2_diff[i] = (v2_neg[i]-v2_pos[i])/(v2_neg[i]+v2_pos[i]);
+		v2_diff[i] = (v2_neg[i]-v2_pos[i]);
+
 		cout << "difference : " << v2_diff[i] <<endl;
 		err_diff[i] = sqrt(err_neg[i]*err_neg[i]+err_pos[i]*err_pos[i]);
 
