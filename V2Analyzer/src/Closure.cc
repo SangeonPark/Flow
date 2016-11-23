@@ -194,6 +194,9 @@ Implementation:
  		reco_WQ2_neg[i] = 0.0;
 
  	}
+
+
+
  	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
 
  		double eta = cand->eta();
@@ -219,15 +222,18 @@ Implementation:
  		double dxyos = dxybest/dxyerror;
  		if(fabs(dzos) > offlineDCA_) continue;
  		if(fabs(dxyos) > offlineDCA_) continue;
-
 //ptError
  		if(fabs(cand->ptError())/cand->pt() > offlineptErr_ ) continue;
+
+
+		double efficiency = effTable->GetBinContent(effTable->FindBin(eta, pt));
+ 		double random = ((double) rand() / (RAND_MAX));
+ 		if( random > efficiency ) continue;
+
 
  		if(fabs(eta)<2.4 && pt > 0.4){
  			reconTracks++;
  		}
-
-
 
 
 //kinematic cuts
@@ -235,10 +241,7 @@ Implementation:
  		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
- 		double efficiency = effTable->GetBinContent(effTable->FindBin(eta, pt));
- 		double random = ((double) rand() / (RAND_MAX));
- 		if( random > efficiency ) continue;
-
+ 
 
 
  		TComplex e(1,2*phi,1);
@@ -246,9 +249,9 @@ Implementation:
 
 
 
- 		reco_N_tot += 1.0;
- 		if( charge > 0){ reco_N_pos+= 1.0;}
- 		if( charge < 0){ reco_N_neg+= 1.0;}
+ 		reco_N_tot += weight;
+ 		if( charge > 0){ reco_N_pos+= weight;}
+ 		if( charge < 0){ reco_N_neg+= weight;}
 
 
  		for (int i = 0; i < NBins; ++i)
@@ -369,8 +372,6 @@ Implementation:
 
  		TComplex e(1,2*phi,1);
  		e *= weight; 
-
-
 
  		gen_N_tot += 1.0;
  		if( charge > 0){ gen_N_pos+= 1.0;}
