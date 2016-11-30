@@ -4,7 +4,7 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.closure_cfi")
+process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
 
 #ntrkRange = [200,400,800,1500]
 #ntrkLow = [60,70,80,90,100,120,140,160]
@@ -43,20 +43,21 @@ efftableNameList = ["eff_5","eff_4","eff_3","eff_2","eff_1","eff_1"]
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_SP_FinalResult_MB5_centrality_v1"
+outputName = "multicrab_CMW_SP_FinalResult_MB67_centrality_v1"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'PbPbCumulant_cfg.py'
-config.Data.inputDBS = 'phys03'
+config.JobType.psetName = 'PbPb_502TeV_cfg.py'
+config.Data.inputDBS = 'global'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 10
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 config.Data.publication = False
 config.Data.outputDatasetTag = outputName
+config.Data.allowNonValidInputDataset = True
 config.Site.storageSite = 'T3_US_Rice'
 
 if __name__ == '__main__':
@@ -75,8 +76,8 @@ if __name__ == '__main__':
           print "Failed submitting task: %s" % (cle)
 
 
-   sampleName = [ "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_v5-70836070e3530d592901940b96c951fe/USER",
-                  "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER"]       
+   sampleName = [ "/HIMinimumBias6/HIRun2015-02May2016-v1/AOD",
+                  "/HIMinimumBias7/HIRun2015-02May2016-v1/AOD"]       
    
    for num in range(0,2):
       for paths in range(0,6):
