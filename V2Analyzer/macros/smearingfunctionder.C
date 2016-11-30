@@ -12,7 +12,7 @@ void smearingfunctionder()
    TF1* smearingfit[15][4];
    TF1* genfit[15];
    TF1* recofit[15];
-   for(int i=0; i<11;i++){
+   for(int i=0; i<14;i++){
 
       for (int j = 0; j < 4; ++j){
          smearingfit[i][j] = new TF1(Form("smearingfit_%d_%d",i,j),"[0]*exp(-0.5*(x-[1])*(x-[1])/([2]*[2]))/sqrt(2*pi*[2]*[2])", -1, 1);
@@ -30,26 +30,33 @@ void smearingfunctionder()
 
    c2->Divide(2,2);
 
-   int N[7] = {90,120,150,185,260,300,400};
-   int Ncent[4] = {30,40,50,60};
+   //int N[7] = {90,120,150,185,260,300,400};
+   int N[9] = {90,120,150,185,220,260,300,400,500};
+   int Ncent[7] = {30,40,50,60,70,80,90};
+
+
    double x[14];
    double y[14];
    double yerr[14];
+   double xerr[14];
+
+   double smearingmean[14];
+
 
    double smearingwidth;
 
 
-   for(int i=0;i<7;i++){
+   for(int i=0;i<14;i++){
 
 
-      if(i<7){
-         f = new TFile(Form("../../../rootfiles/closure/fctder_%d.root",N[i]));
+      if(i<8){
+         f = new TFile(Form("../../../rootfiles/closure/final/closure_mult_%d.root",N[i]));
       }
       else{
-         f = new TFile(Form("../../../rootfiles/closure/fctdercent_%d.root",Ncent[i-7]));
+         f = new TFile(Form("../../../rootfiles/closure/final/closure_cent_%d.root",Ncent[i-8]));
       }
 
-      cout << "ive reached : " << i << endl;
+     // cout << "ive reached : " << i << endl;
 
 
       genAch[i] = (TH1D*)f->Get("demo/GenChargeAsym");
@@ -66,7 +73,7 @@ void smearingfunctionder()
       genAch[i]->Scale(1.0/genAch[i]->Integral());
       recoAch[i]->Scale(1.0/recoAch[i]->Integral());
 
-      cout << "ive reached : " << i << endl;
+      //cout << "ive reached : " << i << endl;
 
       genfit[i] = new TF1(Form("genfit_%d",i),"gaus", -1, 1);
       recofit[i] = new TF1(Form("recofit_%d",i),"gaus", -1, 1);
@@ -77,7 +84,7 @@ void smearingfunctionder()
       genAch[i]->Fit(genfit[i],"RN0");
       recoAch[i]->Fit(recofit[i],"RN0");
 
-      cout << "this importnat point : " << i << endl;
+      //cout << "this importnat point : " << i << endl;
 
       
 
@@ -107,38 +114,41 @@ void smearingfunctionder()
       double smearing_prediction;
       smearing_prediction = sqrt(recowidth*recowidth-genwidth*genwidth);
 
-      cout << "point2 : " << i << endl;
+      //cout << "point2 : " << i << endl;
+      double smearingmean_temp = 0.0;
 
 
       for (int j=0;j<4;j++){
          double mean;
+
+
          
 
-         cout << "point3 : " << i <<" "<< j<< endl;
+         //cout << "point3 : " << i <<" "<< j<< endl;
 
 
 
 
          smearingAch[i][j] = genrecoach[i]->ProjectionX(Form("smearingdist_%f_%f",ach_low,ach_high),yaxis->FindBin(ach_low),yaxis->FindBin(ach_high));
          
-         cout << "point3-prime : " << i <<" "<< j<< endl;
+         //cout << "point3-prime : " << i <<" "<< j<< endl;
 
 
          smearingAch[i][j]->Rebin(20);
 
-         cout << "point3-prime1 : " << i <<" "<< j<< endl;
+         //cout << "point3-prime1 : " << i <<" "<< j<< endl;
 
          smearingAch[i][j]->Scale(1.0/smearingAch[i][j]->Integral());
 
-         cout << "point3-prime2 : " << i <<" "<< j<< endl;
+         //cout << "point3-prime2 : " << i <<" "<< j<< endl;
 
          mean = smearingAch[i][j]->GetMean();
 
-            cout << "point3-prime3 : " << mean <<" "<< smearing_prediction<< endl;
+         //cout << "point3-prime3 : " << mean <<" "<< smearing_prediction<< endl;
 
          smearingfit[i][j]->SetParameters(0.1,mean,smearing_prediction);
 
-         cout << "point4 : " << i <<" "<< j<< endl;
+         //cout << "point4 : " << i <<" "<< j<< endl;
 
 
          smearingAch[i][j]->Fit(smearingfit[i][j],"RN0","",-0.5,0.5);
@@ -146,6 +156,7 @@ void smearingfunctionder()
          double stdev_temp = smearingAch[i][j]->GetStdDev();
          double err_temp = smearingfit[i][j]->GetParError(2);
          double stderr_temp = smearingAch[i][j]->GetStdDevError();
+         smearingmean_temp += smearingfit[i][j]->GetParameter(1);
          sum_smearingwidth+=smearingwidth_temp;
          sum_stdev += stdev_temp; 
 
@@ -153,48 +164,57 @@ void smearingfunctionder()
          var_stdev += stderr_temp*stderr_temp;
 
 
-         cout << "point5 : " << i <<" "<< j<< endl;
+         //cout << "point5 : " << i <<" "<< j<< endl;
 
 
          ach_low += (genwidth*0.5);
          ach_high += (genwidth*0.5);
-         if(i==7){
+         
+         if(i==8){
             c2->cd(j+1);
             smearingAch[i][j]->Draw();
             smearingfit[i][j]->Draw("same");
-            TLatex* text4 = makeLatex(Form("smearing width : %f",smearingfit[i][j]->GetParameter(2)),0.60,0.51) ;
+            TLatex* text4 = makeLatex(Form("smearing mean : %f",smearingfit[i][j]->GetParameter(1)),0.70,0.71) ;
             text4->Draw("same");
 
-            cout << "width temp" << smearingwidth_temp << endl;
-            if(j==3){
-
-               TLatex* text5 = makeLatex(Form("stdev avg : %f, fit average:%f ",sum_stdev/4,sum_smearingwidth/4),0.60,0.41);
-               text5->Draw("same");
-            }
          }
+         
 
 
       }
 
 
 
+
       //smearingwidth = sum_stdev/4.0;
       smearingwidth = sum_smearingwidth/4.0;
 
-      cout << "sum smearingwidth : " << sum_smearingwidth << endl;
+      //cout << "sum smearingwidth : " << sum_smearingwidth << endl;
 
-      cout << "smearing widdth : " << smearingwidth << endl;
+      //cout << "smearing widdth : " << smearingwidth << endl;
 
       x[i] = NTrkHist[i]->GetMean();
+      smearingmean[i]=smearingmean_temp/4.0;
+
+
       y[i] = smearingwidth;
       yerr[i] = sqrt(var_smearingwidth);
+      xerr[i] = NTrkHist[i]->GetMeanError();
       //yerr[i] = sqrt(var_stdev);
 
 
    }
+   for(i=0;i<14;i++){
+      if(i<8){
+         cout << N[i] << "-" << N[i+1] << " : " << smearingmean[i] << endl;
+      }
+      else{
+         cout << Ncent[i-8] << "-" << Ncent[i-7] << "% : " << smearingmean[i] << endl;
+      }
+   }
    c1->cd();
 
-   TGraphErrors* smearing_fuc = new TGraphErrors(11,x,y,NULL,yerr);
+   TGraphErrors* smearing_fuc = new TGraphErrors(10,x,y,xerr,yerr);
 
    TH1D* base1 = makeHist("base1", "", "N^{offline}_{trk}", "#sigma_{smearing}", 6000,0, 6000, kBlack);
    TH1D* base2 = makeHist("base2", "", "Observed A_{ch}", "v_{2}(-) - v_{2}(+)", 1000, -0.2, 0.2, kBlack);
@@ -237,6 +257,8 @@ void smearingfunctionder()
 
 
    TF1 *myfit = new TF1("myfit","[0]*(1/sqrt(x)) + [1]", 0, 1200);
+   myfit->SetParameters(0.4,0.002);
+
    smearing_fuc->Fit(myfit,"RN0");
 
 
@@ -298,7 +320,7 @@ void smearingfunctionder()
 
 
 
-   c1->Print("~/Summer2016/smearingfunction_stdev.pdf");
+   c1->Print("~/Summer2016/smearingfunction_stdev.gif");
    c2->Print("~/Summer2016/smearingfit_eachbin.pdf");
 
    cout << "Mean x!!!!!!!!!: " << x[0] << endl;
