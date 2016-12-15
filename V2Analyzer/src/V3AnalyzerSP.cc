@@ -471,15 +471,23 @@ Implementation:
  	edm::Service<TFileService> fs;
  	TH1D::SetDefaultSumw2();
 
- 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",21,-0.4,0.4);
- 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",1000,0,500);
+ 	NAchBins = achBins_.size()-1;
 
- 	edm::FileInPath fip1("Flow/V2Analyzer/data/Hydjet_eff_mult_v1.root");  
+
+ 	asym_Dist = fs->make<TH1D>("ChargeAsym","Distribution of Charge Asymmetry",1000,-0.4,0.4);
+ 	NTrkHist = fs->make<TH1D>("NTrkHist","NTrack",5000,0,5000);
+ 	cbinHist = fs->make<TH1D>("cbinHist",";cbin",200,0,200);
+ 	etaHist = fs->make<TH1D>("etaHist",";etaHist", 1000,-2.4,2.4);
+
+
+
+
+ 	edm::FileInPath fip1(efftablePath_.c_str());  
  	TFile f1(fip1.fullPath().c_str(),"READ");
- 	effTable = (TH2D*)f1.Get("rTotalEff3D_1");
+ 	effTable = (TH2D*)f1.Get(efftableName_.c_str());
 
 //list of c2 histograms
- 	for (Int_t i = 0; i < 5; i++){
+ 	for (Int_t i = 0; i < NAchBins; i++){
  		for(Int_t j = 0 ; j < 4; j++){
 
  			c2_pos_case1[i][j][0] = fs->make<TH1D>(Form("c2pos_%d_%d_cos_case1",i,j),"c2 Distribution",1000,-1,1);
@@ -492,13 +500,13 @@ Implementation:
  			c2_neg_case2[i][j][1] = fs->make<TH1D>(Form("c2neg_%d_%d_sin_case2",i,j),"c2 Distribution",1000,-1,1);
 
  		}
- 	}
+ 		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+ 		pt_pos[i] = fs->make<TH1D>(Form("pt_pos_%d",i+1),Form("pt_pos_%d",i+1),1000,0.0,4.0);
+ 		pt_neg[i] = fs->make<TH1D>(Form("pt_neg_%d",i+1),Form("pt_neg_%d",i+1),1000,0.0,4.0);
 
- 	ach_hist[0] = fs->make<TH1D>("ach_1","ach_1",1000,-0.4,0.4);
- 	ach_hist[1] = fs->make<TH1D>("ach_2","ach_2",1000,-0.4,0.4);
- 	ach_hist[2] = fs->make<TH1D>("ach_3","ach_3",1000,-0.4,0.4);
- 	ach_hist[3] = fs->make<TH1D>("ach_4","ach_4",1000,-0.4,0.4);
- 	ach_hist[4] = fs->make<TH1D>("ach_5","ach_5",1000,-0.4,0.4);
+
+
+ 	}
  }
 
 // ------------ method called once each job just after ending the event loop  ------------
