@@ -36,7 +36,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	//f = new TFile("../../../rootfiles/systematics_redo/v2_Cumulant_40.root");
 
 
-	f = new TFile("../../../rootfiles/narrowpt/3Merged.root");
+	f = new TFile("../../../rootfiles/narrowpt/range2.root");
 
 	// = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
 
@@ -137,7 +137,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_1.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/narrowpt_30_40_centrality.root","RECREATE");
 
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
@@ -167,7 +167,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	//TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
 	TLatex* text_b = makeLatex("30-40%",0.25,0.80) ;
 
-	TLatex* text_c = makeLatex("0.7 < p_{T} < 0.85 GeV/c",0.25,0.75) ;
+	TLatex* text_c = makeLatex("0.8 < p_{T} < 0.85 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
 	text_a->SetTextFont(42);
@@ -244,7 +244,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
 
-	SaveCanvas(c3,"pics",Form("30-40Narrowpt3RangeMerged"));
+	SaveCanvas(c3,"pics",Form("30-40Narrowpt"));
 
 
 

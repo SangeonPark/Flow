@@ -15,8 +15,8 @@ demo = cms.EDAnalyzer('V2AnalyzerSP',
                       vzHigh = cms.untracked.double(15.0),           
                       etaCutMin = cms.double(-2.4),
                       etaCutMax = cms.double(2.4),
-                      ptCutMin = cms.double(0.3),
-                      ptCutMax = cms.double(3.0),
+                      ptCutMin = cms.double(0.7),
+                      ptCutMax = cms.double(0.85),
 
 
                       doEffCorrection = cms.bool(True),

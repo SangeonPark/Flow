@@ -43,7 +43,7 @@ efftableNameList = ["eff_1","eff_2","eff_2","eff_2","eff_3","eff_3","eff_3","eff
 efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
 
 
-outputName = "multicrab_CMW_SP_FinalResult_MB67_multiplicity_v1"
+outputName = "multicrab_CMW_SP_FinalResult_NarrowPt_MB67_multiplicity_v1"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True

@@ -345,7 +345,7 @@ void selfcorr_SP_new(){
 	base3->GetXaxis()->CenterTitle();
 	base3->GetYaxis()->CenterTitle();
 	base3->SetTitleSize  (0.040,"X");
-	base3->SetTitleOffset(1.4,"X");
+	base3->SetTitleOffset(1.4,"X");	
 	base3->SetTitleFont  (42,"X");
 	base3->SetLabelOffset(0.006,"X");
 	base3->SetLabelSize  (0.040,"X");

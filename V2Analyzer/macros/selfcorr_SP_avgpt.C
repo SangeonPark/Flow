@@ -6,7 +6,7 @@ void selfcorr_SP_avgpt(){
 
 	const int NAchBins = 7;
 
-	TFile *f = new TFile("../../../rootfiles/appletoapple/ALICE.root");
+	TFile *f = new TFile("../../../rootfiles/systematics_redo/v2_Cumulant_30.root");
 	TH1D* pt_pos[100];
 	TH1D* pt_neg[100];
 
@@ -32,11 +32,16 @@ void selfcorr_SP_avgpt(){
 	double ptavg_pos[NAchBins];
 	double ptavg_neg[NAchBins];
 	double ptavg_diff[NAchBins];
+	double ptavg_pos_err[NAchBins];
+	double ptavg_neg_err[NAchBins];
+	double ptavg_diff_err[NAchBins];
 
 
 	double numerator;
 	double denominator;
 	double q0,q1,q2,q3;
+
+	double variance_pos,variance_neg,variance_diff,sum;
 
 	
 	
@@ -46,21 +51,53 @@ void selfcorr_SP_avgpt(){
 		x[i]=ach_hist[i]->GetMean();
 		ptavg_pos[i]=pt_pos[i]->GetMean();
 		ptavg_neg[i]=pt_neg[i]->GetMean();
+		ptavg_pos_err[i]=pt_pos[i]->GetMeanError();
+
+		variance_pos = ptavg_pos_err[i]*ptavg_pos_err[i];
+		
+		ptavg_neg_err[i]=pt_neg[i]->GetMeanError();
+		
+		variance_neg = ptavg_neg_err[i]*ptavg_neg_err[i];
+		
 		ptavg_diff[i] = (ptavg_neg[i] - ptavg_pos[i])/(ptavg_neg[i] + ptavg_pos[i]);
-		cout << ptavg_diff[i] << endl;
+
+		sum = ptavg_pos[i] + ptavg_neg[i];
+		variance_diff = (4*ptavg_neg[i]*ptavg_neg[i]*variance_pos)/(sum*sum*sum*sum)+(4*ptavg_pos[i]*ptavg_pos[i]*variance_neg)/(sum*sum*sum*sum);
+		
+		ptavg_diff_err[i] = sqrt(variance_diff);
+		cout << ptavg_neg_err[i] << endl;
+
 
 	}	
 
+	TFile *file1 = new TFile("~/Summer2016/root_forgraphs/meanptslope.root","RECREATE");
 
 
-	TGraph *gr_pos = new TGraph(NAchBins,x,ptavg_pos);
-	TGraph *gr_neg = new TGraph(NAchBins,x,ptavg_neg);
-	TGraph *gr_diff = new TGraph(NAchBins,x,ptavg_diff);
+
+	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,ptavg_pos,NULL,ptavg_pos_err);
+	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,ptavg_neg,NULL,ptavg_neg_err);
+	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,ptavg_diff,NULL,ptavg_diff_err);
+	
+	gr_diff->RemovePoint(6);
+	gr_diff->RemovePoint(0);
+
+	gr_pos->RemovePoint(6);
+	gr_pos->RemovePoint(0);
+
+	gr_neg->RemovePoint(6);
+	gr_neg->RemovePoint(0);
+
+	gr_pos->Write();
+	gr_neg->Write();
+	gr_diff->Write();
+
+
+
 
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.7, 0.9);
+	base->GetYaxis()->SetRangeUser(0.78, 0.84);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
@@ -84,9 +121,9 @@ void selfcorr_SP_avgpt(){
 	base->SetLineWidth(0);
 
 	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
-	base2->GetYaxis()->SetRangeUser(-0.1, 0.1);
+	base2->GetYaxis()->SetRangeUser(-0.05, 0.05);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
-	base2->GetYaxis()->SetTitle(" <pt>_{neg}-<pt>_{pos}/<pt>_{neg}+<pt>_{pos} ");
+	base2->GetYaxis()->SetTitle(" (<pt>_{neg}-<pt>_{pos})/(<pt>_{neg}+<pt>_{pos}) ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
 	base2->SetTitleSize  (0.040,"X");
@@ -141,7 +178,7 @@ void selfcorr_SP_avgpt(){
 	gStyle->SetOptTitle(0);
 
 //	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_a = makeLatex("ALICE, 30-40% centrality",0.25,0.85) ;
+	TLatex* text_a = makeLatex("CMS, 30-40% centrality",0.25,0.85) ;
 //	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_b = makeLatex("A_{ch} in -2.4 < #eta < 0",0.25,0.80) ;
 	TLatex* text_d = makeLatex("v_{2} in -2.4 < #eta < 0",0.25,0.75) ;
@@ -191,6 +228,10 @@ void selfcorr_SP_avgpt(){
 	fit1->SetLineColor(kRed);
 	fit1->SetLineStyle(2);
 	gr_diff->Fit(fit1,"RN0");
+
+	fit1->Write();
+
+
 
 	c1->cd(2);
 /*	gr_diff_poseta->GetYaxis()->SetRangeUser(-0.004,0.004);
@@ -245,6 +286,10 @@ void selfcorr_SP_avgpt(){
 	*/
 	c1->Print("~/Summer2016/avgpt_30.pdf");
 	c1->Print("~/Summer2016/avgpt_30.gif");
+
+			file1->Close();
+
+
 
 
 }

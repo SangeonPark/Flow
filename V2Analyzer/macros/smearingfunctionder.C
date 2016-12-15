@@ -320,7 +320,7 @@ void smearingfunctionder()
 
 
 
-   c1->Print("~/Summer2016/smearingfunction_stdev.gif");
+   c1->Print("~/Summer2016/smearingfunction_stdev.pdf");
    c2->Print("~/Summer2016/smearingfit_eachbin.pdf");
 
    cout << "Mean x!!!!!!!!!: " << x[0] << endl;
