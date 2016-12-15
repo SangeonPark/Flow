@@ -4,9 +4,12 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.closure_cfi")
+process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
 
 ntrkRange = [120,150,185,220,260,300]
+efftableNameList = ["eff_2","eff_2","eff_2","eff_3","eff_3"]
+efftablePathList = ["Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root","Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root"]
+
 
 hltPathNames = ['HLT_PAPixelTracks_Multiplicity100_v*',
 		'HLT_PAPixelTracks_Multiplicity130_v*',
@@ -18,7 +21,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_pPb_v2_closuretest_randomdropping'
+outputName = 'multicrab_CMW_SP_FinalResult_v2_pPb_v1'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'v2analyzerCumulant_cfg.py'
@@ -51,14 +54,18 @@ if __name__ == '__main__':
 		 "/PAHighPt/davidlw-PA2013_FlowCorr_PromptReco_TrkHM_Gplus_Reverse_ReTracking_v18-28b2b9cce04ec3f20baeb96fbd2295a8/USER"]
    beam = [False,False,True]
 
-   for paths in range(2,3):
+   for paths in range(0,5):
    	  for num in range(0,3):
 		
                 print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
 		print 'double check that multipclicity range is from %r to %r' % (ntrkRange[paths], ntrkRange[paths+1])
+		print 'double check that we are using %r' % (efftableNameList[paths])
+        print 'double check that we are using %r' % (efftablePathList[num])
 		
 		process.demo.Nmin = ntrkRange[paths]
 		process.demo.Nmax = ntrkRange[paths+1]
+		process.demo.efftablePath = efftablePathList[num]
+        process.demo.efftableName = efftableNameList[paths]
 		
 		if paths == 0:
 			process.hltHM.HLTPaths = [hltPathNames[0]]

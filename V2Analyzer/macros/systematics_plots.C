@@ -31,7 +31,7 @@ void systematics_plots(){
 	double variance_diff;
 
 
-	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_vtz_wide.root");
+	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_trk_loose.root");
 
 	for (Int_t i = 0; i < NAchBins; i++){
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
@@ -90,7 +90,7 @@ void systematics_plots(){
 
 	diff_list[0] = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
 
-	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_vtz_narrow.root");
+	f = new TFile("~/Summer2016/rootfiles/systematics_redo/v2_trk_tight.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -230,7 +230,7 @@ void systematics_plots(){
 
 
 	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
+	TLatex* text_b = makeLatex("30-40%",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
 	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
 
@@ -260,9 +260,9 @@ void systematics_plots(){
 	diff_list[2]->Fit(fit3,"N0");
 
 
-	TLatex* text1 = makeLatex(Form("wide slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;	
-	TLatex* text2 = makeLatex(Form("narrow slope : %.3f #pm %.3f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.30) ;
-	TLatex* text3= makeLatex(Form("def. slope : %.3f #pm %.3f",fit3->GetParameter(1),fit3->GetParError(1)),0.45,0.35) ;
+	TLatex* text1 = makeLatex(Form("loose slope : %.3f #pm %.3f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;	
+	TLatex* text2 = makeLatex(Form("tight slope : %.3f #pm %.3f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.30) ;
+	TLatex* text3= makeLatex(Form("default slope : %.3f #pm %.3f",fit3->GetParameter(1),fit3->GetParError(1)),0.45,0.35) ;
 
 
 	text1->SetTextFont(42);
@@ -317,7 +317,7 @@ void systematics_plots(){
 	leg2->AddEntry(fit3 , "default","l");
 
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","syst_trkcuts");
+	SaveCanvas(c3,"pics","syst_trk");
 
 
 
