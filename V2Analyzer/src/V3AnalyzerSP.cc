@@ -35,14 +35,19 @@ Implementation:
  V3AnalyzerSP::V3AnalyzerSP(const edm::ParameterSet& iConfig)
  {
 
+ 	offlineptErr_ = iConfig.getUntrackedParameter<double>("offlineptErr");
  	offlineDCA_ = iConfig.getUntrackedParameter<double>("offlineDCA");
  	etaCutMin_ = iConfig.getParameter<double>("etaCutMin");
  	etaCutMax_ = iConfig.getParameter<double>("etaCutMax");
+ 	ptCutMin_ = iConfig.getParameter<double>("ptCutMin");
+ 	ptCutMax_ = iConfig.getParameter<double>("ptCutMax");
+
  	etaHFLow_ = iConfig.getParameter<double>("etaHFLow");
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
-
- 	NTrkMin_ = iConfig.getParameter<int>("NTrkMin");
- 	NTrkMax_ = iConfig.getParameter<int>("NTrkMax");
+ 	Nmin_ = iConfig.getParameter<int>("Nmin");
+ 	Nmax_ = iConfig.getParameter<int>("Nmax");
+ 	vzLow_ = iConfig.getUntrackedParameter<double>("vzLow");
+ 	vzHigh_ = iConfig.getUntrackedParameter<double>("vzHigh");
 
  	trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
  	vertexSrc_ = iConfig.getParameter<std::string>("vertexSrc");
@@ -50,6 +55,13 @@ Implementation:
 
  	doEffCorrection_ = iConfig.getParameter<bool>("doEffCorrection");
  	reverseBeam_ = iConfig.getParameter<bool>("reverseBeam");
+
+
+ 	useCentrality_ = iConfig.getParameter<bool>("useCentrality");
+ 	centBins_ = iConfig.getUntrackedParameter<std::vector<double>>("centBins");
+ 	achBins_ = iConfig.getUntrackedParameter<std::vector<double>>("achBins");
+ 	efftablePath_ = iConfig.getParameter<std::string>("efftablePath");
+ 	efftableName_ = iConfig.getParameter<std::string>("efftableName");
 
 //now do what ever initialization is needed
 
@@ -84,14 +96,65 @@ Implementation:
  	bestvzError = vtx.zError(); bestvxError = vtx.xError(); bestvyError = vtx.yError();
 
 //vertices selection
- 	if(bestvz < -15.0 || bestvz>15.0) return;
+ 	if( fabs(bestvz) < vzLow_ || fabs(bestvz) > vzHigh_ ) return;
 
  	edm::Handle<reco::TrackCollection> tracks;
  	iEvent.getByLabel(trackSrc_, tracks);
 
+ 	//centrality range selection
+
+ 	Handle<CaloTowerCollection> towers;
+ 	iEvent.getByLabel(towerSrc_, towers);
+
+
+
+ 	double etHFtowerSumPlus = 0.0;
+ 	double etHFtowerSumMinus = 0.0;
+ 	double etHFtowerSum = 0.0;
+
+ 	if( useCentrality_ ){
+
+ 		for( unsigned i = 0; i<towers->size(); ++ i){
+ 			const CaloTower & tower = (*towers)[ i ];
+ 			double eta = tower.eta();
+ 			bool isHF = tower.ietaAbs() > 29;
+ 			if(isHF && eta > 0){
+ 				etHFtowerSumPlus += tower.pt();
+ 			}
+ 			if(isHF && eta < 0){
+ 				etHFtowerSumMinus += tower.pt();
+ 			}
+ 		}
+ 		etHFtowerSum=etHFtowerSumPlus + etHFtowerSumMinus;
+
+ 		int bin = -1;
+ 		for(int j=0; j<200; j++){
+ 			if( etHFtowerSum >= centBins_[j] ){
+ 				bin = j; break;
+ 			}
+ 		}
+
+ 		int hiBin = bin;
+ 		cbinHist->Fill( hiBin );
+ 		if( hiBin < Nmin_ || hiBin >= Nmax_ ) return;
+
+ 	}
+
  	double N_pos = 0.0;
  	double N_neg = 0.0;
  	double N_tot = 0.0;
+
+ 	double N_pos_fixed = 0.0;
+ 	double N_neg_fixed = 0.0;
+ 	double N_tot_fixed = 0.0;
+
+ 	double pt_tot_pos = 0.0;
+ 	double pt_avg_pos = 0.0;
+ 	double pt_weight_pos = 0.0;
+
+ 	double pt_tot_neg = 0.0;
+ 	double pt_avg_neg = 0.0;
+ 	double pt_weight_neg = 0.0;
 
 
  	double W_Q2C = 0.0;
@@ -121,6 +184,49 @@ Implementation:
  		double eta = cand->eta();
  		double charge = (double)cand->charge();
  		double pt = cand->pt();
+ 		double weight = 1.0;
+ 		if( doEffCorrection_ ){
+ 			weight = 1.0/effTable->GetBinContent( effTable->FindBin(eta, pt) );
+ 		}
+//highPurity
+ 		if(!cand->quality(reco::TrackBase::highPurity)) continue;
+ 		math::XYZPoint bestvtx(bestvx,bestvy,bestvz);
+ 		double dzbest = cand->dz(bestvtx);
+ 		double dxybest = cand->dxy(bestvtx);
+ 		double dzerror = sqrt(cand->dzError()*cand->dzError()+bestvzError*bestvzError);
+ 		double dxyerror = sqrt(cand->d0Error()*cand->d0Error()+bestvxError*bestvyError);
+ 		double dzos = dzbest/dzerror;
+ 		double dxyos = dxybest/dxyerror;
+ 		if(fabs(dzos) > 3) continue;
+ 		if(fabs(dxyos) > 3) continue;
+ 		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
+ 		if(fabs(eta)<2.4 && pt > 0.4){
+ 			nTracks++;
+ 			if(charge>0){
+ 				nTracks_pos++;
+ 			}
+ 			else{
+ 				nTracks_neg++;
+ 			}
+ 		}
+ 		if(pt <= 0.3 ||  3.0 <= pt ) continue;
+ 		if(eta <= -2.4 || 2.4 <= eta) continue;
+ 		N_tot_fixed += weight;
+ 		if(charge>0){ N_pos_fixed += weight; }
+ 		if(charge<0){ N_neg_fixed += weight; }
+ 	}
+ 	//Cut on NTrackOffline (Should be disabled if useCentrality = True)	
+ 	if(!useCentrality_){
+
+ 		if( nTracks < Nmin_ || nTracks >= Nmax_ ) return;
+
+ 	}
+
+ 	for( reco::TrackCollection::const_iterator cand = tracks->begin(); cand != tracks->end(); cand++){
+
+ 		double eta = cand->eta();
+ 		double charge = (double)cand->charge();
+ 		double pt = cand->pt();
  		double phi = cand->phi();
  		double weight = 1.0;
 
@@ -143,65 +249,57 @@ Implementation:
  		if(fabs(dxyos) > offlineDCA_) continue;
 
 //ptError
- 		if(fabs(cand->ptError())/cand->pt() > 0.1 ) continue;
+ 		if(fabs(cand->ptError())/cand->pt() > offlineptErr_ ) continue;
 
- 		if(fabs(eta)<2.4 && pt > 0.4){
- 			nTracks++;
- 			if(charge>0){
- 				nTracks_pos++;
- 			}
- 			else{
- 				nTracks_neg++;
- 			}
- 		}
 
- 		if(pt < 0.3 || pt > 3.0 ) continue;
- 		if(2.4 < fabs(eta)) continue;
+ 		if(pt <= ptCutMin_ ||  ptCutMax_ <= pt ) continue;
+ 		if(eta <= etaCutMin_ || etaCutMax_ <= eta) continue;
  		if(reverseBeam_) { eta *= -1.0;}
 
+ 		etaHist->Fill(eta);
 
  		TComplex e(1,3*phi,1);
 
- 		e *= weight; 
+ 		e *= weight;
+ 		N_tot += weight; 
+ 		if( charge > 0){
+ 			N_pos+=weight;
+ 			pt_tot_pos += pt*weight;
+ 			pt_weight_pos += weight; 
+ 		}
+ 		if( charge < 0){
+ 			N_neg+=weight;
+ 			pt_tot_neg += pt*weight;
+ 			pt_weight_neg += weight;
+
+ 		}
 
 
  		if(-1.0 <= eta && eta < 1.0){
  			Q2C += e;
- 			N_tot+=weight;
  			W_Q2C += weight;
- 			if(charge > 0.0){
- 				N_pos+=weight;
- 			}
- 			if(charge < 0.0){
- 				N_neg+=weight;
- 			}
+
 
  		}
- 		if(1.0 <= eta && eta < 2.4){
- 			N_tot += weight;
+ 		if(0 < eta && eta < 2.4){
  			if(charge > 0.0){
- 				N_pos+=weight;
  				Q2pluseta_pos += e;
  				W_Q2pluseta_pos += weight;
 
  			}
  			if(charge < 0.0){
- 				N_neg+=weight;
  				Q2pluseta_neg += e;
  				W_Q2pluseta_neg += weight;
 
  			}
  		}
- 		if(-2.4 <= eta && eta < -1.0){
- 			N_tot += weight;
+ 		if(-2.4 < eta && eta < 0){
  			if(charge > 0.0){
- 				N_pos+=weight;
  				Q2minuseta_pos += e;
  				W_Q2minuseta_pos += weight;
 
  			}
  			if(charge < 0.0){
- 				N_neg+=weight;
  				Q2minuseta_neg += e;
  				W_Q2minuseta_neg += weight;
 
@@ -209,9 +307,6 @@ Implementation:
  		}
 
  	}
-
- 	Handle<CaloTowerCollection> towers;
- 	iEvent.getByLabel(towerSrc_, towers);
 
  	double W_Q2A = 0;
  	double W_Q2B = 0;
@@ -242,19 +337,21 @@ Implementation:
  		}
  	}
 
+ 	double N_diff_fixed = N_pos_fixed - N_neg_fixed;
+ 	double ach = N_diff_fixed/N_tot_fixed;
 
- 	if( nTracks < NTrkMin_ || nTracks >= NTrkMax_ ) return;
+ 	pt_avg_pos = pt_tot_pos/pt_weight_pos; 
+ 	pt_avg_neg = pt_tot_neg/pt_weight_neg; 
 
-
- 	double N_diff = N_pos - N_neg;
- 	double ach = N_diff/N_tot;
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
 
- 	for(Int_t i=0;i<5;i++){
+ 	for(Int_t i=0;i<NAchBins;i++){
 
- 		if(Bins[i] < ach && ach <= Bins[i+1]){
+ 		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
+ 			pt_pos[i]->Fill(pt_avg_pos);
+ 			pt_neg[i]->Fill(pt_avg_neg);
 
  			TComplex z;
  			double Npairs;
@@ -363,6 +460,7 @@ Implementation:
 
  		}
  	}
+
 
  }
 

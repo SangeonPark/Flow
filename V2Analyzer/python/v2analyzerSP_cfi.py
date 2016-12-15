@@ -33,7 +33,7 @@ demo = cms.EDAnalyzer('V2AnalyzerSP',
                       #cross-check
                       achBins = cms.untracked.vdouble(-1,-0.09,-0.05,-0.015,0.015,0.05,0.09,1),
                       reverseBeam = cms.bool(False),
-                      useCentrality = cms.bool(False),
+                      useCentrality = cms.bool(True),
                       Nmin = cms.int32(185),
                       Nmax = cms.int32(220),
                       
