@@ -5,6 +5,8 @@ using namespace std;
 void v2ErrGraph(){
 
 	TFile* f;
+	const int NAchBins = 7;
+
 	TH1D* c2_pos_case1[5][5][2];
 	TH1D* c2_neg_case1[5][5][2];
 	TH1D* c2_tot_case1[5][5][2];
