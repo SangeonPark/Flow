@@ -60,12 +60,12 @@ if __name__ == '__main__':
                 print 'double check that with %r sample the reverse beam option is %r ' % (num, beam[num])
 		print 'double check that multipclicity range is from %r to %r' % (ntrkRange[paths], ntrkRange[paths+1])
 		print 'double check that we are using %r' % (efftableNameList[paths])
-        print 'double check that we are using %r' % (efftablePathList[num])
+                print 'double check that we are using %r' % (efftablePathList[num])
 		
 		process.demo.Nmin = ntrkRange[paths]
 		process.demo.Nmax = ntrkRange[paths+1]
 		process.demo.efftablePath = efftablePathList[num]
-        process.demo.efftableName = efftableNameList[paths]
+                process.demo.efftableName = efftableNameList[paths]
 		
 		if paths == 0:
 			process.hltHM.HLTPaths = [hltPathNames[0]]
