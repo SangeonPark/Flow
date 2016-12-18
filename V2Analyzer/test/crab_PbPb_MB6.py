@@ -3,7 +3,7 @@
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
-outputName = 'CMW_PbPb_MainResult_ver2'
+outputName = 'CMW_PbPb_MainResult_MB6_ver2'
 config.General.requestName = outputName
 config.General.workArea = outputName
 config.General.transferOutputs = True
@@ -32,6 +32,7 @@ config.Data.allowNonValidInputDataset = True
 #PbPb Data
 config.Data.inputDataset = '/HIMinimumBias6/HIRun2015-02May2016-v1/AOD'
 config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/HI/Cert_262548-263757_PromptReco_HICollisions15_JSON_v2.txt'
+#config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/HI/Cert_263685-263757_PromptReco_HICollisions15_TrackerOnly_JSON.txt'
 
 config.Data.splitting = 'LumiBased'
 config.Data.ignoreLocality = False
