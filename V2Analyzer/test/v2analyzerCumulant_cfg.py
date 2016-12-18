@@ -2,15 +2,11 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Demo")
 
-
 process.SimpleMemoryCheck = cms.Service("SimpleMemoryCheck",ignoreTotal = cms.untracked.int32(1) )
-
 
 process.load("FWCore.MessageService.MessageLogger_cfi")
 process.MessageLogger.cerr.FwkReport.reportEvery = cms.untracked.int32(1000)
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
-
-
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 
 process.source = cms.Source("PoolSource",
