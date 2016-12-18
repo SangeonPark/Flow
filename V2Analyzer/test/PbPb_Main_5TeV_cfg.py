@@ -50,6 +50,7 @@ process.TFileService = cms.Service("TFileService",fileName = cms.string("vn_main
 
 process.demo_n1 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_1'),
                       Nmin = cms.int32(90),
                       Nmax = cms.int32(120),
                       order = cms.int32(2),  
@@ -58,6 +59,7 @@ process.demo_n1 = process.demo.clone(
 
 process.demo_n2 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_2'),
                       Nmin = cms.int32(120),
                       Nmax = cms.int32(150),
                       order = cms.int32(2),  
@@ -65,30 +67,35 @@ process.demo_n2 = process.demo.clone(
 
 process.demo_n3 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_2'),
                       Nmin = cms.int32(150),
                       Nmax = cms.int32(185),
                       order = cms.int32(2),  
 )
 process.demo_n4 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_2'),
                       Nmin = cms.int32(185),
                       Nmax = cms.int32(220),
                       order = cms.int32(2),  
 )
 process.demo_n5 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_3'),
                       Nmin = cms.int32(220),
                       Nmax = cms.int32(260),
                       order = cms.int32(2),  
 )
 process.demo_n6 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_3'),
                       Nmin = cms.int32(260),
                       Nmax = cms.int32(300),
                       order = cms.int32(2),  
 )
 process.demo_n7 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_3'),
                       Nmin = cms.int32(300),
                       Nmax = cms.int32(400),
                       order = cms.int32(2),  
@@ -96,6 +103,7 @@ process.demo_n7 = process.demo.clone(
 
 process.demo_n8 = process.demo.clone(
                       useCentrality = cms.bool(False),
+                      efftableName = cms.string('eff_4'),
                       Nmin = cms.int32(400),
                       Nmax = cms.int32(500),
                       order = cms.int32(2),  
@@ -103,6 +111,7 @@ process.demo_n8 = process.demo.clone(
 
 process.demo_n9 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_5'),
                       Nmin = cms.int32(60),
                       Nmax = cms.int32(80),
                       order = cms.int32(2),  
@@ -111,6 +120,7 @@ process.demo_n9 = process.demo.clone(
 
 process.demo_n10 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_4'),
                       Nmin = cms.int32(80),
                       Nmax = cms.int32(100),
                       order = cms.int32(2),  
@@ -118,6 +128,7 @@ process.demo_n10 = process.demo.clone(
 
 process.demo_n11 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_3'),
                       Nmin = cms.int32(100),
                       Nmax = cms.int32(120),
                       order = cms.int32(2),  
@@ -125,6 +136,7 @@ process.demo_n11 = process.demo.clone(
 
 process.demo_n12 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_2'),
                       Nmin = cms.int32(120),
                       Nmax = cms.int32(140),
                       order = cms.int32(2),  
@@ -132,6 +144,7 @@ process.demo_n12 = process.demo.clone(
 
 process.demo_n13 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_1'),
                       Nmin = cms.int32(140),
                       Nmax = cms.int32(160),
                       order = cms.int32(2),  
@@ -139,6 +152,7 @@ process.demo_n13 = process.demo.clone(
 
 process.demo_n14 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_1'),
                       Nmin = cms.int32(160),
                       Nmax = cms.int32(180),
                       order = cms.int32(2),  
@@ -146,6 +160,7 @@ process.demo_n14 = process.demo.clone(
 
 process.demo_n15 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_5'),
                       Nmin = cms.int32(60),
                       Nmax = cms.int32(80),
                       order = cms.int32(3),  
@@ -154,6 +169,7 @@ process.demo_n15 = process.demo.clone(
 
 process.demo_n16 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_4'),
                       Nmin = cms.int32(80),
                       Nmax = cms.int32(100),
                       order = cms.int32(3),  
@@ -161,6 +177,7 @@ process.demo_n16 = process.demo.clone(
 
 process.demo_n17 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_3'),
                       Nmin = cms.int32(100),
                       Nmax = cms.int32(120),
                       order = cms.int32(3),  
@@ -168,6 +185,7 @@ process.demo_n17 = process.demo.clone(
 
 process.demo_n18 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_2'),
                       Nmin = cms.int32(120),
                       Nmax = cms.int32(140),
                       order = cms.int32(3),  
@@ -175,6 +193,7 @@ process.demo_n18 = process.demo.clone(
 
 process.demo_n19 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_1'),
                       Nmin = cms.int32(140),
                       Nmax = cms.int32(160),
                       order = cms.int32(3),  
@@ -182,6 +201,7 @@ process.demo_n19 = process.demo.clone(
 
 process.demo_n20 = process.demo.clone(
                       useCentrality = cms.bool(True),
+                      efftableName = cms.string('eff_1'),
                       Nmin = cms.int32(160),
                       Nmax = cms.int32(180),
                       order = cms.int32(3),  
