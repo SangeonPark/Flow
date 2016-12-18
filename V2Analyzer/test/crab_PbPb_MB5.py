@@ -29,6 +29,7 @@ config.Data.inputDBS = 'phys03'
 
 #PbPb Data
 config.Data.inputDataset = '/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_v5-70836070e3530d592901940b96c951fe/USER'
+#config.Data.inputDataset = '/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER'
 
 config.Data.splitting = 'FileBased'
 config.Data.ignoreLocality = False
