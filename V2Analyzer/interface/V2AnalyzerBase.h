@@ -235,6 +235,7 @@ private:
       double vzHigh_;
       int Nmin_;
       int Nmax_;
+      int order_;
 
       std::vector<double> centBins_;
       std::vector<double> achBins_;
