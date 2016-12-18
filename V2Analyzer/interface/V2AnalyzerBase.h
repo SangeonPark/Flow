@@ -172,6 +172,7 @@ private:
       double etaCutMax_;
       double etaHFLow_;
       double etaHFUpp_;
+      double order_;
       int NTrkMin_;
       int NTrkMax_;
       bool doEffCorrection_;

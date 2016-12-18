@@ -5,17 +5,13 @@ using namespace std;
 void selfcorr_SP_avgpt(){
 
 	const int NAchBins = 7;
+	const double correction = 0.641;
 
-	TFile *f = new TFile("../../../rootfiles/systematics_redo/v2_Cumulant_30.root");
+	TFile *f = new TFile("../../../rootfiles/FinalResult_Temp/MainResult/v2/PbPb/centrality/50/Merged.root");
+
 	TH1D* pt_pos[100];
 	TH1D* pt_neg[100];
-
-
 	TH1D* ach_hist[100];
-
-
-
-
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -49,6 +45,8 @@ void selfcorr_SP_avgpt(){
 		
 
 		x[i]=ach_hist[i]->GetMean();
+		x[i] *= correction;
+
 		ptavg_pos[i]=pt_pos[i]->GetMean();
 		ptavg_neg[i]=pt_neg[i]->GetMean();
 		ptavg_pos_err[i]=pt_pos[i]->GetMeanError();
@@ -70,14 +68,14 @@ void selfcorr_SP_avgpt(){
 
 	}	
 
-	TFile *file1 = new TFile("~/Summer2016/root_forgraphs/meanptslope.root","RECREATE");
+	TFile *file1 = new TFile("~/Summer2016/root_forgraphs/avg_pt_slope.root","RECREATE");
 
 
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,ptavg_pos,NULL,ptavg_pos_err);
 	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,ptavg_neg,NULL,ptavg_neg_err);
 	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,ptavg_diff,NULL,ptavg_diff_err);
-	
+	/*
 	gr_diff->RemovePoint(6);
 	gr_diff->RemovePoint(0);
 
@@ -86,7 +84,7 @@ void selfcorr_SP_avgpt(){
 
 	gr_neg->RemovePoint(6);
 	gr_neg->RemovePoint(0);
-
+*/
 	gr_pos->Write();
 	gr_neg->Write();
 	gr_diff->Write();
@@ -120,7 +118,7 @@ void selfcorr_SP_avgpt(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.2,0.2);
 	base2->GetYaxis()->SetRangeUser(-0.05, 0.05);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" (<pt>_{neg}-<pt>_{pos})/(<pt>_{neg}+<pt>_{pos}) ");

@@ -9,6 +9,7 @@ process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
 #ntrkRange = [200,400,800,1500]
 #ntrkLow = [60,70,80,90,100,120,140,160]
 #ntrkUpp = [70,80,90,100,120,140,160,180]
+
 #ntrkLow = [90,120,150,185,220,260,300,400]
 #ntrkUpp = [120,150,185,220,260,300,400,500]
 
@@ -33,6 +34,7 @@ ntrkUpp = [80,100,120,140,160,180]
 
 
 #efftableNameList = ["eff_1","eff_2","eff_2","eff_2","eff_3","eff_3","eff_3","eff_4"]
+
 efftableNameList = ["eff_5","eff_4","eff_3","eff_2","eff_1","eff_1"]
 #efftableNameList = ["eff_5"]
 
@@ -53,7 +55,7 @@ config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'PbPbCumulant_cfg.py'
 config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'FileBased'
-config.Data.unitsPerJob = 10
+config.Data.unitsPerJob = 20
 config.Data.outLFNDirBase = '/store/user/%s/' % (getUsernameFromSiteDB())
 config.Data.publication = False
 config.Data.outputDatasetTag = outputName

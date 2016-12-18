@@ -46,6 +46,8 @@ Implementation:
  	etaHFUpp_ = iConfig.getParameter<double>("etaHFUpp");
  	Nmin_ = iConfig.getParameter<int>("Nmin");
  	Nmax_ = iConfig.getParameter<int>("Nmax");
+ 	order_ = iConfig.getParameter<int>("order");
+
  	vzLow_ = iConfig.getUntrackedParameter<double>("vzLow");
  	vzHigh_ = iConfig.getUntrackedParameter<double>("vzHigh");
 
@@ -258,7 +260,7 @@ Implementation:
 
  		etaHist->Fill(eta);
 
- 		TComplex e(1,2*phi,1);
+ 		TComplex e(1,order_*phi,1);
 
  		e *= weight;
  		N_tot += weight; 
@@ -321,7 +323,7 @@ Implementation:
  		if(reverseBeam_) { caloEta *= -1.0;}
 
 
- 		TComplex e(1,2*caloPhi,1);
+ 		TComplex e(1,order_*caloPhi,1);
 
  		e*=w;
 
