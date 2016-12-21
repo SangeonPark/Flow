@@ -28,8 +28,8 @@ demo = cms.EDAnalyzer('V2AnalyzerSP',
                       vzHigh = cms.untracked.double(15.0),           
                       etaCutMin = cms.double(-2.4),
                       etaCutMax = cms.double(2.4),
-                      ptCutMin = cms.double(0.7),
-                      ptCutMax = cms.double(0.85),
+                      ptCutMin = cms.double(0.3),
+                      ptCutMax = cms.double(3.0),
 
 
                       doEffCorrection = cms.bool(True),
@@ -45,7 +45,7 @@ demo = cms.EDAnalyzer('V2AnalyzerSP',
 
                       #cross-check
                       achBins = cms.untracked.vdouble(-1,-0.09,-0.05,-0.015,0.015,0.05,0.09,1),
-                      reverseBeam = cms.bool(True),
+                      reverseBeam = cms.bool(False),
                       useCentrality = cms.bool(False),
                       Nmin = cms.int32(185),
                       Nmax = cms.int32(220),
