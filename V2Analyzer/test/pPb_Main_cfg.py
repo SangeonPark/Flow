@@ -25,50 +25,50 @@ process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
 
 process.TFileService = cms.Service("TFileService",fileName = cms.string("vn_mainresult_ver3.root"))
 
-hltHM_n1 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
-hltHM_n1.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*']
+process.hltHM_n1 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
+process.hltHM_n1.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*']
 
-hltHM_n1.andOr = cms.bool(True)
-hltHM_n1.throw = cms.bool(False)
+process.hltHM_n1.andOr = cms.bool(True)
+process.hltHM_n1.throw = cms.bool(False)
 
-hltHM_n2 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
-hltHM_n2.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
+process.hltHM_n2 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
+process.hltHM_n2.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
                   'HLT_PAPixelTracks_Multiplicity130_v*'
 ]
 
-hltHM_n2.andOr = cms.bool(True)
-hltHM_n2.throw = cms.bool(False)
+process.hltHM_n2.andOr = cms.bool(True)
+process.hltHM_n2.throw = cms.bool(False)
 
-hltHM_n3 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
-hltHM_n3.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
+process.hltHM_n3 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
+process.hltHM_n3.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
                   'HLT_PAPixelTracks_Multiplicity130_v*',
                   'HLT_PAPixelTracks_Multiplicity160_v*'
 
 ]
 
-hltHM_n3.andOr = cms.bool(True)
-hltHM_n3.throw = cms.bool(False)
+process.hltHM_n3.andOr = cms.bool(True)
+process.hltHM_n3.throw = cms.bool(False)
 
-hltHM_n4 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
-hltHM_n4.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
+process.hltHM_n4 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
+process.hltHM_n4.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
                   'HLT_PAPixelTracks_Multiplicity130_v*',
                   'HLT_PAPixelTracks_Multiplicity160_v*',
                   'HLT_PAPixelTracks_Multiplicity190_v*'
 ]
 
-hltHM_n4.andOr = cms.bool(True)
-hltHM_n4.throw = cms.bool(False)
+process.hltHM_n4.andOr = cms.bool(True)
+process.hltHM_n4.throw = cms.bool(False)
 
-hltHM_n5 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
-hltHM_n5.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
+process.hltHM_n5 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
+process.hltHM_n5.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*',
                   'HLT_PAPixelTracks_Multiplicity130_v*',
                   'HLT_PAPixelTracks_Multiplicity160_v*',
                   'HLT_PAPixelTracks_Multiplicity190_v*',
                   'HLT_PAPixelTracks_Multiplicity220_v*'
 ]
 
-hltHM_n5.andOr = cms.bool(True)
-hltHM_n5.throw = cms.bool(False)
+process.hltHM_n5.andOr = cms.bool(True)
+process.hltHM_n5.throw = cms.bool(False)
 
 process.demo_n1 = process.demo.clone(
                       useCentrality = cms.bool(False),
