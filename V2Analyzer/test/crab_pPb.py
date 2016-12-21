@@ -3,7 +3,7 @@
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
-outputName = 'pPbDataNo2rereco'
+outputName = 'CMW_mainresult_pPb_ver3'
 config.General.requestName = outputName
 config.General.workArea = outputName
 config.General.transferOutputs = True
@@ -11,7 +11,7 @@ config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'v2analyzer_cfg.py'
+config.JobType.psetName = 'pPb_Main_cfg.py'
 
 config.Data.inputDBS = 'phys03'
 #MB
