@@ -388,6 +388,8 @@ private:
       int Nmin_;
       int Nmax_;
       int NEtaBins_;
+      int order_;
+
       bool doEffCorrection_;
       bool doAchEffCorrection_;
       bool reverseBeam_;

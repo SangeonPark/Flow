@@ -49,6 +49,7 @@ Implementation:
  	NEtaBins_ = iConfig.getParameter<int>("NEtaBins");
  	vzLow_ = iConfig.getUntrackedParameter<double>("vzLow");
  	vzHigh_ = iConfig.getUntrackedParameter<double>("vzHigh");
+ 	order_ = iConfig.getParameter<int>("order");
  	
 
  	trackSrc_ = iConfig.getParameter<edm::InputTag>("trackSrc");
@@ -284,7 +285,7 @@ Implementation:
 
 
 
- 		TComplex e(1,2*phi,1);
+ 		TComplex e(1,order_*phi,1);
  		e *= weight; 
 
 

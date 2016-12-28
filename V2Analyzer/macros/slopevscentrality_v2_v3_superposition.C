@@ -181,11 +181,13 @@ void slopevscentrality_v2_v3_superposition(){
 	}
 
 	TGraphErrors* v3_PbPbslope_centrality = new TGraphErrors(4,x_v3_cent,v3_PbPb_centrality_yval,NULL,v3_PbPb_centrality_ystaterr);
+
+/*
 	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure5.root","RECREATE");
 	v2_PbPbslope_centrality->Write();
 	v3_PbPbslope_centrality->Write();
 	rebinned->Close();
-
+*/
 
 
 	v2_PbPbslope_centrality -> SetMarkerStyle(24);

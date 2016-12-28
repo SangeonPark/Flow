@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void v2ErrMerged(){
+void figure2_1_generate(){
 
 	TFile* f;
 	const int NAchBins = 7;
