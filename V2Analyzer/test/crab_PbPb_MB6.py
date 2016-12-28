@@ -30,8 +30,8 @@ config.Data.allowNonValidInputDataset = True
 #config.Data.inputDataset = '/Hijing_PPb502_MinimumBias/davidlw-RecoSkim_ReTracking_v4_10M-5cde49c8740ff28f897f533d05a99dbc/USER'
 
 #PbPb Data
-#config.Data.inputDataset = '/HIMinimumBias6/HIRun2015-02May2016-v1/AOD'
-config.Data.inputDataset = '/HIMinimumBias7/HIRun2015-02May2016-v1/AOD'
+config.Data.inputDataset = '/HIMinimumBias6/HIRun2015-02May2016-v1/AOD'
+#config.Data.inputDataset = '/HIMinimumBias7/HIRun2015-02May2016-v1/AOD'
 
 config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/HI/Cert_262548-263757_PromptReco_HICollisions15_JSON_v2.txt'
 #config.Data.lumiMask = '/afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions15/HI/Cert_263685-263757_PromptReco_HICollisions15_TrackerOnly_JSON.txt'
