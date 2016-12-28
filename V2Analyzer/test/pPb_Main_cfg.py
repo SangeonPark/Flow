@@ -20,10 +20,10 @@ process.source = cms.Source("PoolSource",
 )
 )
 
-process.load("Flow.V2Analyzer.v2analyzerSP_cfi")
+process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
 
 
-process.TFileService = cms.Service("TFileService",fileName = cms.string("vn_mainresult_ver3.root"))
+process.TFileService = cms.Service("TFileService",fileName = cms.string("vn_mainresult_cumulant_ver1.root"))
 
 process.hltHM_n1 = HLTrigger.HLTfilters.hltHighLevel_cfi.hltHighLevel.clone()
 process.hltHM_n1.HLTPaths = ['HLT_PAPixelTracks_Multiplicity100_v*']
