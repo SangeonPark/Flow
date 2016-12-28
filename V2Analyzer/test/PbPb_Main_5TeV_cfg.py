@@ -39,7 +39,7 @@ process.NoScraping = cms.EDFilter("FilterOutScraping",
 process.source = cms.Source("PoolSource",
     # replace 'myfile.root' with the source file you want to use
     fileNames = cms.untracked.vstring(
-'/store/hidata/HIRun2015/HIMinimumBias7/AOD/02May2016-v1/00000/0670F503-1E99-E611-9BD5-F01FAFDC5659.root'
+'/store/hidata/HIRun2015/HIMinimumBias6/AOD/02May2016-v1/00000/0670F503-1E99-E611-9BD5-F01FAFDC5659.root'
 )
 )
 
