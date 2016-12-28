@@ -3,7 +3,7 @@
 
 from CRABClient.UserUtilities import config, getUsernameFromSiteDB
 config = config()
-outputName = 'CMW_mainresult_pPb_cumulant_narrowpt_reverse_ver1'
+outputName = 'CMW_mainresult_pPb_cumulant_reverse_ver1'
 config.General.requestName = outputName
 config.General.workArea = outputName
 config.General.transferOutputs = True
