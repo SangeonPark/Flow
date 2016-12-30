@@ -45,7 +45,7 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       #efftablePath = cms.string('Flow/V2Analyzer/data/EPOS_eff_loose.root'),
                       #efftableName = cms.string('recoHist'),
                       #PbPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root'),
                       efftableName = cms.string('eff_5'),
 
                       #5Bins
