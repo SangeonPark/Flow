@@ -27,7 +27,7 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       vzHigh = cms.untracked.double(15.0),                      
                       #Check whether to apply eff. correction 
                       doEffCorrection = cms.bool(True),
-                      doAchEffCorrection = cms.bool(True),
+                      doAchEffCorrection = cms.bool(False),
                       
                       #ALWAYS CHECK THIS PART
 
