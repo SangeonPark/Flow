@@ -229,8 +229,8 @@ Implementation:
  				nTracks_neg++;
  			}
  		}
- 		if(pt <= 0.3 ||  3.0 <= pt ) continue;
- 		if(eta <= -2.4 || 2.4 <= eta) continue;
+ 		if(pt <= 0.3 ||  5.0 <= pt ) continue;
+ 		if(eta <= -0.8 || 0.8 <= eta) continue;
  		N_tot_fixed += weight;
  		if(charge>0){ N_pos_fixed += weight; }
  		if(charge<0){ N_neg_fixed += weight; }
