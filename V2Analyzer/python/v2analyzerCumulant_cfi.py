@@ -32,11 +32,11 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       #ALWAYS CHECK THIS PART
 
                       #kinematic cuts!!!!!!
-                      etaCutMin = cms.double(-0.8),
-                      etaCutMax = cms.double(0.8),
-                      etaGap = cms.double(0.8),
+                      etaCutMin = cms.double(-2.4),
+                      etaCutMax = cms.double(2.4),
+                      etaGap = cms.double(2.0),
                       ptCutMin = cms.double(0.3),
-                      ptCutMax = cms.double(5.0),
+                      ptCutMax = cms.double(3.0),
                       NEtaBins = cms.int32(96),                        
                      
                       #pPb
