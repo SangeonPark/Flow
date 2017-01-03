@@ -8,7 +8,7 @@ void figure6_ntrk(){
 
 	const int NAchBins = 7;
 	//double correctionlist[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
-	double correctionlist[10] = {1, 1, 1, 1, 1, 1,1,1,1,1};
+	double correctionlist[10] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662,0.645,0.663};
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -254,7 +254,7 @@ void figure6_ntrk(){
 
 
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure6_ntrk_notcorrected.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure6_ntrk.root","RECREATE");
 	graph_list[0]->Write();
 	graph_list[1]->Write();
 	graph_list[2]->Write();

@@ -8,7 +8,7 @@ void figure2_0_generator(){
 	const int NAchBins = 7;
 
 	//const double correction = 0.7463;
-	const double correction = 1.0;
+	const double correction = 0.687;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -138,7 +138,7 @@ void figure2_0_generator(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_0_notcorrected.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_0.root","RECREATE");
 
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);

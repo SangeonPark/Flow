@@ -7,7 +7,7 @@ void figure5_generator(){
 	TFile *f;
 	const int NAchBins = 7;
 	//double correctionlist[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
-	double correctionlist[6] = {1, 1, 1, 1, 1, 1};
+	double correctionlist[6] = {0.645, 0.663, 0.673, 0.689, 0.699, 0.623};
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -182,7 +182,7 @@ void figure5_generator(){
 	TGraphErrors* v3_PbPbslope_centrality = new TGraphErrors(4,x_v3_cent,v3_PbPb_centrality_yval,NULL,v3_PbPb_centrality_ystaterr);
 
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure5_notcorrected.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure5.root","RECREATE");
 	v2_PbPbslope_centrality->Write();
 	v3_PbPbslope_centrality->Write();
 	rebinned->Close();

@@ -10,9 +10,14 @@ void figure3_generator(){
 //	double correctionlist_ntrk[7] = {0.7439,0.7520,0.7575,0.7463,0.7508,0.7374,0.7127};
 //	double correctionlist_pPb[4] = {0.7520,0.7575,0.7463,0.7595};
 
+/*
 	double correctionlist_cent[6] = {1, 1, 1, 1, 1, 1};
 	double correctionlist_ntrk[8] = {1,1,1,1,1,1,1,1};
-	double correctionlist_pPb[5] = {1,1,1,1,1};
+	double correctionlist_pPb[5] = {1,1,1,1,1}; */
+
+	double correctionlist_cent[6] = {0.645, 0.663, 0.673, 0.689, 0.699, 0.623};
+	double correctionlist_ntrk[8] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662};
+	double correctionlist_pPb[5] = {0.698,0.694,0.687,0.684,0.676};
 
 
 
@@ -117,7 +122,7 @@ void figure3_generator(){
 
 	}
 
-	TGraphErrors* pPbslope = new TGraphErrors(4,pPb_xval,pPb_yval,NULL,pPb_ystaterr);
+	TGraphErrors* pPbslope = new TGraphErrors(5,pPb_xval,pPb_yval,NULL,pPb_ystaterr);
 
 
 
@@ -262,7 +267,7 @@ void figure3_generator(){
 
 	}
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure3_notcorrected.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure3.root","RECREATE");
 
 	TGraphErrors* PbPbslope_centrality = new TGraphErrors(2,PbPb_centrality_xval,PbPb_centrality_yval,NULL,PbPb_centrality_ystaterr);
 	pPbslope->Write();

@@ -207,119 +207,119 @@ process.demo_n20 = process.demo.clone(
                       order = cms.int32(3),  
 )
 
-process.p_n1 = cms.Path(  process.hfCoincFilter *
+process.p_n1 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n1
             )
 
-process.p_n2 = cms.Path(  process.hfCoincFilter *
+process.p_n2 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n2
             )
-process.p_n3 = cms.Path(  process.hfCoincFilter *
+process.p_n3 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n3
             )
-process.p_n4 = cms.Path(  process.hfCoincFilter *
+process.p_n4 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n4
             )
 
-process.p_n5 = cms.Path(  process.hfCoincFilter *
+process.p_n5 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n5
             )
 
-process.p_n6 = cms.Path(  process.hfCoincFilter *
+process.p_n6 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n6
             )
 
-process.p_n7 = cms.Path(  process.hfCoincFilter *
+process.p_n7 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n7
             )
 
-process.p_n8 = cms.Path(  process.hfCoincFilter *
+process.p_n8 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n8
             )
 
-process.p_n9 = cms.Path(  process.hfCoincFilter *
+process.p_n9 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n9
             )
 
-process.p_n10 = cms.Path(  process.hfCoincFilter *
+process.p_n10 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n10
             )
 
-process.p_n11 = cms.Path(  process.hfCoincFilter *
+process.p_n11 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n11
             )
 
-process.p_n12 = cms.Path(  process.hfCoincFilter *
+process.p_n12 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n12
             )
 
-process.p_n13 = cms.Path(  process.hfCoincFilter *
+process.p_n13 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n13
             )
 
-process.p_n14 = cms.Path(  process.hfCoincFilter *
+process.p_n14 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n14
             )
 
-process.p_n15 = cms.Path(  process.hfCoincFilter *
+process.p_n15 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n15
             )
 
-process.p_n16 = cms.Path(  process.hfCoincFilter *
+process.p_n16 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n16
             )
 
-process.p_n17 = cms.Path(  process.hfCoincFilter *
+process.p_n17 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n17
             )
 
-process.p_n18 = cms.Path(  process.hfCoincFilter *
+process.p_n18 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n18
             )
 
-process.p_n19 = cms.Path(  process.hfCoincFilter *
+process.p_n19 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n19
             )
 
-process.p_n20 = cms.Path(  process.hfCoincFilter *
+process.p_n20 = cms.Path(  process.hfCoincFilter3 *
                        process.PAprimaryVertexFilter *
                        process.NoScraping *
                        process.demo_n20

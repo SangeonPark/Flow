@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void figure6_centrality(){
+void figure_intercept(){
 
 	TFile *f;
 	const int NAchBins = 7;
@@ -12,25 +12,19 @@ void figure6_centrality(){
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
 	TH1D* ach_hist[NAchBins];
-	TH1D* pt_pos[NAchBins];
-
-	TH1D* pt_neg[NAchBins];
-
 	TGraphErrors* gr_diff;
 	TF1* fit1;
 
 	double x_centrality[6] = {35, 45, 55, 65, 75, 85};
+	double x_v3_cent[6] = {35, 45, 55, 65,75,85};
 
 	double v2_PbPb_centrality_yval[6];
 	double v2_PbPb_centrality_ystaterr[6];
 	double v2_statErr[6];
 
-	double pt_yval[6];
-	double pt_yerr[6];
-	
-	double narrow_yval[6];
-	double narrow_yerr[6];
-	
+	double v3_PbPb_centrality_yval[6];
+	double v3_PbPb_centrality_ystaterr[6];
+	double v3_statErr[6];
 
 
 	double variance_pos = 0.0;
@@ -45,8 +39,6 @@ void figure6_centrality(){
 
 	int v2_index[6] = {9,10,11,12,13,14};
 	int v3_index[6] = {15,16,17,18,19,20};
-
-	TGraphErrors* graph_list[3];
 
 	f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Main_PbPb_Merged.root");
 
@@ -109,77 +101,16 @@ void figure6_centrality(){
 		
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.2, 0.2);
 		gr_diff->Fit(fit1);
-		r = fit1->GetParameter(1);
-		v2_PbPb_centrality_ystaterr[n] = fit1->GetParError(1);
+		r = fit1->GetParameter(0);
+		v2_PbPb_centrality_ystaterr[n] = fit1->GetParError(0);
 		cout << "v2err: " << v2_PbPb_centrality_ystaterr[n] << endl;
 		v2_PbPb_centrality_yval[n] = r;
 
 	}
 
 
-	graph_list[0] = new TGraphErrors(6,x_centrality,v2_PbPb_centrality_yval,NULL,v2_PbPb_centrality_ystaterr);
+	TGraphErrors* v2_PbPbslope_centrality = new TGraphErrors(6,x_centrality,v2_PbPb_centrality_yval,NULL,v2_PbPb_centrality_ystaterr);
 
-	for (int n = 0; n <6; ++n)
-	{
-		double x[NAchBins];
-		double ptavg_pos[NAchBins];
-		double ptavg_neg[NAchBins];
-		double ptavg_diff[NAchBins];
-		double ptavg_pos_err[NAchBins];
-		double ptavg_neg_err[NAchBins];
-		double ptavg_diff_err[NAchBins];
-		TGraphErrors* graph;
-		TF1* fit;
-
-
-
-		for (Int_t i = 0; i < NAchBins; i++){
-
-			ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",v2_index[n],i+1));
-			pt_pos[i] = (TH1D*)f->Get(Form("demo_n%d/pt_pos_%d",v2_index[n],i+1));
-			pt_neg[i] = (TH1D*)f->Get(Form("demo_n%d/pt_neg_%d",v2_index[n],i+1));
-
-		}
-
-		for(Int_t i=0; i<NAchBins; i++){
-
-
-			x[i]=ach_hist[i]->GetMean();
-			x[i] *= correctionlist[n];
-
-			ptavg_pos[i]=pt_pos[i]->GetMean();
-			ptavg_neg[i]=pt_neg[i]->GetMean();
-			ptavg_pos_err[i]=pt_pos[i]->GetMeanError();
-
-			variance_pos = ptavg_pos_err[i]*ptavg_pos_err[i];
-
-			ptavg_neg_err[i]=pt_neg[i]->GetMeanError();
-
-			variance_neg = ptavg_neg_err[i]*ptavg_neg_err[i];
-
-			ptavg_diff[i] = (ptavg_neg[i] - ptavg_pos[i])/(ptavg_neg[i] + ptavg_pos[i]);
-
-			sum = ptavg_pos[i] + ptavg_neg[i];
-			variance_diff = (4*ptavg_neg[i]*ptavg_neg[i]*variance_pos)/(sum*sum*sum*sum)+(4*ptavg_pos[i]*ptavg_pos[i]*variance_neg)/(sum*sum*sum*sum);
-
-			ptavg_diff_err[i] = sqrt(variance_diff);
-			cout << ptavg_neg_err[i] << endl;
-
-
-		}	
-		graph = new TGraphErrors(NAchBins,x,ptavg_diff,NULL,ptavg_diff_err);
-		fit = new TF1("Linear fitting", "[0]+x*[1]", -0.15, 0.15);
-		graph->Fit(fit,"RN0");
-		pt_yval[n] = fit->GetParameter(1);
-		pt_yerr[n] = fit->GetParError(1);
-
-	}
-
-	graph_list[1] = new TGraphErrors(6,x_centrality,pt_yval,NULL,pt_yerr);
-
-
-
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Narrowpt_PbPb_Merged.root");
 
 
 	for (int n = 0; n <6; ++n)
@@ -187,14 +118,14 @@ void figure6_centrality(){
 		
 
 		for (Int_t i = 0; i < NAchBins; i++){
-			ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",v2_index[n],i+1));
+			ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",v3_index[n],i+1));
 
-			c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_cos",v2_index[n],i));
-			c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_sin",v2_index[n],i));
+			c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_cos",v3_index[n],i));
+			c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_sin",v3_index[n],i));
 
 
-			c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_cos",v2_index[n],i));
-			c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_sin",v2_index[n],i));
+			c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_cos",v3_index[n],i));
+			c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_sin",v3_index[n],i));
 
 		}
 
@@ -237,44 +168,39 @@ void figure6_centrality(){
 
 
 		gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL, err_diff);
-		
 		fit1 = new TF1("Linear fitting case 1", "[0]+x*[1]", -0.2, 0.2);
 		gr_diff->Fit(fit1);
-		r = fit1->GetParameter(1);
-		narrow_yerr[n] = fit1->GetParError(1);
-		narrow_yval[n] = r;
+		r = fit1->GetParameter(0);
+		v3_PbPb_centrality_ystaterr[n] = fit1->GetParError(0);
+		cout << "v3err: " << v3_PbPb_centrality_ystaterr[n] << endl;
+
+		v3_PbPb_centrality_yval[n] = r;
+		cout << r << endl;
 
 	}
 
-
-	graph_list[2] = new TGraphErrors(3,x_centrality,narrow_yval,NULL,narrow_yerr);
-
+	TGraphErrors* v3_PbPbslope_centrality = new TGraphErrors(4,x_v3_cent,v3_PbPb_centrality_yval,NULL,v3_PbPb_centrality_ystaterr);
 
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure6_centrality.root","RECREATE");
-	graph_list[0]->Write();
-	graph_list[1]->Write();
-	graph_list[2]->Write();
-
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure_intercept.root","RECREATE");
+	v2_PbPbslope_centrality->Write();
+	v3_PbPbslope_centrality->Write();
 	rebinned->Close();
 
 
 
-	graph_list[0] -> SetMarkerStyle(24);
-	graph_list[0] -> SetMarkerColor(kBlue);
-	graph_list[0] -> SetLineColor(kBlue);
-	graph_list[1] -> SetMarkerStyle(25);
-	graph_list[1] -> SetMarkerColor(kRed);
-	graph_list[1] -> SetLineColor(kRed);
-	graph_list[2] -> SetMarkerStyle(kCircle);
-	graph_list[2] -> SetMarkerColor(kBlack);
-	graph_list[2] -> SetLineColor(kBlack);
+	v2_PbPbslope_centrality -> SetMarkerStyle(24);
+	v2_PbPbslope_centrality -> SetMarkerColor(kBlue);
+	v2_PbPbslope_centrality -> SetLineColor(kBlue);
+	v3_PbPbslope_centrality -> SetMarkerStyle(25);
+	v3_PbPbslope_centrality -> SetMarkerColor(kRed);
+	v3_PbPbslope_centrality -> SetLineColor(kRed);
 
 
 
 	gStyle->SetLegendFont(42);	gStyle->SetOptTitle(0);
-	TH1D* base = new TH1D("base","base",1,30,100);
-	base->GetYaxis()->SetRangeUser(0.00,0.15);
+	TH1D* base = new TH1D("base","base",1,0,100);
+	base->GetYaxis()->SetRangeUser(0.00,0.1);
 	base->GetXaxis()->SetTitle("Centrality(%)");
 	base->GetYaxis()->SetTitle("Slope parameter(normalized v_{n})");
 	base->GetXaxis()->CenterTitle();
@@ -306,14 +232,12 @@ void figure6_centrality(){
 	text_d->SetTextFont(42);
 
 
-	TLegend* leg = new TLegend(0.7,0.78,0.88,.88);
+	TLegend* leg = new TLegend(0.80,0.78,0.98,.88);
 	leg->SetLineColor(kWhite);
 	leg->SetFillColor(0);
 	leg->SetFillStyle(0);
-	leg->AddEntry(graph_list[0], "v2","p");	
-	leg->AddEntry(graph_list[1], "pt","p");
-	leg->AddEntry(graph_list[2], "v2(narrowpt)","p");
-
+	leg->AddEntry(v2_PbPbslope_centrality, "v2","p");	
+	leg->AddEntry(v3_PbPbslope_centrality, "v3","p");
 
 
 	//leg->AddEntry(gr_neg, "neg","p");
@@ -321,14 +245,12 @@ void figure6_centrality(){
 	
 	c3->cd();
 	base->Draw("");
-
 	text_a->Draw("");
 	text_c->Draw("");
 	text_d->Draw("");
 
-	graph_list[0]->Draw("PSame");
-	graph_list[1]->Draw("PSame");
-	graph_list[2]->Draw("PSame");
+	v2_PbPbslope_centrality->Draw("PSame");
+	v3_PbPbslope_centrality->Draw("PSame");
 
 
 
@@ -338,10 +260,6 @@ void figure6_centrality(){
 
     //Define a linear function
 
-    for (int i = 0; i < 6; ++i)
-    {
-    	cout << narrow_yval[i] << endl;
-    }
 
 
 
