@@ -58,7 +58,8 @@ demo = cms.EDAnalyzer('V2AnalyzerCumulant',
                       #achBins = cms.untracked.vdouble(-999,-0.1,-0.08,-0.07,-0.055,-0.04,-0.027,-0.02,-0.015,-0.011,-0.007,-0.004,-0.0015,0.0015,0.004,0.007,0.011,0.015,0.02,0.027,0.04,0.055,0.07,0.08,0.1,999),
                       
                       #cross-check
-                      achBins = cms.untracked.vdouble(-1,-0.09,-0.05,-0.015,0.015,0.05,0.09,1),
+                      #achBins = cms.untracked.vdouble(-1,-0.09,-0.05,-0.015,0.015,0.05,0.09,1),
+                      achBins = cms.untracked.vdouble(-1,-0.07,-0.03,-0.01,0.01,0.03,0.07,1),
                       reverseBeam = cms.bool(False),
                       useCentrality = cms.bool(True),
                       Nmin = cms.int32(60),
