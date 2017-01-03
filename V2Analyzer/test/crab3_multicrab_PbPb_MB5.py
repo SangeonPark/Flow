@@ -6,7 +6,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
 
-outputName = "multicrab_CMW_MainResult_Cumulant_PbPb_MB5_0104"
+outputName = "multicrab_CMW_MainResult_Cumulant_ALICE_MB5_0104"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
