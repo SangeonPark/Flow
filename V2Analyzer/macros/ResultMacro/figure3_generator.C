@@ -6,19 +6,19 @@ void figure3_generator(){
 
 	TFile *f;
 	const int NAchBins = 7;
-//	double correctionlist_cent[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
-//	double correctionlist_ntrk[7] = {0.7439,0.7520,0.7575,0.7463,0.7508,0.7374,0.7127};
-//	double correctionlist_pPb[4] = {0.7520,0.7575,0.7463,0.7595};
 
-/*
+
+
 	double correctionlist_cent[6] = {1, 1, 1, 1, 1, 1};
 	double correctionlist_ntrk[8] = {1,1,1,1,1,1,1,1};
-	double correctionlist_pPb[5] = {1,1,1,1,1}; */
+	double correctionlist_pPb[5] = {1,1,1,1,1};
 
+
+/*
 	double correctionlist_cent[6] = {0.645, 0.663, 0.673, 0.689, 0.699, 0.623};
 	double correctionlist_ntrk[8] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662};
 	double correctionlist_pPb[5] = {0.698,0.694,0.687,0.684,0.676};
-
+*/
 
 
 	int cent_index[2] = {9,10};
@@ -60,7 +60,7 @@ void figure3_generator(){
 	for (int n = 0; n <5; ++n)
 	{
 		
-		f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Main_pPb_Merged.root");
+		f = new TFile("~/Summer2016/rootfiles/FinalResult_0104/Main_pPb_Merged.root");
 		NTrkHist = (TH1D*)f->Get(Form("demo_n%d/NTrkHist",pPb_index[n]));
 		pPb_xval[n] = NTrkHist->GetMean();
 
@@ -122,7 +122,7 @@ void figure3_generator(){
 
 	}
 
-	TGraphErrors* pPbslope = new TGraphErrors(5,pPb_xval,pPb_yval,NULL,pPb_ystaterr);
+	TGraphErrors* pPbslope = new TGraphErrors(4,pPb_xval,pPb_yval,NULL,pPb_ystaterr);
 
 
 

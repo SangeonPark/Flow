@@ -7,8 +7,8 @@ void figure6_ntrk(){
 	TFile *f;
 
 	const int NAchBins = 7;
-	//double correctionlist[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
-	double correctionlist[10] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662,0.645,0.663};
+	//double correctionlist[10] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662,0.645,0.663};
+	double correctionlist[10] = {1,1,1,1,1,1,1,1,1,1};
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -181,8 +181,8 @@ void figure6_ntrk(){
 	graph_list[1] = new TGraphErrors(10,x_val,pt_yval,NULL,pt_yerr);
 
 
-
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Narrowpt_PbPb_Merged.root");
+/*
+	f = new TFile("~/Summer2016/rootfiles/FinalResult_0104/Narrowpt_PbPb_Merged.root");
 
 
 	for (int n = 0; n <10; ++n)
@@ -251,13 +251,13 @@ void figure6_ntrk(){
 
 
 	graph_list[2] = new TGraphErrors(10,x_val,narrow_yval,NULL,narrow_yerr);
-
+*/
 
 
 	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure6_ntrk.root","RECREATE");
 	graph_list[0]->Write();
 	graph_list[1]->Write();
-	graph_list[2]->Write();
+//	graph_list[2]->Write();
 
 	rebinned->Close();
 
@@ -269,9 +269,9 @@ void figure6_ntrk(){
 	graph_list[1] -> SetMarkerStyle(25);
 	graph_list[1] -> SetMarkerColor(kRed);
 	graph_list[1] -> SetLineColor(kRed);
-	graph_list[2] -> SetMarkerStyle(kCircle);
-	graph_list[2] -> SetMarkerColor(kBlack);
-	graph_list[2] -> SetLineColor(kBlack);
+//	graph_list[2] -> SetMarkerStyle(kCircle);
+//	graph_list[2] -> SetMarkerColor(kBlack);
+//	graph_list[2] -> SetLineColor(kBlack);
 
 
 
@@ -315,7 +315,7 @@ void figure6_ntrk(){
 	leg->SetFillStyle(0);
 	leg->AddEntry(graph_list[0], "v2","p");	
 	leg->AddEntry(graph_list[1], "pt","p");
-	leg->AddEntry(graph_list[2], "v2(narrowpt)","p");
+	//leg->AddEntry(graph_list[2], "v2(narrowpt)","p");
 
 
 
@@ -332,7 +332,7 @@ void figure6_ntrk(){
 
 	graph_list[0]->Draw("PSame");
 	graph_list[1]->Draw("PSame");
-	graph_list[2]->Draw("PSame");
+	//graph_list[2]->Draw("PSame");
 
 
 

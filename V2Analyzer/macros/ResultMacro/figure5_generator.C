@@ -6,8 +6,8 @@ void figure5_generator(){
 
 	TFile *f;
 	const int NAchBins = 7;
-	//double correctionlist[6] = {0.6527, 0.7218, 0.7411, 0.7551, 0.7567, 0.6836};
-	double correctionlist[6] = {0.645, 0.663, 0.673, 0.689, 0.699, 0.623};
+	double correctionlist[6] = {1,1,1,1,1,1};
+	//double correctionlist[6] = {0.645, 0.663, 0.673, 0.689, 0.699, 0.623};
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -40,7 +40,7 @@ void figure5_generator(){
 	int v2_index[6] = {9,10,11,12,13,14};
 	int v3_index[6] = {15,16,17,18,19,20};
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Main_PbPb_Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/FinalResult_0104/Main_PbPb_Merged.root");
 
 
 	for (int n = 0; n <6; ++n)

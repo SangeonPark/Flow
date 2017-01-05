@@ -7,8 +7,9 @@ void figure4_0_generator(){
 
 	const int NAchBins = 7;
 
-	//const double correction = 0.7463;
-	const double correction = 0.645;
+//	const double correction = 0.645;
+	const double correction = 1.0;
+
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -37,7 +38,7 @@ void figure4_0_generator(){
 	//f = new TFile("../../../rootfiles/systematics_redo/v2_Cumulant_40.root");
 
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Main_PbPb_Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/FinalResult_0104/Main_PbPb_Merged.root");
 
 	// = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
 

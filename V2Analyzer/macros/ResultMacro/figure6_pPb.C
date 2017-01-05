@@ -7,7 +7,9 @@ void figure6_pPb(){
 
 	TFile *f;
 	const int NAchBins = 7;
-	double correctionlist[5] = {0.698,0.694,0.687,0.684,0.676};
+//	double correctionlist[5] = {0.698,0.694,0.687,0.684,0.676};
+	double correctionlist[5] = {1,1,1,1,1};
+
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -40,7 +42,7 @@ void figure6_pPb(){
 
 	TGraphErrors* graph_list[3];
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Main_pPb_Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/FinalResult_0104/Main_pPb_Merged.root");
 
 	for (int n = 0; n <5; ++n)
 	{
@@ -103,12 +105,6 @@ void figure6_pPb(){
 	}
 
 	graph_list[0] = new TGraphErrors(5,x_val,pt_yval,NULL,pt_yerr);
-
-	for(i=0;i<5;i++)
-	{
-		cout << "shit" << pt_yval[i] << endl;
-	}
-
 
 
 

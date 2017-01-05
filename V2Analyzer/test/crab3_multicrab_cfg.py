@@ -10,7 +10,7 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_MainResult_Cumulant_pPb_0104'
+outputName = 'multicrab_CMW_MainResult_Cumulant_pPb_new_0106'
 
 config.JobType.pluginName = 'Analysis'
 config.JobType.psetName = 'pPb_Main_cfg.py'
