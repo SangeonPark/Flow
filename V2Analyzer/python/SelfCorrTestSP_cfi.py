@@ -27,11 +27,11 @@ demo = cms.EDAnalyzer('SelfCorrTestSP',
                       #efftablePath = cms.string('Flow/V2Analyzer/data/EPOS_eff_loose.root'),
                       #efftableName = cms.string('recoHist'),
                       #PbPb
-                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1_loose.root'),
+                      efftablePath = cms.string('Flow/V2Analyzer/data/Hydjet_PbPb_eff_v1.root'),
                       efftableName = cms.string('eff_5'),
 
                       #cross-check
-                      achBins = cms.untracked.vdouble(-1,-0.09,-0.05,-0.015,0.015,0.05,0.09,1),
+                      achBins = cms.untracked.vdouble(-1,-0.07,-0.03,-0.01,0.01,0.03,0.07,1),
                       reverseBeam = cms.bool(False),
                       useCentrality = cms.bool(True),
                       Nmin = cms.int32(60),
