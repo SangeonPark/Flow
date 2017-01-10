@@ -6,8 +6,8 @@ void figure5_generator(){
 
 	TFile *f;
 	const int NAchBins = 7;
-	double correctionlist[6] = {1,1,1,1,1,1};
-	//double correctionlist[6] = {0.645, 0.663, 0.673, 0.689, 0.699, 0.623};
+	//double correctionlist[6] = {1,1,1,1,1,1};
+	double correctionlist[6] = {0.645, 0.663, 0.673, 0.689, 0.699, 0.623};
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -40,7 +40,7 @@ void figure5_generator(){
 	int v2_index[6] = {9,10,11,12,13,14};
 	int v3_index[6] = {15,16,17,18,19,20};
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_0104/Main_PbPb_Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
 
 
 	for (int n = 0; n <6; ++n)
@@ -220,7 +220,7 @@ void figure5_generator(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TCanvas* c3 = MakeCanvas("c3","c3");
+	TCanvas* c3 = new TCanvas("c3","c3",1,1,600,600);
 	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.84) ;
 	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.78) ;

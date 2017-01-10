@@ -7,8 +7,8 @@ void figure6_ntrk(){
 	TFile *f;
 
 	const int NAchBins = 7;
-	//double correctionlist[10] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662,0.645,0.663};
-	double correctionlist[10] = {1,1,1,1,1,1,1,1,1,1};
+	double correctionlist[10] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662,0.645,0.663};
+	//double correctionlist[10] = {1,1,1,1,1,1,1,1,1,1};
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -48,7 +48,7 @@ void figure6_ntrk(){
 
 	TGraphErrors* graph_list[3];
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_Cumulant/Main_PbPb_Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
 
 
 	for (int n = 0; n <10; ++n)
@@ -297,7 +297,7 @@ void figure6_ntrk(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TCanvas* c3 = MakeCanvas("c3","c3");
+	TCanvas* c3 = new TCanvas("c3","c3",1,1,600,600);
 	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.84) ;
 	TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 260",0.25,0.80) ;
 	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.78) ;
