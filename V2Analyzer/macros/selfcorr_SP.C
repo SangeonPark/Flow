@@ -6,7 +6,7 @@ void selfcorr_SP(){
 
 	const int NAchBins = 7;
 
-	TFile *f = new TFile("../../../rootfiles/selfcorrelation/SP/selfcortest_new_30.root");
+	TFile *f = new TFile("~/Summer2016/rootfiles/selfcorrelation/SP/selfcortest_new_30.root");
 	TH1D* c2_pos_case1[100][4][2];
 	TH1D* c2_neg_case1[100][4][2];
 	TH1D* c2_tot_case1[100][4][2];
@@ -147,7 +147,7 @@ void selfcorr_SP(){
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.102, 0.112);
+	base->GetYaxis()->SetRangeUser(0.082, 0.112);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);

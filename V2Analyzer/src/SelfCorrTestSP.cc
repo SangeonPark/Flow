@@ -227,41 +227,41 @@ Implementation:
 
  		if(isAchinMinusEta_){
  			if(-2.4 < eta && eta < 0){
- 				N_tot += weight;
+ 				N_tot += 1.0;
  				if(charge > 0.0){
- 					N_pos+=weight;
+ 					N_pos+=1.0;
  				}
  				if(charge < 0.0){
- 					N_neg+=weight;
+ 					N_neg+=1.0;
  				}
  			}
  			if(0 < eta && eta < 2.4){
- 				N_tot_otherside += weight;
+ 				N_tot_otherside += 1.0;
  				if(charge > 0.0){
- 					N_pos_otherside+=weight;
+ 					N_pos_otherside+=1.0;
  				}
  				if(charge < 0.0){
- 					N_neg_otherside+=weight;
+ 					N_neg_otherside+=1.0;
  				}
  			}
  		}
  		if(!isAchinMinusEta_){
  			if(0 < eta && eta < 2.4){
- 				N_tot += weight;
+ 				N_tot += 1.0;
  				if(charge > 0.0){
- 					N_pos+=weight;
+ 					N_pos+=1.0;
  				}
  				if(charge < 0.0){
- 					N_neg+=weight;
+ 					N_neg+=1.0;
  				}
  			}
  			if(-2.4 < eta && eta < 0){
- 				N_tot_otherside += weight;
+ 				N_tot_otherside += 1.0;
  				if(charge > 0.0){
- 					N_pos_otherside+=weight;
+ 					N_pos_otherside+=1.0;
  				}
  				if(charge < 0.0){
- 					N_neg_otherside+=weight;
+ 					N_neg_otherside+=1.0;
  				}
  			}
  		}
