@@ -6,7 +6,6 @@ void selfcorr_SP(){
 
 	const int NAchBins = 7;
 
-	TFile *f = new TFile("~/Summer2016/rootfiles/selfcorrelation/SP/selfcortest_new_30.root");
 	TH1D* c2_pos_case1[100][4][2];
 	TH1D* c2_neg_case1[100][4][2];
 	TH1D* c2_tot_case1[100][4][2];
@@ -23,6 +22,81 @@ void selfcorr_SP(){
 	TH1D* c2_neg[100][4];
 
 
+	double v2_pos_sample[100][10];
+	double v2_neg_sample[100][10];
+	double v2_diff_sample[100][10];
+	double x[NAchBins];
+	double v2_pos_poseta[NAchBins];
+	double v2_neg_poseta[NAchBins];
+	double v2_diff_poseta[NAchBins];
+
+	double v2_pos_negeta[NAchBins];
+	double v2_neg_negeta[NAchBins];
+	double v2_diff_negeta[NAchBins];
+
+	double numerator;
+	double denominator;
+	double q0,q1,q2,q3;
+	double err_pos[NAchBins];
+	double err_neg[NAchBins];
+	double err_diff[NAchBins];
+
+
+	for (int m = 0; m < 10; ++m)
+	{
+		f = new TFile(Form("~/Summer2016/rootfiles/selfcorr_0110/leaveout%d.root",m+1));
+		for (Int_t i = 0; i < NAchBins; i++){
+			for(Int_t j = 0 ; j < 4; j++){
+
+				c2_tot_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case1",i,j));
+				c2_tot_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_sin_case1",i,j));
+				c2_pos_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case1",i,j));
+				c2_pos_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case1",i,j));
+				c2_neg_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case1",i,j));
+				c2_neg_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case1",i,j));
+
+				c2_tot_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case2",i,j));
+				c2_tot_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_sin_case2",i,j));
+				c2_pos_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case2",i,j));
+				c2_pos_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case2",i,j));
+				c2_neg_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case2",i,j));
+				c2_neg_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case2",i,j));
+
+			}
+		}
+
+
+
+		for(Int_t i=0; i<NAchBins; i++){
+
+			
+//positive
+			q0 = c2_pos_case1[i][0][0]->GetMean();
+			q1 = c2_pos_case1[i][1][0]->GetMean();
+			q2 = c2_pos_case1[i][2][0]->GetMean();
+			q3 = c2_pos_case1[i][3][0]->GetMean();
+
+			numerator = q0;
+			denominator = sqrt((q1*q2)/q3);
+			v2_pos_sample[i][m] = numerator/denominator;
+
+//negative
+			q0 = c2_neg_case1[i][0][0]->GetMean();
+			q1 = c2_neg_case1[i][1][0]->GetMean();
+			q2 = c2_neg_case1[i][2][0]->GetMean();
+			q3 = c2_neg_case1[i][3][0]->GetMean();
+			numerator = q0;
+			denominator = sqrt((q1*q2)/q3);
+			v2_neg_sample[i][m] = numerator/denominator;
+
+			v2_diff_sample[i][m] = (v2_neg_sample[i][m] - v2_pos_sample[i][m])/(v2_neg_sample[i][m] + v2_pos_sample[i][m]);
+
+		}
+
+	}
+
+
+	TFile *f = new TFile("~/Summer2016/rootfiles/selfcorr_0110/Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -61,18 +135,7 @@ void selfcorr_SP(){
 		
 	}
 */
-	double x[NAchBins];
-	double v2_pos_poseta[NAchBins];
-	double v2_neg_poseta[NAchBins];
-	double v2_diff_poseta[NAchBins];
 
-	double v2_pos_negeta[NAchBins];
-	double v2_neg_negeta[NAchBins];
-	double v2_diff_negeta[NAchBins];
-
-	double numerator;
-	double denominator;
-	double q0,q1,q2,q3;
 
 	
 	
@@ -105,8 +168,35 @@ void selfcorr_SP(){
 		v2_neg_poseta[i] = numerator/denominator;
 
 
-		v2_diff_poseta[i] = v2_neg_poseta[i]-v2_pos_poseta[i];
+		v2_diff_poseta[i] = (v2_neg_poseta[i]-v2_pos_poseta[i])/(v2_neg_poseta[i]+v2_pos_poseta[i]);
 
+
+//error bars
+		double variance_pos = 0.0;
+		double variance_neg = 0.0;
+		double variance_diff = 0.0;
+		double sum;
+
+		for (int k = 0; k < 10; ++k)
+		{
+			variance_pos += (v2_pos_sample[i][k]-v2_pos_poseta[i])*(v2_pos_sample[i][k]-v2_pos_poseta[i]);
+			variance_neg += (v2_neg_sample[i][k]-v2_neg_poseta[i])*(v2_neg_sample[i][k]-v2_neg_poseta[i]);
+			variance_diff += (v2_diff_sample[i][k]-v2_diff_poseta[i])*(v2_diff_sample[i][k]-v2_diff_poseta[i]);
+		}
+		sum = v2_pos_poseta[i] + v2_neg_poseta[i];
+		variance_pos *= 0.9;
+		variance_neg *= 0.9;
+		variance_diff *= 0.9;
+		//variance_diff = (4*v2_neg[i]*v2_neg[i]*variance_pos)/(sum*sum*sum*sum)+(4*v2_pos[i]*v2_pos[i]*variance_neg)/(sum*sum*sum*sum);
+
+		err_pos[i] = sqrt(variance_pos);
+		err_neg[i] = sqrt(variance_neg);
+		err_diff[i] = sqrt(variance_diff);
+		
+
+
+
+/*
 // negative eta region
 //positive
 		q0 = c2_pos_case2[i][0][0]->GetMean();
@@ -131,28 +221,35 @@ void selfcorr_SP(){
 
 
 		v2_diff_negeta[i] = v2_neg_negeta[i]-v2_pos_negeta[i];
-		
+*/	
 	}	
 
 
 
-	TGraph *gr_pos_poseta = new TGraph(NAchBins,x,v2_pos_poseta);
-	TGraph *gr_neg_poseta = new TGraph(NAchBins,x,v2_neg_poseta);
-	TGraph *gr_diff_poseta = new TGraph(NAchBins,x,v2_diff_poseta);
+	TGraphErrors *gr_pos_poseta = new TGraphErrors(NAchBins,x,v2_pos_poseta,NULL,err_pos);
+	TGraphErrors *gr_neg_poseta = new TGraphErrors(NAchBins,x,v2_neg_poseta,NULL,err_neg);
+	TGraphErrors *gr_diff_poseta = new TGraphErrors(NAchBins,x,v2_diff_poseta,NULL,err_diff);
 
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure_selfcorrelation.root","RECREATE");
+	gr_pos_poseta->Write();
+	gr_neg_poseta->Write();
+	gr_diff_poseta->Write();
+	rebinned->Close();
+
+/*
 	TGraph *gr_pos_negeta = new TGraph(NAchBins,x,v2_pos_negeta);
 	TGraph *gr_neg_negeta = new TGraph(NAchBins,x,v2_neg_negeta);
 	TGraph *gr_diff_negeta = new TGraph(NAchBins,x,v2_diff_negeta);
-
+*/
 	gStyle->SetLegendFont(42);
 	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
 	//pPb
-	base->GetYaxis()->SetRangeUser(0.082, 0.112);
+	base->GetYaxis()->SetRangeUser(0.095, 0.102);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
-	base->GetXaxis()->SetTitle("Observed A_{ch}");
-	base->GetYaxis()->SetTitle("v_{2}{2}");
+	base->GetXaxis()->SetTitle("Observed A_{ch}(-2.4 < #eta < 0)");
+	base->GetYaxis()->SetTitle("v_{2}{2}(0 < #eta < 2.4)");
 	base->GetXaxis()->CenterTitle();
 	base->GetYaxis()->CenterTitle();
 	base->SetTitleSize  (0.040,"X");
@@ -172,7 +269,7 @@ void selfcorr_SP(){
 
 	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
 	base2->GetYaxis()->SetRangeUser(-0.005, 0.005);
-	base2->GetXaxis()->SetTitle("Observed A_{ch}");
+	base2->GetXaxis()->SetTitle("Observed A_{ch}(-2.4 < #eta < 0)");
 	base2->GetYaxis()->SetTitle(" (v^{#minus}_{2} #minus v^{#plus}_{2})/(v^{#minus}_{2} #plus v^{#plus}_{2}) ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
@@ -194,34 +291,38 @@ void selfcorr_SP(){
 	gr_neg_poseta -> SetMarkerColor(kBlue);
 	gr_pos_poseta -> SetMarkerStyle(28);
 	gr_pos_poseta -> SetMarkerColor(kRed);
-
+/*
 	gr_neg_negeta -> SetMarkerStyle(20);
 	gr_neg_negeta -> SetMarkerColor(kBlue);
 	gr_pos_negeta -> SetMarkerStyle(28);
 	gr_pos_negeta -> SetMarkerColor(kRed);
-	
+*/	
 	TCanvas* c1 = new TCanvas("c1","c1",1,1,1200,600);
 	c1->Divide(2,1,0.01,0.01);
+
+	/*
 	TCanvas* c2 = new TCanvas("c2","c2",1,1,1200,600);
 	c2->Divide(2,1,0.01,0.01);
+*/
 
 	gr_pos_poseta->SetFillStyle(0);
 	gr_pos_poseta->SetFillColor(0);
 	gr_neg_poseta->SetFillStyle(0);
 	gr_neg_poseta->SetFillColor(0);
+	/*
 	gr_pos_negeta->SetFillStyle(0);
 	gr_pos_negeta->SetFillColor(0);
 	gr_neg_negeta->SetFillStyle(0);
 	gr_neg_negeta->SetFillColor(0);
-
+*/
 	gStyle->SetOptTitle(0);
 
-//	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
-	TLatex* text_a = makeLatex("40-50% centrality",0.25,0.85) ;
-//	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
-	TLatex* text_b = makeLatex("A_{ch} in -2.4 < #eta < 0",0.25,0.80) ;
-	TLatex* text_d = makeLatex("v_{2} in -2.4 < #eta < 0",0.25,0.75) ;
-	TLatex* text_c = makeLatex("v_{2} in 0 < #eta < 2.4",0.25,0.75) ;
+	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
+	TLatex* text_b = makeLatex("30-40% centrality",0.25,0.80) ;
+	TLatex* text_c = makeLatex("0.3 < p_{T} < 3 GeV/c",0.25,0.75) ;
+	TLatex* text_d = makeLatex("A_{ch} in -2.4 < #eta < 0",0.25,0.80) ;
+	TLatex* text_e = makeLatex("v_{2} in -2.4 < #eta < 0",0.25,0.75) ;
+	TLatex* text_f = makeLatex("v_{2} in 0 < #eta < 2.4",0.25,0.75) ;
 
 
 	text_a->SetTextFont(42);
@@ -235,14 +336,14 @@ void selfcorr_SP(){
 	leg->SetFillStyle(0);
 	leg->AddEntry(gr_pos_poseta, "v_{2}^{#plus}{2}","p");
 	leg->AddEntry(gr_neg_poseta , "v_{2}^{#minus}{2}","p");
-
+/*
 	TLegend* leg2 = new TLegend(0.76,0.80,0.94,.88);
 	leg2->SetLineColor(kWhite);
 	leg2->SetFillColor(0);
 	leg2->SetFillStyle(0);
 	leg2->AddEntry(gr_pos_negeta, "v_{2}^{#plus}{2}","p");
 	leg2->AddEntry(gr_neg_negeta , "v_{2}^{#minus}{2}","p");
-
+*/
 	
 	c1->cd(1);
 	base->Draw("");
@@ -282,18 +383,20 @@ void selfcorr_SP(){
 	gr_diff_poseta->Draw("PSame");
 	text1->DrawClone("Same");
 	text2->DrawClone("Same");
-
 	fit1->DrawClone("Same");
 
+	c1->Print("~/Summer2016/selfcorr_SP_diff_40.pdf");
+	c1->Print("~/Summer2016/selfcorr_SP_diff_40.gif");
+
+/*
 	c2->cd(1);
 	base->Draw("");
 	gr_pos_negeta->Draw("PSame");
 	gr_neg_negeta->Draw("PSame");
-
-	//text_a->DrawClone("Same");
-	//text_b->DrawClone("Same");
-	//text_c->DrawClone("Same");
-//	leg->DrawClone("Same");
+	text_a->DrawClone("Same");
+	text_b->DrawClone("Same");
+	text_c->DrawClone("Same");
+	leg->DrawClone("Same");
 
 	text_a->DrawClone("Same");
 	text_b->DrawClone("Same");
@@ -308,12 +411,12 @@ void selfcorr_SP(){
 	gr_diff_negeta->Fit(fit2,"RN0");
 
 	c2->cd(2);
-/*	gr_diff_negeta->GetYaxis()->SetRangeUser(-0.004,0.004);
+	gr_diff_negeta->GetYaxis()->SetRangeUser(-0.004,0.004);
 	gr_diff_negeta->GetXaxis()->SetLimits(-0.1,0.1);
 	gr_diff_negeta->GetXaxis()->SetTitle("A_{ch}");
 	gr_diff_negeta->GetYaxis()->SetTitle("v_{2}(-) - v_{2}(+)");
 	gr_diff_negeta->GetYaxis()->SetTitleOffset(1.1);
-	gr_diff_negeta->GetXaxis()->SetTitleOffset(1.1); */
+	gr_diff_negeta->GetXaxis()->SetTitleOffset(1.1); 
 
 	TLatex* text3 = makeLatex(Form("Intercept : %f #pm %f",fit2->GetParameter(0),fit2->GetParError(0)),0.45,0.25) ;
 	TLatex* text4 = makeLatex(Form("slope : %.4f #pm %.4f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.30) ;
@@ -321,15 +424,11 @@ void selfcorr_SP(){
 	gr_diff_negeta->Draw("PSame");
 	text3->DrawClone("Same");
 	text4->DrawClone("Same");
-
 	fit2->DrawClone("Same");
-
-	c1->Print("~/Summer2016/selfcorr_SP_diff_40.pdf");
-	c1->Print("~/Summer2016/selfcorr_SP_diff_40.gif");
-
 
 	c2->Print("~/Summer2016/selfcorr_SP_same_40.pdf");
 	c2->Print("~/Summer2016/selfcorr_SP_same_40.gif");
+	*/
 
 
 }

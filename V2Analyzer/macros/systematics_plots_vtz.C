@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void systematics_plots(){
+void systematics_plots_vtz(){
 
 	TFile *f;
 
@@ -35,13 +35,13 @@ void systematics_plots(){
 	f = new TFile("~/Summer2016/rootfiles/systematics_0110/Systematics_Merged.root");
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo_n3/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo_n4/ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n3/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n3/c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n3/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n3/c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i< NAchBins; i++){
@@ -95,13 +95,13 @@ void systematics_plots(){
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo_n2/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo_n5/ach_%d",i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n2/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n2/c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n5/c2pos_%d_cos",i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n5/c2pos_%d_sin",i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n2/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n2/c2neg_%d_sin",i));
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n5/c2neg_%d_cos",i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n5/c2neg_%d_sin",i));
 		
 	}
 	for(Int_t i=0; i< NAchBins; i++){
@@ -212,7 +212,7 @@ void systematics_plots(){
 
 
 	TH1D* base2 = new TH1D("base2","base2",1,-0.05,0.05);
-	base2->GetYaxis()->SetRangeUser(-0.04, 0.04);
+	base2->GetYaxis()->SetRangeUser(-0.015, 0.015);
 	base2->GetXaxis()->SetTitle("Observed A_{ch}");
 	base2->GetYaxis()->SetTitle(" #frac{ v_{2}^{#minus} #minus v_{2}^{#plus} }{ v_{2}^{#minus} #plus v_{2}^{#plus} } ");
 	base2->GetXaxis()->CenterTitle();
@@ -268,8 +268,8 @@ void systematics_plots(){
 	diff_list[2]->Fit(fit3,"N0");
 
 
-	TLatex* text1 = makeLatex(Form("loose slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;	
-	TLatex* text2 = makeLatex(Form("tight slope : %.4f #pm %.4f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.30) ;
+	TLatex* text1 = makeLatex(Form("wide slope : %.4f #pm %.4f",fit1->GetParameter(1),fit1->GetParError(1)),0.45,0.25) ;	
+	TLatex* text2 = makeLatex(Form("narrow slope : %.4f #pm %.4f",fit2->GetParameter(1),fit2->GetParError(1)),0.45,0.30) ;
 	TLatex* text3= makeLatex(Form("default slope : %.4f #pm %.4f",fit3->GetParameter(1),fit3->GetParError(1)),0.45,0.35) ;
 
 
@@ -320,12 +320,12 @@ void systematics_plots(){
 	leg2->SetLineColor(kWhite);
 	leg2->SetFillColor(0);
 	leg2->SetFillStyle(0);
-	leg2->AddEntry(fit1, "loose","l");
-	leg2->AddEntry(fit2 , "tight","l");
+	leg2->AddEntry(fit1, "wide","l");
+	leg2->AddEntry(fit2 , "narrow","l");
 	leg2->AddEntry(fit3 , "default","l");
 
 	leg2->DrawClone("Same");
-	SaveCanvas(c3,"pics","syst_trk");
+	SaveCanvas(c3,"pics","syst_vtz");
 
 
 

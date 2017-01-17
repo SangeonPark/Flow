@@ -28,14 +28,31 @@ void ALICE_Comparison(){
 	double variance_diff;
 
 
-	double x_alice[8] = {-0.07,-0.05,-0.03,-0.01,0.01,0.03,0.05,0.07};
-	double v2_pos_alice[8] = {0.0995,0.0985+0.0005/4,0.098+0.0005/4,0.0975+0.0005*2/3,0.0975+0.0005/6,0.0975,0.097+0.0005/2,0.097+0.0005/2+0.0001};
-	double v2_neg_alice[8] = {0.097-0.0005/5,0.097+0.0005/4,0.097+0.0005/2,0.0975,0.0975+0.0005/2,0.098+0.0005/4,0.0985+0.0001,0.0985+0.0005*2/3};
-	double v2_diff_alice[8];
-	for (int i = 0; i < 8; ++i)
+	double x_alice[10] = {-0.09,-0.07,-0.05,-0.03,-0.01,0.01,0.03,0.05,0.07,0.09};
+
+
+//	double v2_pos_alice[10] = {0.0995,0.0985+0.0005/4,0.098+0.0005/4,0.0975+0.0005*2/3,0.0975+0.0005/6,0.0975,0.097+0.0005/2,0.097+0.0005/2+0.0001};
+//	double v2_neg_alice[10] = {0.097-0.0005/5,0.097+0.0005/4,0.097+0.0005/2,0.0975,0.0975+0.0005/2,0.098+0.0005/4,0.0985+0.0001,0.0985+0.0005*2/3};
+
+	double v2_pos_alice[10] = {0.101486,0.099522,0.0986494,0.0981239,0.0978174,0.0975633,0.0974495,0.0972289,0.0972825,0.0976992};
+	double v2_neg_alice[10]={0.0991805,0.0968823,0.0971381,0.0972906,0.0974951,0.0977261,0.0981123,0.0986047,0.0988509,0.10041};
+	double err_pos_alice[10]={0.00199737,0.000688926,0.000277691,0.000144079,0.000101033,8.87595e-05,0.000109954,0.000176882,0.00037035,0.000996611};
+	double err_neg_alice[10]={0.00196405,0.000663062,0.000268974,0.000141065,0.000100219,8.94285e-05,0.000112572,0.000183565,0.000386812,0.00106967};
+
+	double err_diff_alice[10];
+	double v2_diff_alice[10];
+
+	for (int i = 0; i < 10; ++i)
 	{
 		v2_diff_alice[i] = (v2_neg_alice[i]-v2_pos_alice[i])/(v2_neg_alice[i]+v2_pos_alice[i]);
 
+		sum = v2_pos_alice[i] + v2_neg_alice[i];
+		variance_pos = err_pos_alice[i]*err_pos_alice[i];
+		variance_neg = err_neg_alice[i]*err_neg_alice[i];
+
+		variance_diff = (4*v2_neg_alice[i]*v2_neg_alice[i]*variance_pos)/(sum*sum*sum*sum)+(4*v2_pos_alice[i]*v2_pos_alice[i]*variance_neg)/(sum*sum*sum*sum);
+
+		err_diff_alice[i] = sqrt(variance_diff);
 
 	}
 	
@@ -138,9 +155,9 @@ void ALICE_Comparison(){
 	TGraphErrors *gr_diff = new TGraphErrors(7,x,v2_diff,NULL,err_diff);
 
 	
-	TGraph *gr_pos_alice = new TGraph(8,x_alice,v2_pos_alice);
-	TGraph *gr_neg_alice = new TGraph(8,x_alice,v2_neg_alice);
-	TGraph *gr_diff_alice = new TGraph(8,x_alice,v2_diff_alice);
+	TGraphErrors *gr_pos_alice = new TGraphErrors(10,x_alice,v2_pos_alice,NULL,err_pos_alice);
+	TGraphErrors *gr_neg_alice = new TGraphErrors(10,x_alice,v2_neg_alice,NULL,err_neg_alice);
+	TGraphErrors *gr_diff_alice = new TGraphErrors(10,x_alice,v2_diff_alice,NULL,err_diff_alice);
 
 	TCanvas* c1 = new TCanvas("c1","c1");
 	TCanvas* c2 = new TCanvas("c2","c2");

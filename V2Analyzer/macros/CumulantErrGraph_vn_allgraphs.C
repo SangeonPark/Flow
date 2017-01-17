@@ -1,13 +1,13 @@
 #include "RiceStyle.h"
 using namespace std;
 
-void CumulantErrGraph_v2_normalized_pPb(){
+void CumulantErrGraph_vn_allgraphs(){
 
 	TFile *f;
 
 	const int NAchBins = 7;
 	//const double correction = 0.7463;
-	const double correction = 1.0;
+	//const double correction = 1.0;
 
 	TH1D* c2_pos[NAchBins][2];
 	TH1D* c2_neg[NAchBins][2];
@@ -27,13 +27,24 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	double variance_neg;
 	double variance_diff;
 
+	int index_v2_mult;
+	int index_v3_mult;
+	int index_v2_cent; 
+	int index_v3_cent; 
 
-	//f = new TFile("../../../rootfiles/systematics/trackselection/loose/Merged.root");
-	//f = new TFile("../../../rootfiles/systematics/trackselection/tight/Merged.root");
-	//f = new TFile("../../../rootfiles/systematics/vtz/wide/Merged.root");
-	//f = new TFile("../../../rootfiles/systematics/vtz/narrow/Merged.root");
-	//f = new TFile("../../../rootfiles/crosscheck/PbPb/v2/ntrk/185_220/Merged.root");
-	//f = new TFile("../../../rootfiles/systematics_redo/v2_Cumulant_40.root");
+	int mult_start[8] = {90,120,150,185,220,260,300,400}; 
+	int mult_end[8] = {120,150,185,220,260,300,400,500};
+	double correction[8] = {0.704,0.698,0.694,0.687,0.684,0.676,0.673,0.662};
+	int mult_index[8] = {1,2,3,4,5,6,7,8};
+
+	double setrange_low[8] = {0.0814, 0.087,  0.0915,  0.0955, 0.098, 0.1005,  0.1027, 0.1045};
+	double setrange_upp[8] = {0.086, 0.091, 0.0955, 0.099  ,0.1012, 0.104,    0.107, 0.1085}; 
+
+	int num = 7;
+
+	range_start = setrange_low[num];
+	range_end = setrange_upp[num];
+
 
 
 	f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
@@ -43,19 +54,19 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
-		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",mult_index[num],i+1));
 
-		c2_pos[i][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_cos",i));
-		c2_pos[i][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_sin",i));
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_cos",mult_index[num],i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_sin",mult_index[num],i));
 
-		c2_neg[i][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_cos",i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_sin",i));
-		
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_cos",mult_index[num],i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_sin",mult_index[num],i));		
 	}
+
 	for(Int_t i=0; i<NAchBins; i++){
 
 		x[i]=ach_hist[i]->GetMean();
-		x[i] *= correction; 
+		x[i] *= correction[num]; 
 
 //v2 positive
 		cmean = c2_pos[i][0] -> GetMean();
@@ -91,14 +102,14 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	}
 	
 	gStyle->SetLegendFont(42);
-	TH1D* base = new TH1D("base","base",1,-0.15,0.15);
+	TH1D* base = new TH1D("base","base",1,-0.1,0.1);
 	//pPb
 	//base->GetYaxis()->SetRangeUser(0.065, 0.075);
-	base->GetYaxis()->SetRangeUser(0.10, 0.122);
+	base->GetYaxis()->SetRangeUser(range_start, range_end);
 
 	//PbPb
 	//base->GetYaxis()->SetRangeUser(0.093, 0.103);
-	base->GetXaxis()->SetTitle("Observed A_{ch}");
+	base->GetXaxis()->SetTitle("Corrected A_{ch}");
 	base->GetYaxis()->SetTitle("v_{2}{2}");
 	base->GetXaxis()->CenterTitle();
 	base->GetYaxis()->CenterTitle();
@@ -117,9 +128,9 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	base->SetLabelFont  (42   ,"Y");
 	base->SetLineWidth(0);
 
-	TH1D* base2 = new TH1D("base2","base2",1,-0.15,0.15);
+	TH1D* base2 = new TH1D("base2","base2",1,-0.1,0.1);
 	base2->GetYaxis()->SetRangeUser(-0.03, 0.03);
-	base2->GetXaxis()->SetTitle("Observed A_{ch}");
+	base2->GetXaxis()->SetTitle("Corrected A_{ch}");
 	base2->GetYaxis()->SetTitle(" (v^{#minus}_{2} #minus v^{#plus}_{2})/(v^{#minus}_{2} #plus v^{#plus}_{2}) ");
 	base2->GetXaxis()->CenterTitle();
 	base2->GetYaxis()->CenterTitle();
@@ -137,7 +148,7 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	base2->SetLabelFont  (42   ,"Y");
 	base2->SetLineWidth(0);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/narrowpt_30_40_centrality.root","RECREATE");
+	TFile *rebinned = new TFile(Form("~/Summer2016/root_forgraphs/v2_%d_%d.root",mult_start[num],mult_end[num]),"RECREATE");
 
 
 	TGraphErrors *gr_pos = new TGraphErrors(NAchBins,x,v2_pos,NULL,err_pos);
@@ -165,10 +176,10 @@ void CumulantErrGraph_v2_normalized_pPb(){
 
 	TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
 	//TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
-	TLatex* text_b = makeLatex("30-40%",0.25,0.80) ;
+	TLatex* text_b = makeLatex(Form("%d #leq N^{offline}_{trk} < %d",mult_start[num],mult_end[num]),0.25,0.80) ;
 
-	TLatex* text_c = makeLatex("0.8 < p_{T} < 0.85 GeV/c",0.25,0.75) ;
-	TLatex* text_d = makeLatex("|#Delta#eta| > 2",0.25,0.70) ;
+	TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.25,0.75) ;
+	TLatex* text_d = makeLatex("|#Delta#eta| > 1",0.25,0.70) ;
 
 	text_a->SetTextFont(42);
 	text_b->SetTextFont(42);
@@ -244,7 +255,11 @@ void CumulantErrGraph_v2_normalized_pPb(){
 	leg2->AddEntry(gr_diff , "data","p");
 	leg2->DrawClone("Same");
 
-	SaveCanvas(c3,"pics",Form("30-40Narrowpt"));
+	cout << mult_start[num] << endl;
+	cout << mult_end[num] << endl;
+
+	c3->Print(Form("~/Summer2016/pics/v2_ntrk_%d_%d.pdf",mult_start[num],mult_end[num]));
+	c3->Print(Form("~/Summer2016/pics/v2_ntrk_%d_%d.gif",mult_start[num],mult_end[num]));
 
 
 

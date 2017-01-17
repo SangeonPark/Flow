@@ -343,6 +343,79 @@ private:
 
 };
 
+
+class AutoCorrelation : public edm::EDAnalyzer {
+public:
+      explicit AutoCorrelation(const edm::ParameterSet&);
+      ~AutoCorrelation();
+
+      static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
+
+
+private:
+      virtual void beginJob() ;
+      virtual void analyze(const edm::Event&, const edm::EventSetup&);
+      virtual void endJob() ;
+
+      virtual void beginRun(edm::Run const&, edm::EventSetup const&);
+      virtual void endRun(edm::Run const&, edm::EventSetup const&);
+      virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+      virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+
+      // ----------member data ---------------------------
+
+      TNtuple* track_Data;
+      TH1D* asym_Dist;
+      TH1D* NTrkHist;
+      TH2D* effTable;
+      TH1D* cbinHist;
+
+      
+      double offlineDCA_;
+      double offlineptErr_;
+      double etaCutMin_;
+      double etaCutMax_;
+      double ptCutMin_;
+      double ptCutMax_;
+      double etaHFLow_;
+      double etaHFUpp_;
+      double etaGap_;
+      double vzLow_;
+      double vzHigh_;
+      int Nmin_;
+      int Nmax_;
+
+
+      std::vector<double> centBins_;
+      std::vector<double> achBins_;
+      std::string efftablePath_;
+      std::string efftableName_;
+      int NAchBins;
+
+      bool doEffCorrection_;
+      bool useCentrality_;
+      bool reverseBeam_;  
+
+ //     double Bins[6] = {-999,-0.04,-0.015,0.015,0.04,999 };
+
+      TH1D* c2_pos_case1[100][4][2];
+      TH1D* c2_neg_case1[100][4][2];
+      TH1D* c2_tot_case1[100][4][2];
+      TH1D* c2_pos_case2[100][4][2];
+      TH1D* c2_neg_case2[100][4][2];
+      TH1D* c2_tot_case2[100][4][2];
+
+      TH1D* ach_hist[100];
+      TH1D* pt_pos[100];
+      TH1D* pt_neg[100];
+
+      
+      edm::InputTag trackSrc_;
+      std::string vertexSrc_;
+      edm::InputTag towerSrc_;
+
+};
+
 class V2AnalyzerCumulant : public edm::EDAnalyzer {
 public:
       explicit V2AnalyzerCumulant(const edm::ParameterSet&);
