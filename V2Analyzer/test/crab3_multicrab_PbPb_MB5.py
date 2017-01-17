@@ -4,9 +4,9 @@ config = config()
 import FWCore.ParameterSet.Config as cms
 #load the cfi file and rewrite cross section parameter each time:
 process = cms.Process('Demo')
-process.load("Flow.V2Analyzer.SelfCorrTestSP_cfi")
+process.load("Flow.V2Analyzer.AutoCorrelation_cfi")
 
-outputName = "multicrab_CMW_SelfCorr_SP_PbPb_MB5_0110"
+outputName = "multicrab_CMW_AutoCorrelation_SP_PbPb_MB5_0117"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
