@@ -171,7 +171,7 @@ void CumulantErrGraph_v2_allgraphs_pPb(){
 
 
 
-	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=2.76TeV",0.25,0.85) ;
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
 	//TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
 	TLatex* text_b = makeLatex(Form("%d #leq N^{offline}_{trk} < %d",mult_start[num],mult_end[num]),0.25,0.80) ;
 

@@ -13,41 +13,24 @@ void achDistwithVerticalLines()
    TCanvas* c1 = new TCanvas("c1","c1",1,1,600,600);
 
 
-   for (int i = 3; i < 4; ++i)
-   {
-      cout << i << endl;
-
-      f = new TFile(Form("~/Summer2016/rootfiles/crosscheck/pPb/v2/%d_%d/Merged.root",ntrklist[i],ntrklist[i+1]));
-      //f = new TFile(Form("~/Summer2016/rootfiles/crosscheck/PbPb/v2/ntrk/%d_%d/Merged.root",centralitylist[i],centralitylist[i+1]));
-      
-      cout << "yeah" << endl;
-
-      for (Int_t j = 0; j < 7; j++){
-
-         achdisttemp[i][j] = (TH1D*)f->Get(Form("demo/ach_%d",j+1));
-
-      }
-
-      achdist[i] = (TH1D*)f->Get("demo/ach_1");
-
-      for(j = 1; j< 7; j++){
-         achdist[i] -> Add(achdisttemp[i][j],1.0);
-      }
-      
+   f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
+   //   f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_pPb_Merged.root");
 
 
-      achdist[i]->SetName(Form("h_%d",i));
-      
-   }
-   achdist[3]->GetXaxis()->SetRangeUser(-0.25, 0.25);
+   achdist[3] = (TH1D*)f->Get("demo_n9/ChargeAsym");
+   achdist[3]->Rebin(2);
+
+   achdist[3]->GetXaxis()->SetRangeUser(-0.15, 0.15);
+   //achdist[3]->GetYaxis()->SetRangeUser(0, 800000);
+
    //achdist[3]->SetMarkerColor(kBlue);
 
-   TLine *l1 = new TLine(-0.09,0,-0.09,40000);
-   TLine *l2 = new TLine(-0.05,0,-0.05,55000);
-   TLine *l3 = new TLine(-0.015,0,-0.015,60000);
-   TLine *l4 = new TLine(0.015,0,0.015,60000);
-   TLine *l5 = new TLine(0.05,0,0.05,55000);
-   TLine *l6 = new TLine(0.09,0,0.09,40000);
+   TLine *l1 = new TLine(-0.07,0,-0.07,300000);
+   TLine *l2 = new TLine(-0.03,0,-0.03,600000);
+   TLine *l3 = new TLine(-0.01,0,-0.01,650000);
+   TLine *l4 = new TLine(0.01,0,0.01,650000);
+   TLine *l5 = new TLine(0.03,0,0.03,600000);
+   TLine *l6 = new TLine(0.07,0,0.07,300000);
 
    l1->SetLineColor(kBlue);
    l1->SetLineStyle(2);
@@ -76,6 +59,41 @@ void achDistwithVerticalLines()
 
 
    achdist[3]->Draw();
+   achdist[3]->GetXaxis()->SetTitle("Observed A_{ch}");
+   achdist[3]->GetYaxis()->SetTitle("Count");
+   achdist[3]->GetXaxis()->CenterTitle();
+   achdist[3]->GetYaxis()->CenterTitle();
+   achdist[3]->SetTitleSize  (0.040,"X");
+   achdist[3]->SetTitleOffset(1.4,"X");
+   achdist[3]->SetTitleFont  (42,"X");
+   achdist[3]->SetLabelOffset(0.006,"X");
+   achdist[3]->SetLabelSize  (0.040,"X");
+   achdist[3]->SetLabelFont  (42   ,"X");
+
+   achdist[3]->SetTitleSize  (0.040,"Y");
+   achdist[3]->SetTitleOffset(2.2,"Y");
+   achdist[3]->SetTitleFont  (42,"Y");
+   achdist[3]->SetLabelOffset(0.006,"Y");
+   achdist[3]->SetLabelSize  (0.040,"Y");
+   achdist[3]->SetLabelFont  (42   ,"Y");
+   achdist[3]->SetLineWidth(0);
+   TLatex* text_a = makeLatex("CMS PbPb #sqrt{s_{NN}}=5.02TeV",0.23,0.87) ;
+
+   TLatex* text_b = makeLatex("30-40%",0.23,0.82) ;
+
+   TLatex* text_c = makeLatex("0.3 < p_{T} < 3.0 GeV/c",0.23,0.75) ;
+
+   text_a->SetTextFont(42);
+
+   text_b->SetTextFont(42);
+
+   text_c->SetTextFont(42);
+
+   text_a->DrawClone("Same");
+   text_b->DrawClone("Same");
+   //text_c->DrawClone("Same");
+
+
    l1->Draw("same");
    l2->Draw("same");
    l3->Draw("same");

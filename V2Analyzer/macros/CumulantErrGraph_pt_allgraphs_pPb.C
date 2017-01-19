@@ -38,7 +38,7 @@ void CumulantErrGraph_pt_allgraphs_pPb(){
 	double range_start = 0.06;
 	double range_end = 0.072;
 
-	int num = 0;
+	int num = 4;
 
 	range_start = setrange_low[num];
 	range_end = setrange_upp[num];
@@ -168,7 +168,7 @@ void CumulantErrGraph_pt_allgraphs_pPb(){
 
 
 
-	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=2.76TeV",0.25,0.85) ;
+	TLatex* text_a = makeLatex("CMS pPb #sqrt{s_{NN}}=5.02TeV",0.25,0.85) ;
 	//TLatex* text_b = makeLatex("185 #leq N_{trk}^{offline} < 220",0.25,0.80) ;
 	TLatex* text_b = makeLatex(Form("%d #leq N^{offline}_{trk} < %d",mult_start[num],mult_end[num]),0.25,0.80) ;
 
