@@ -406,6 +406,8 @@ private:
       TH1D* c2_tot_case2[100][4][2];
 
       TH1D* ach_hist[100];
+      TH1D* ach_hist_otherside[100];
+
       TH1D* pt_pos[100];
       TH1D* pt_neg[100];
 
