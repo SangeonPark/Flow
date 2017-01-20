@@ -6,7 +6,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.AutoCorrelation_cfi")
 
-outputName = "multicrab_CMW_AutoCorrelation_SP_PbPb_MB5_0119"
+outputName = "multicrab_CMW_AutoCorrelation_SP_PbPb_MB5_0119_ver2"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True

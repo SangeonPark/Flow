@@ -139,6 +139,10 @@ Implementation:
  	double N_pos = 0.0;
  	double N_neg = 0.0;
  	double N_tot = 0.0;
+ 	double N_pos_otherside = 0.0;
+ 	double N_neg_otherside = 0.0;
+ 	double N_tot_otherside = 0.0;
+
 
  	double pt_tot_pos = 0.0;
  	double pt_avg_pos = 0.0;
@@ -220,12 +224,15 @@ Implementation:
  			}
  		}
  		if(random>0.5){
+ 			N_tot_otherside += 1.0;
  			if(charge>0){
+ 				N_pos_otherside+=1.0;
  				pt_tot_pos += weight*pt;
  				pt_weight_pos += weight;
 
  			}
  			if(charge<0){
+ 				N_neg_otherside+=1.0;
  				pt_tot_neg += weight*pt;
  				pt_weight_neg += weight;
 
@@ -305,7 +312,10 @@ Implementation:
 
 
  	double N_diff = N_pos - N_neg;
+ 	double N_diff_otherside = N_pos_otherside - N_neg_otherside;
+
  	double ach = N_diff/N_tot;
+ 	double ach_otherside = N_diff_otherside/N_tot_otherside;
 
  	asym_Dist->Fill(ach);
  	NTrkHist->Fill(nTracks);
@@ -319,6 +329,8 @@ Implementation:
 
  		if(achBins_[i] < ach && ach <= achBins_[i+1]){
  			ach_hist[i]->Fill(ach);
+ 			ach_hist_otherside[i]->Fill(ach_otherside);
+
  			pt_pos[i]->Fill(pt_avg_pos);
  			pt_neg[i]->Fill(pt_avg_neg);
 
@@ -467,6 +479,8 @@ Implementation:
 
  		}
  		ach_hist[i] = fs->make<TH1D>(Form("ach_%d",i+1),Form("ach_%d",i+1),1000,-0.4,0.4);
+ 		ach_hist_otherside[i] = fs->make<TH1D>(Form("ach_otherside_%d",i+1),Form("ach_otherside_%d",i+1),1000,-0.4,0.4);
+
  		pt_pos[i] = fs->make<TH1D>(Form("pt_pos_%d",i+1),Form("pt_pos_%d",i+1),1000,0.0,4.0);
  		pt_neg[i] = fs->make<TH1D>(Form("pt_neg_%d",i+1),Form("pt_neg_%d",i+1),1000,0.0,4.0);
 
