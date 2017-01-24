@@ -41,7 +41,7 @@ if __name__ == '__main__':
    sampleName = [ "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_v5-70836070e3530d592901940b96c951fe/USER",
                   "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER"]       
    
-   for num in range(0,2):
+   for num in range(1,2):
       print 'double check that we are using sample %r ' % (sampleName[num])
       RequestName = outputName + '_' + str(num) 
       DataSetName = sampleName[num]
