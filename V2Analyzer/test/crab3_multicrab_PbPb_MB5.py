@@ -6,7 +6,7 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
 
-outputName = "multicrab_CMW_PbPb_varybinning_185_220_ver2_0123"
+outputName = "multicrab_CMW_PbPb_varybinning_185_220_ver3_0124"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
@@ -41,7 +41,7 @@ if __name__ == '__main__':
    sampleName = [ "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_v5-70836070e3530d592901940b96c951fe/USER",
                   "/HIMinimumBias5/davidlw-RecoSkim2015_pprereco_TrackerOnly_v5-70836070e3530d592901940b96c951fe/USER"]       
    
-   for num in range(1,2):
+   for num in range(0,2):
       print 'double check that we are using sample %r ' % (sampleName[num])
       RequestName = outputName + '_' + str(num) 
       DataSetName = sampleName[num]

@@ -42,22 +42,25 @@ process.demo_n2 = process.demo.clone(
                       order = cms.int32(2),  
 )
 
-process.demo_n3 = process.demo.clone(
+process.demo_n3= process.demo.clone(
                       useCentrality = cms.bool(False),
                       efftableName = cms.string('eff_2'),
-                      achBins = cms.untracked.vdouble(-1,-0.09,-0.05,-0.015,0.015,0.05,0.09,1),
+                      achBins = cms.untracked.vdouble(-1,-0.09,-0.055,-0.02,0.02,0.055,0.09,1),
                       Nmin = cms.int32(185),
                       Nmax = cms.int32(220),
                       order = cms.int32(2),  
 )
+
 process.demo_n4 = process.demo.clone(
                       useCentrality = cms.bool(False),
                       efftableName = cms.string('eff_2'),
-                      achBins = cms.untracked.vdouble(-1,-0.09,-0.06,-0.03,0.03,0.06,0.09,1),
+                      achBins = cms.untracked.vdouble(-1,-0.09,-0.06,-0.02,0.02,0.06,0.09,1),
                       Nmin = cms.int32(185),
                       Nmax = cms.int32(220),
                       order = cms.int32(2),  
 )
+
+
 
 
 process.p_n1 = cms.Path(process.demo_n1)

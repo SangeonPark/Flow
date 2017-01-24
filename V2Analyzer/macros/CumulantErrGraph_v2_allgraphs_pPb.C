@@ -34,30 +34,46 @@ void CumulantErrGraph_v2_allgraphs_pPb(){
 	int mult_index[5] = {1,2,3,4,5};
 
 
-	double setrange_low[5] = {0.067, 0.0685, 0.0695 ,0.07, 0.069};
-	double setrange_upp[5] = {0.071, 0.0715, 0.073 ,0.0735, 0.074};
+	//double setrange_low[5] = {0.067, 0.0685, 0.0695 ,0.07, 0.069};
+	//double setrange_upp[5] = {0.071, 0.0715, 0.073 ,0.0735, 0.074};
 
-	int num = 4;
+	double setrange_low[5] = {0.067, 0.0685, 0.095 ,0.07, 0.069};
+	double setrange_upp[5] = {0.071, 0.0715, 0.1 ,0.0735, 0.074};
+
+	int num = 2;
 
 	range_start = setrange_low[num];
 	range_end = setrange_upp[num];
 
+	int num_temp=0; 
+	int temp_index[4] = {1,2,3,4};
 
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_pPb_Merged.root");
 
-	// = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
+	//f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
+
+	f = new TFile("~/Summer2016/rootfiles/v2_varybin_temp.root");
 
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
+		/*
 		ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",mult_index[num],i+1));
 
 		c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_cos",mult_index[num],i));
 		c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_sin",mult_index[num],i));
 
 		c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_cos",mult_index[num],i));
-		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_sin",mult_index[num],i));		
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_sin",mult_index[num],i));
+		*/
+		ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",temp_index[num_temp],i+1));
+
+		c2_pos[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_cos",temp_index[num_temp],i));
+		c2_pos[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2pos_%d_sin",temp_index[num_temp],i));
+
+		c2_neg[i][0] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_cos",temp_index[num_temp],i));
+		c2_neg[i][1] = (TH1D*)f->Get(Form("demo_n%d/c2neg_%d_sin",temp_index[num_temp],i));
+
 	}
 
 	for(Int_t i=0; i<NAchBins; i++){
@@ -89,11 +105,13 @@ void CumulantErrGraph_v2_allgraphs_pPb(){
 
 	//error bars
 
-		cout << "xcoord " << x[i] << endl;
+		cout << "ycoord " << v2_pos[i] << endl;
 
 		err_pos[i] = sqrt(variance_pos);
 		err_neg[i] = sqrt(variance_neg);
 		err_diff[i] = sqrt(variance_diff);
+
+		//cout << x[i] << enld
 
 
 	}

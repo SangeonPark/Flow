@@ -38,24 +38,34 @@ void CumulantErrGraph_pt_allgraphs_PbPb(){
 	double range_start = 0.06;
 	double range_end = 0.072;
 
-	int num = 4;
+	int num = 2;
 
 	range_start = setrange_low[num];
 	range_end = setrange_upp[num];
 
+	int num_temp=3; 
+	int temp_index[4] = {1,2,3,4};
 
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
 
-	// = new TFile("../../../rootfiles/closure/pPb/185_220/Merged.root");
+	//f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
+
+	f = new TFile("~/Summer2016/rootfiles/v2_varybin_temp.root");
 
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
+		/*
 
 		ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",mult_index[num],i+1));
 		pt_pos[i] = (TH1D*)f->Get(Form("demo_n%d/pt_pos_%d",mult_index[num],i+1));
 		pt_neg[i] = (TH1D*)f->Get(Form("demo_n%d/pt_neg_%d",mult_index[num],i+1));
+		*/
+		cout << temp_index[num_temp] << endl;
+
+		ach_hist[i] = (TH1D*)f->Get(Form("demo_n%d/ach_%d",temp_index[num_temp],i+1));
+		pt_pos[i] = (TH1D*)f->Get(Form("demo_n%d/pt_pos_%d",temp_index[num_temp],i+1));
+		pt_neg[i] = (TH1D*)f->Get(Form("demo_n%d/pt_neg_%d",temp_index[num_temp],i+1));
 
 
 	}
@@ -252,8 +262,8 @@ void CumulantErrGraph_pt_allgraphs_PbPb(){
 	cout << mult_start[num] << endl;
 	cout << mult_end[num] << endl;
 
-	c3->Print(Form("~/Summer2016/pics/pt_PbPb_%d_%d.pdf",mult_start[num],mult_end[num]));
-	c3->Print(Form("~/Summer2016/pics/pt_PbPb_%d_%d.gif",mult_start[num],mult_end[num]));
+	c3->Print(Form("~/Summer2016/pics/pt_PbPb_%d_%d_binning_%d.pdf",mult_start[num],mult_end[num],temp_index[num_temp]));
+	c3->Print(Form("~/Summer2016/pics/pt_PbPb_%d_%d_binning_%d.gif",mult_start[num],mult_end[num],temp_index[num_temp]));
 
 
 
