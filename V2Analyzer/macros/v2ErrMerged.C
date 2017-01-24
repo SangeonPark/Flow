@@ -52,23 +52,23 @@ void v2ErrMerged(){
 
 	for (int m = 0; m < 10; ++m)
 	{
-		f = new TFile(Form("~/Summer2016/rootfiles/FinalResult_ver3/leaveout%d.root",m+1));
+		f = new TFile(Form("~/Summer2016/rootfiles/autocorrelation/leaveout%d.root",m+1));
 		for (Int_t i = 0; i < NAchBins; i++){
 			for(Int_t j = 0 ; j < 4; j++){
 
-				c2_tot_case1[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_cos_case1",i,j));
-				c2_tot_case1[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_sin_case1",i,j));
-				c2_pos_case1[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_cos_case1",i,j));
-				c2_pos_case1[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_sin_case1",i,j));
-				c2_neg_case1[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_cos_case1",i,j));
-				c2_neg_case1[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_sin_case1",i,j));
+				c2_tot_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case1",i,j));
+				c2_tot_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_sin_case1",i,j));
+				c2_pos_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case1",i,j));
+				c2_pos_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case1",i,j));
+				c2_neg_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case1",i,j));
+				c2_neg_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case1",i,j));
 
-				c2_tot_case2[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_cos_case2",i,j));
-				c2_tot_case2[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_sin_case2",i,j));
-				c2_pos_case2[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_cos_case2",i,j));
-				c2_pos_case2[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_sin_case2",i,j));
-				c2_neg_case2[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_cos_case2",i,j));
-				c2_neg_case2[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_sin_case2",i,j));
+				c2_tot_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case2",i,j));
+				c2_tot_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_sin_case2",i,j));
+				c2_pos_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case2",i,j));
+				c2_pos_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case2",i,j));
+				c2_neg_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case2",i,j));
+				c2_neg_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case2",i,j));
 
 			}
 		}
@@ -132,28 +132,28 @@ void v2ErrMerged(){
 
 	}
 
-	f = new TFile("~/Summer2016/rootfiles/FinalResult_ver3/Merged.root");
+	f = new TFile("~/Summer2016/rootfiles/autocorrelation/Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
 
-		ach_hist[i] = (TH1D*)f->Get(Form("demo_n4/ach_%d",i+1));
+		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
 		
 		for(Int_t j = 0 ; j < 4; j++){
 			
-			c2_tot_case1[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_cos_case1",i,j));
-			c2_tot_case1[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_sin_case1",i,j));
-			c2_pos_case1[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_cos_case1",i,j));
-			c2_pos_case1[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_sin_case1",i,j));
-			c2_neg_case1[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_cos_case1",i,j));
-			c2_neg_case1[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_sin_case1",i,j));
+			c2_tot_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case1",i,j));
+			c2_tot_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_sin_case1",i,j));
+			c2_pos_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case1",i,j));
+			c2_pos_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case1",i,j));
+			c2_neg_case1[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case1",i,j));
+			c2_neg_case1[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case1",i,j));
 
-			c2_tot_case2[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_cos_case2",i,j));
-			c2_tot_case2[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2tot_%d_%d_sin_case2",i,j));
-			c2_pos_case2[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_cos_case2",i,j));
-			c2_pos_case2[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2pos_%d_%d_sin_case2",i,j));
-			c2_neg_case2[i][j][0] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_cos_case2",i,j));
-			c2_neg_case2[i][j][1] = (TH1D*)f->Get(Form("demo_n4/c2neg_%d_%d_sin_case2",i,j));
+			c2_tot_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_cos_case2",i,j));
+			c2_tot_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2tot_%d_%d_sin_case2",i,j));
+			c2_pos_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_cos_case2",i,j));
+			c2_pos_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2pos_%d_%d_sin_case2",i,j));
+			c2_neg_case2[i][j][0] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_cos_case2",i,j));
+			c2_neg_case2[i][j][1] = (TH1D*)f->Get(Form("demo/c2neg_%d_%d_sin_case2",i,j));
 
 			//c2_pos_case2[i][j][0] ->Sumw2();
 			//c2_neg_case2[i][j][0] ->Sumw2(); 
@@ -252,7 +252,7 @@ void v2ErrMerged(){
 	TGraphErrors *gr_neg = new TGraphErrors(NAchBins,x,v2_neg,NULL,err_neg);
 	TGraphErrors *gr_diff = new TGraphErrors(NAchBins,x,v2_diff,NULL,err_diff);
 
-	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure2_1_notcorrected.root","RECREATE");
+	TFile *rebinned = new TFile("~/Summer2016/root_forgraphs/figure_selfcorrelation.root","RECREATE");
 	gr_pos->Write();
 	gr_neg->Write();
 	gr_diff->Write();

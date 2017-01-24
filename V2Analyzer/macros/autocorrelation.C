@@ -43,12 +43,14 @@ void autocorrelation(){
 
 
 
-	TFile *f = new TFile("../../../rootfiles/CMW_AutoCorrelation_SP_PbPb_MB5_0119.root");
+	TFile *f = new TFile("../../../rootfiles/autocorr_Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
 
 		ach_hist[i] = (TH1D*)f->Get(Form("demo/ach_%d",i+1));
+		ach_otherside[i] = (TH1D*)f->Get(Form("demo/ach_otherside_%d",i+1));
+
 		
 		for(Int_t j = 0 ; j < 4; j++){
 			
@@ -87,7 +89,7 @@ void autocorrelation(){
 	for(Int_t i=0; i<NAchBins; i++){
 		
 
-		x[i]=ach_hist[i]->GetMean();
+		x[i]=ach_otherside[i]->GetMean();
 
 
 // positive eta region

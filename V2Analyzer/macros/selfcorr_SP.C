@@ -44,7 +44,7 @@ void selfcorr_SP(){
 
 	for (int m = 0; m < 10; ++m)
 	{
-		f = new TFile(Form("~/Summer2016/rootfiles/selfcorr_0110/leaveout%d.root",m+1));
+		f = new TFile(Form("~/Summer2016/rootfiles/autocorrelation/leaveout%d.root",m+1));
 		for (Int_t i = 0; i < NAchBins; i++){
 			for(Int_t j = 0 ; j < 4; j++){
 
@@ -65,26 +65,43 @@ void selfcorr_SP(){
 			}
 		}
 
+		for (int i = 0; i < 5; ++i)
+		{
+			for(int j = 0; j < 4; j++){
+
+				c2_pos[i][j] =  new TH1D(*c2_pos_case1[i][j][0]);
+				c2_pos[i][j] -> Add(c2_pos_case2[i][j][0],1.);
+
+				c2_neg[i][j] = new TH1D(*c2_neg_case1[i][j][0]);
+				c2_neg[i][j] -> Add(c2_neg_case2[i][j][0],1.);
+
+
+			}
+
+		}
+
+
+
 
 
 		for(Int_t i=0; i<NAchBins; i++){
 
 			
 //positive
-			q0 = c2_pos_case1[i][0][0]->GetMean();
-			q1 = c2_pos_case1[i][1][0]->GetMean();
-			q2 = c2_pos_case1[i][2][0]->GetMean();
-			q3 = c2_pos_case1[i][3][0]->GetMean();
+			q0 = c2_pos[i][0][0]->GetMean();
+			q1 = c2_pos[i][1][0]->GetMean();
+			q2 = c2_pos[i][2][0]->GetMean();
+			q3 = c2_pos[i][3][0]->GetMean();
 
 			numerator = q0;
 			denominator = sqrt((q1*q2)/q3);
 			v2_pos_sample[i][m] = numerator/denominator;
 
 //negative
-			q0 = c2_neg_case1[i][0][0]->GetMean();
-			q1 = c2_neg_case1[i][1][0]->GetMean();
-			q2 = c2_neg_case1[i][2][0]->GetMean();
-			q3 = c2_neg_case1[i][3][0]->GetMean();
+			q0 = c2_neg[i][0][0]->GetMean();
+			q1 = c2_neg[i][1][0]->GetMean();
+			q2 = c2_neg[i][2][0]->GetMean();
+			q3 = c2_neg[i][3][0]->GetMean();
 			numerator = q0;
 			denominator = sqrt((q1*q2)/q3);
 			v2_neg_sample[i][m] = numerator/denominator;
@@ -96,7 +113,7 @@ void selfcorr_SP(){
 	}
 
 
-	TFile *f = new TFile("~/Summer2016/rootfiles/selfcorr_0110/Merged.root");
+	TFile *f = new TFile("~/Summer2016/rootfiles/autocorrelation/Merged.root");
 
 
 	for (Int_t i = 0; i < NAchBins; i++){
@@ -119,7 +136,7 @@ void selfcorr_SP(){
 		}
 
 	}
-/*
+
 	for (int i = 0; i < 5; ++i)
 	{
 		for(int j = 0; j < 4; j++){
@@ -134,7 +151,7 @@ void selfcorr_SP(){
 		}
 		
 	}
-*/
+
 
 
 	
@@ -147,10 +164,10 @@ void selfcorr_SP(){
 
 // positive eta region
 //positive
-		q0 = c2_pos_case1[i][0][0]->GetMean();
-		q1 = c2_pos_case1[i][1][0]->GetMean();
-		q2 = c2_pos_case1[i][2][0]->GetMean();
-		q3 = c2_pos_case1[i][3][0]->GetMean();
+		q0 = c2_pos[i][0][0]->GetMean();
+		q1 = c2_pos[i][1][0]->GetMean();
+		q2 = c2_pos[i][2][0]->GetMean();
+		q3 = c2_pos[i][3][0]->GetMean();
 
 		numerator = q0;
 		denominator = sqrt((q1*q2)/q3);
@@ -159,10 +176,10 @@ void selfcorr_SP(){
 
 
 //negative
-		q0 = c2_neg_case1[i][0][0]->GetMean();
-		q1 = c2_neg_case1[i][1][0]->GetMean();
-		q2 = c2_neg_case1[i][2][0]->GetMean();
-		q3 = c2_neg_case1[i][3][0]->GetMean();
+		q0 = c2_neg[i][0][0]->GetMean();
+		q1 = c2_neg[i][1][0]->GetMean();
+		q2 = c2_neg[i][2][0]->GetMean();
+		q3 = c2_neg[i][3][0]->GetMean();
 		numerator = q0;
 		denominator = sqrt((q1*q2)/q3);
 		v2_neg_poseta[i] = numerator/denominator;

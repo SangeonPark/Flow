@@ -341,12 +341,12 @@ void v2Merged(){
 
 	gr_diff_alice -> SetMarkerStyle(24);
 
-	gr_diff_alice->Draw("PSame");
+//	gr_diff_alice->Draw("PSame");
 
-	text1->DrawClone("Same");
+	//text1->DrawClone("Same");
 	//text2->DrawClone("Same");
 	//text3->DrawClone("Same");
-	text4->DrawClone("Same");
+	//text4->DrawClone("Same");
 
 
 	fit1->DrawClone("Same");

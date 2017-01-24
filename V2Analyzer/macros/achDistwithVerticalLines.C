@@ -13,25 +13,31 @@ void achDistwithVerticalLines()
    TCanvas* c1 = new TCanvas("c1","c1",1,1,600,600);
 
 
-   f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
-   //   f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_pPb_Merged.root");
+   //f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_PbPb_Merged.root");
+      f = new TFile("~/Summer2016/rootfiles/FinalResult_0106/Main_pPb_Merged.root");
 
 
-   achdist[3] = (TH1D*)f->Get("demo_n9/ChargeAsym");
-   achdist[3]->Rebin(2);
+   achdist[3] = (TH1D*)f->Get("demo_n3/ChargeAsym");
+  // achdist[3]->Rebin(5);
 
-   achdist[3]->GetXaxis()->SetRangeUser(-0.15, 0.15);
-   //achdist[3]->GetYaxis()->SetRangeUser(0, 800000);
+   achdist[3]->GetXaxis()->SetRangeUser(-0.25, 0.25);
+  // achdist[3]->GetYaxis()->SetRangeUser(0, 500000);
 
    //achdist[3]->SetMarkerColor(kBlue);
 
-   TLine *l1 = new TLine(-0.07,0,-0.07,300000);
-   TLine *l2 = new TLine(-0.03,0,-0.03,600000);
-   TLine *l3 = new TLine(-0.01,0,-0.01,650000);
-   TLine *l4 = new TLine(0.01,0,0.01,650000);
-   TLine *l5 = new TLine(0.03,0,0.03,600000);
+ /*  TLine *l1 = new TLine(-0.07,0,-0.07,300000);
+   TLine *l2 = new TLine(-0.03,0,-0.03,400000);
+   TLine *l3 = new TLine(-0.01,0,-0.01,450000);
+   TLine *l4 = new TLine(0.01,0,0.01,450000);
+   TLine *l5 = new TLine(0.03,0,0.03,400000);
    TLine *l6 = new TLine(0.07,0,0.07,300000);
-
+*/
+   TLine *l1 = new TLine(-0.085,0,-0.085,300000);
+   TLine *l2 = new TLine(-0.05,0,-0.05,400000);
+   TLine *l3 = new TLine(-0.025,0,-0.025,450000);
+   TLine *l4 = new TLine(0.025,0,0.025,450000);
+   TLine *l5 = new TLine(0.05,0,0.05,400000);
+   TLine *l6 = new TLine(0.085,0,0.085,300000);
    l1->SetLineColor(kBlue);
    l1->SetLineStyle(2);
    l1->SetLineWidth(3);
