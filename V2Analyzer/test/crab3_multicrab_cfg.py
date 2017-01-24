@@ -10,10 +10,10 @@ config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
-outputName = 'multicrab_CMW_MainResult_Cumulant_pPb_new_0106_ver2'
+outputName = 'multicrab_CMW_PbPb_varybinning_185_220_ver4_0124'
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'pPb_Main_cfg.py'
+config.JobType.psetName = 'pPb_Main_varybin_cfg.py'
 config.Data.inputDBS = 'phys03'
 config.Data.splitting = 'FileBased'
 config.Data.unitsPerJob = 10
