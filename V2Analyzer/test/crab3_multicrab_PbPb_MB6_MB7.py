@@ -6,14 +6,14 @@ import FWCore.ParameterSet.Config as cms
 process = cms.Process('Demo')
 process.load("Flow.V2Analyzer.v2analyzerCumulant_cfi")
 
-outputName = "multicrab_CMW_MainResult_Cumulant_PbPb_MB67_new_0106"
+outputName = "multicrab_CMW_PbPb_varybinning_185_220_ver4_0124"
 
 config.General.transferOutputs = True
 config.General.transferLogs = True
 config.JobType.allowUndistributedCMSSW = True
 
 config.JobType.pluginName = 'Analysis'
-config.JobType.psetName = 'PbPb_Main_5TeV_cfg.py'
+config.JobType.psetName = 'PbPb_Main_varybin_5TeV_cfg.py'
 config.Data.inputDBS = 'global'
 config.Data.allowNonValidInputDataset = True
 config.Data.splitting = 'LumiBased'
